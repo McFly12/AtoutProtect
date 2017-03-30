@@ -147,22 +147,22 @@
 	<div class="container pt">
 		<div class="row mt centered">
 			<div class="col-lg-3">
-				<span class="glyphicon glyphicon-star-empty" style="color:#fff68f;"></span>
+				<span class="glyphicon glyphicon-star-empty" style="color:#f8941d;"></span>
 				<p style="text-align:justify;text-justify:inter-word;">Nous avons collaboré auprès des plus grandes entreprises.</p>
 			</div>
 
 			<div class="col-lg-3">
-				<span class="glyphicon glyphicon-headphones" style="color:black;"></span>
+				<span class="glyphicon glyphicon-transfer" style="color:black;"></span>
 				<p style="text-align:justify;text-justify:inter-word;">Une équipe de techniciens sont à votre disposition afin de régler quelconque problèmes.</p>
 			</div>
 
 			<div class="col-lg-3">
-				<span class="glyphicon glyphicon-euro" style="color:black;"></span>
+				<span class="glyphicon glyphicon-saved" style="color:#009d4f;"></span>
 				<p style="text-align:justify;text-justify:inter-word;">Nous certifions que l'ensemble des achats effectués sur le site, sont sécurisés.</p>
 			</div>
 
 			<div class="col-lg-3">
-				<span class="glyphicon glyphicon-globe" style="color:#4F69A2;"></span>
+				<span class="glyphicon glyphicon-globe" style="color:#3b5998;"></span>
 				<p style="text-align:justify;text-justify:inter-word;">Nous travaillons avec l'ensemble du monde.</p>
 			</div>
 		</div><!-- /row -->

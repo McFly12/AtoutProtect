@@ -60,49 +60,6 @@
     });
   </script>
 
-  <script language="Javascript">
-    $(document).ready(function () {
-      $('#mdp').keypress(function(e) {
-        if($('#mdp').val().length >= 0) {
-          var s = String.fromCharCode( e.which );
-           if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
-             document.getElementById('CapsLock').style.visibility = 'visible';
-             document.getElementById('CapsLock2').style.visibility = 'hidden';
-           }
-           else {
-             document.getElementById('CapsLock').style.visibility = 'hidden';
-             document.getElementById('CapsLock2').style.visibility = 'hidden';
-           }
-        }
-        else {
-          document.getElementById('CapsLock').style.visibility = 'hidden';
-          document.getElementById('CapsLock2').style.visibility = 'hidden';
-        }
-      });
-    });
-  </script>
-  <script language="Javascript">
-    $(document).ready(function () {
-      $('#confirmmdp').keypress(function(e) {
-        if($('#confirmmdp').val().length >= 0) {
-          var s = String.fromCharCode( e.which );
-           if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
-             document.getElementById('CapsLock2').style.visibility = 'visible';
-             document.getElementById('CapsLock').style.visibility = 'hidden';
-           }
-           else {
-             document.getElementById('CapsLock2').style.visibility = 'hidden';
-             document.getElementById('CapsLock').style.visibility = 'hidden';
-           }
-        }
-        else {
-          document.getElementById('CapsLock2').style.visibility = 'hidden';
-          document.getElementById('CapsLock').style.visibility = 'hidden';
-        }
-      });
-    });
-  </script>
-
   <script>
     function isNumberKey(evt) {
     	var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -242,26 +199,26 @@
           </div><br />
           <div class="input-group">
             <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
-            <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Mot de passe" aria-describedby="sizing-addon2"><div id="CapsLock" style="visibility:hidden;float:right;"><font color='#ffa500'>Caps Lock is on.</font></div>
+            <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Mot de passe" aria-describedby="sizing-addon2">
           </div><br />
           <div class="input-group">
             <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
-            <input type="password" class="form-control" id="confirmmdp" name="confirmmdp" placeholder="Confirmation Mot de passe" aria-describedby="sizing-addon2"><div id="CapsLock" style="visibility:hidden;float:right;"><font color='#ffa500'>Caps Lock is on.</font></div>
+            <input type="password" class="form-control" id="confirmmdp" name="confirmmdp" placeholder="Confirmation" aria-describedby="sizing-addon2">
           </div><br />
           <div class="input-group">
-            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-home" style="color:black;font-size:12px;"></span></span>
+            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-map-marker" style="color:black;font-size:12px;"></span></span>
             <input type="text" class="form-control" name="adresse" placeholder="Adresse" aria-describedby="sizing-addon2">
           </div><br />
           <div class="input-group">
-            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-home" style="color:black;font-size:12px;"></span></span>
+            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-map-marker" style="color:black;font-size:12px;"></span></span>
             <input type="text" class="form-control" name="codepostal" autocomplete="off" maxlength="5" onkeypress="return isNumberKey(event)" placeholder="Code Postal" aria-describedby="sizing-addon2">
           </div><br />
           <div class="input-group">
-            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-home" style="color:black;font-size:12px;"></span></span>
+            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-map-marker" style="color:black;font-size:12px;"></span></span>
             <input type="text" class="form-control" name="ville" placeholder="Ville" autocomplete="off" aria-describedby="sizing-addon2">
           </div><br />
           <div align="center"><br />
-            <button type="submit" id="creer_compte" name="creer_compte" class="btn btn-success">ENREGISTRER</button>
+            <button type="submit" id="creer_compte" name="creer_compte" class="btn btn-success">&nbsp;ENREGISTRER</button>
           </div>
 				</form>
 			</div>

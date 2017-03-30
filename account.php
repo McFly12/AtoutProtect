@@ -242,7 +242,7 @@ ini_set('error_reporting', E_ALL);
                           <?php }
                         } ?>
                         <br /><br />
-                <a href="createaccount.php">
+                <a href="modules/SupCompte.php">
                   <button id="supmoncompte" name="supmoncompte" type="submit" class="btnmodalCancel" style="width:130%" ><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;SUPPRIMER MON COMPTE</button>
                 </a>
               </div>
