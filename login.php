@@ -97,7 +97,7 @@
           <?php if(isset($_SESSION['nom'])) { ?>
             <div id="moncompte">
               <font color="#D8D6D6"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;
-              <img src="assets/img/download.png"></img>
+              <img src="assets/img/submenu.png"></img>
                 <ul style="display:none;">
                   <li id="compte" style='color:white'>
                     <a href="account.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Mon Compte</a>
