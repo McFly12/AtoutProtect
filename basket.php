@@ -1,61 +1,68 @@
-<?php session_start();
+<?php
 	include_once("gestionpanier.php");
 
-	$erreur = false;
+$erreur = false;
 
-	$action = (isset($_POST['action'])? $_POST['action']:  (isset($_GET['action'])? $_GET['action']:null )) ;
-	if($action !== null)
-	{
-	   if(!in_array($action,array('ajout', 'suppression', 'refresh')))
-	   $erreur=true;
+$action = (isset($_POST['action'])? $_POST['action']:  (isset($_GET['action'])? $_GET['action']:null )) ;
+if($action !== null)
+{
+   if(!in_array($action,array('ajouter', 'suppression', 'refresh')))
+   $erreur=true;
 
-	   //récuperation des variables en POST ou GET
-	   $logiciel = (isset($_POST['logiciel'])? $_POST['logiciel']:  (isset($_GET['logiciel'])? $_GET['logiciel']:null )) ;
-	   $quantite = (isset($_POST['quantite'])? $_POST['quantite']:  (isset($_GET['quantite'])? $_GET['quantite']:null )) ;
-	   $prix = (isset($_POST['prix'])? $_POST['prix']:  (isset($_GET['prix'])? $_GET['prix']:null )) ;
+   //récuperation des variables en POST ou GET
+   $nom = (isset($_POST['nom_logiciel'])? $_POST['nom_logiciel']:  (isset($_GET['nom_logiciel'])? $_GET['nom_logiciel']:null ));
+   $quantite = (isset($_POST['quantite_logiciel'])? $_POST['quantite_logiciel']:  (isset($_GET['quantite_logiciel'])? $_GET['quantite_logiciel']:null ));
+   $prix = (isset($_POST['prix_logiciel'])? $_POST['prix_logiciel']:  (isset($_GET['prix_logiciel'])? $_GET['prix_logiciel']:null ));
+	 $type = (isset($_POST['type_logiciel'])? $_POST['type_logiciel']:  (isset($_GET['type_logiciel'])? $_GET['type_logiciel']:null ));
 
-	   //Suppression des espaces verticaux
-	   $logiciel = preg_replace('#\v#', '',$logiciel);
+   //Suppression des espaces verticaux
+   $nom = preg_replace('#\v#', '',$nom);
+   //On verifie que $p soit un float
+   // $prix = floatval($prix);
 
-	   //On traite $q qui peut etre un entier simple ou un tableau d'entier
-	   if (is_array($quantite)) {
-	      $QteArticle = array();
-	      $i=0;
-	      foreach ($quantite as $contenu){
-	         $QteArticle[$i++] = intval($contenu);
-	      }
-	   }
-	   else
-	   $quantite = intval($quantite);
-	}
+   //On traite $q qui peut etre un entier simple ou un tableau d'entier
 
-	if (!$erreur){
-	   switch($action){
-	      Case "ajout":
-	         ajouterArticle($logiciel,$quantite,$prix);
-	         break;
+   if (is_array($quantite)) {
+      $QteArticle = array();
+      $i=0;
+      foreach ($quantite as $contenu){
+         $QteArticle[$i++] = intval($contenu);
+      }
+   }
+   else {
+		 // $q = intval($q);
+	 }
 
-	      Case "suppression":
-	         supprimerArticle($logiciel);
-	         break;
+}
 
-	      Case "refresh" :
-	         for ($i = 0 ; $i < count($QteArticle) ; $i++)
-	         {
-	            modifierQTeArticle($_SESSION['panier']['id_logiciel'][$i],round($QteArticle[$i]));
-	         }
-	         break;
+if (!$erreur){
+   switch($action){
+      Case "ajouter":
+         ajouterArticle($nom,$quantite,$prix,$type);
+         break;
 
-	      Default:
-	         break;
-	   }
-	}
+      Case "suppression":
+         supprimerArticle($nom);
+         break;
+
+      Case "refresh" :
+         for ($i = 0 ; $i < count($QteArticle) ; $i++)
+         {
+            modif_qte($_SESSION['panier']['logiciel'][$i],round($QteArticle[$i]));
+         }
+         break;
+
+      Default:
+         break;
+   }
+}
+
 ?>
 
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Votre panier</title>
+		<title>Atout Protect - Panier</title>
 		<meta charset="UTF-8">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -122,6 +129,8 @@
 			});
 		});
 	</script>
+
+
 	</head>
 
 	<body>
@@ -176,55 +185,194 @@
 
 <br />
 
-		<?php
-		if (creationPanier())	{
-			$nbArticles=count($_SESSION['panier']['id_logiciel']);
-			if ($nbArticles > 0) { ?>
-				<!-- Affichons maintenant le contenu du panier : -->
-				<div class="col-lg-6 col-lg-offset-3 centered">
-					<h3>VOTRE PANIER :</h3>
-					<hr><br /><br />
+<?php if(isset($_SESSION['nom'])) { ?>
+	<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
+  	<strong> Attention ! Si vous vous déconnectez de votre compte, votre panier sera perdu. </strong>
+	</div><br />
+<?php } ?>
+
+<div class="container" style="width:100%">
+    <ul class="nav nav-tabs">
+        <li class="nav active" style="width:25%"><a href="#A" data-toggle="tab">
+					<i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+						&nbsp;&nbsp;<font color="#555555">Panier</font>
+					</a>
+				</li>
+        <li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
+					<a href="#B" data-toggle="tab">
+						<span class="glyphicon glyphicon-user" style="font-size:inherit;color:#555555"></span>
+							&nbsp;&nbsp;<font color="#555555">Inscription / Connexion</font>
+					</a>
+				</li>
+
+				<?php if(!isset($_SESSION['nom'])) { ?>
+	        <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
+						<a>
+							<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+								&nbsp;&nbsp;<font color="#555555">Paiement</font>
+						</a>
+					</li>
+					<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
+						<a>
+							<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+								&nbsp;&nbsp;<font color="#555555">Validation</font>
+						</a>
+					</li>
+				<?php }
+				 	else { ?>
+						<li class="nav" style="width:25%">
+							<a href="#C" data-toggle="tab">
+								<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+									&nbsp;&nbsp;<font color="#555555">Paiement</font>
+							</a>
+						</li>
+						<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
+							<a>
+								<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+									&nbsp;&nbsp;<font color="#555555">Validation</font>
+							</a>
+						</li>
+					<?php } ?>
+
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="A">
+
+					<?php if (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) { ?>
+							<div class="col-lg-6 col-lg-offset-3 centered">
+								<h3>VOTRE PANIER :</h3>
+								<hr>
+								<p></p> <br />
+							</div>
+
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th style="width:25%;">
+												Nom
+											</th>
+											<th style="width:25%">
+												Type
+											</th>
+											<th style="width:25%">
+												Quantité
+											</th>
+											<th style="width:25%">
+												Prix Unitaire (EUR)
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+												$nbArticles = count($_SESSION['panier']['logiciel']);
+												if ($nbArticles <= 0)
+													echo "<tr><td>Votre panier est vide.</td></tr>";
+												else
+												{
+													for ($i=0 ;$i < $nbArticles ; $i++)
+													{
+														echo "<tr>";
+															echo "<td style=\"font-weight:bold;text-align:center\">".htmlspecialchars($_SESSION['panier']['logiciel'][$i])."</ d>";
+															if($_SESSION['panier']['type'][$i] == "debutantlogiciel1" || $_SESSION['panier']['type'][$i] == "debutantlogiciel2") {
+																echo "<td>Débutant</td>";
+															}
+															else if($_SESSION['panier']['type'][$i] == "standardlogiciel1" || $_SESSION['panier']['type'][$i] == "standardlogiciel2") {
+																echo "<td>Standard</td>";
+															}
+															else if($_SESSION['panier']['type'][$i] == "prologiciel1" || $_SESSION['panier']['type'][$i] == "prologiciel2") {
+																echo "<td>Professionnel</td>";
+															}
+															echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
+															echo "<td>".htmlspecialchars($_SESSION['panier']['prix'][$i])." &euro;</td>";
+														echo "</tr>";
+													}
+													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"4\"></td></tr>";
+
+													echo "<tr><td colspan=\"2\"></td>";
+														echo "<td colspan=\"2\" style=\"text-align:center\">";
+														if($nbArticles == 1) {
+																$number = montant_panier();
+
+															echo "<b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." article ) : ".number_format((float)$number, 2, ',', ' ')." &euro;</b></font>";
+														}
+														else {
+																$number = montant_panier();
+
+															echo "<b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles ) : <font color=\"#e82323!important\">".number_format((float)$number, 2, ',', ' ')." &euro;</font></font></b>";
+														}
+													echo "</td></tr>";
+
+													echo "</td></tr>";
+												}
+											?>
+									</tbody>
+								</table>
+
+								<br />
+
+								<button type="button" class="btn btn-primary" style="float:left;width:20%">
+									<a href="index.php" style="text-decoration:none;color:inherit;">
+										<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
+											&nbsp;&nbsp;Poursuivre mes achats
+									</a>
+								</button> <br /><br /><br />
+
+							</div>
+							<?php
+						}
+						else { // Message si le panier est vide
+							echo 'Votre panier est vide';
+						}
+						echo "</ul>"; ?>
+					</div>
+
+        <div class="tab-pane fade" id="B">
+					<?php if(!isset($_SESSION['nom'])) { ?>
+
+						<div class="row mt">
+			        <div style="float:left;padding-left:10px;width:75%">
+			    			<div role="form" class="col-lg-8 col-lg-offset-2">
+			    				<form method="POST" action="modules/Connexion.php" id="login" style="font-size:27px;">
+			              <div class="input-group">
+			                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-envelope" style="color:black;font-size:12px;"></span></span>
+			                <input type="email" class="form-control" style="width:75%;" name="InputEmail1" placeholder="Email" autocomplete="off" autofocus="on" aria-describedby="sizing-addon2">
+			              </div><br />
+			              <div class="input-group">
+			                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
+			                <input type="password" class="form-control" style="width:75%;" name="InputPassword1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
+			              </div><br />
+			              <div align="center">
+			                <button type="submit" class="btn btn-success" style="width:75%" id="seconnecter"><span class="glyphicon glyphicon-log-in" style="color:white;font-size:12px;"></span>&nbsp;&nbsp;SE CONNECTER</button>
+			              </div>
+			    				</form>
+			    			</div>
+			          <br /> <div class="vertical-row"></div>
+			        </div>
+
+			        <div style="float:right;padding-right:10px;width:25%">
+			    			<div role="form" class="col-lg-8 col-lg-offset-2">
+			              <div><br /><br /><br /><br />
+			                <a href="createaccount.php">
+			                  <button type="submit" class="btn btn-success" style="width:105%" ><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Créer un compte</button>
+			                </a>
+			              </div>
+			    			</div>
+			        </div>
+			  		</div><!-- /row -->
+
+					<?php }
+					else { ?>
+						Vous êtes connecté en tant que <?php echo $_SESSION['nom'];?> <?php echo $_SESSION['prenom']; ?>.
+					<?php } ?>
 				</div>
 
-				<form method="post" action="basket.php">
-				<table style="width:80%;margin-left:10%;margin-right:10%;border:1px solid black;" class="table table-bordered table-responsive table-striped">
-					<thead style="border:1px solid black;background-color:#C5C5C5">
-					<tr>
-						<td style="color:black;font-weight:bold;font-size:17px;">Nom du logiciel</td>
-						<td style="color:black;font-weight:bold;font-size:17px;">Quantité</td>
-						<td style="color:black;font-weight:bold;font-size:17px;">Prix Unitaire</td>
-						<td style="color:black;font-weight:bold;font-size:17px;">Action</td>
-					</tr>
-				</thead>
-				<?php for ($i=0 ;$i < $nbArticles ; $i++)
-				{
-					echo "<tbody style=\"border:1px solid black;\"><tr>";
-					echo "<td>".htmlspecialchars($_SESSION['panier']['id_logiciel'][$i])."</ td>";
-					echo "<td><input autocomplete=\"off\" type=\"number\" size=\"1\" name=\"q[]\" value=\"".htmlspecialchars($_SESSION['panier']['qte'][$i])."\"/></td>";
-					echo "<td><b>".htmlspecialchars($_SESSION['panier']['prix'][$i])." €</b></td>";
-					echo "<td><a style='color:red;' href=\"".htmlspecialchars("basket.php?action=suppression&l=".rawurlencode($_SESSION['panier']['id_logiciel'][$i]))."\"><i class='fa fa-trash-o'></i>&nbsp;Supprimer</a></td>";
-					echo "</tr></tbody>";
-				}
+				<div class="tab-pane fade" id="C">PAIEMENT</div>
 
-				echo "<tr><td colspan=\"4\"><br />";
-				echo "<input type=\"submit\" style=\"color:blue\" value=\"Rafraichir\"></input> ";
-				echo "<input type=\"hidden\" name=\"action\" value=\"refresh\"/>";
-				echo "<font style='font-size:22px;font-weight:bold;margin-left:300px;' >Total : ".number_format(MontantGlobal(), 2, ',', ' '); echo " €</font>";
-				echo "<img style='margin-right:10px;float:right;' src='https://www.paypalobjects.com/webstatic/en_US/i/btn/png/silver-rect-paypal-34px.png' alt='PayPal' style='float:right;'><br /><br />";
-				echo "<img style='margin-right:20px;float:right;' src='assets/img/allopass.png' alt='AlloPass' style='float:right;'><br /><br />";
-				echo "</td></tr>";
-			}
-			else
-			{ ?>
-				<br /><div class='isa_warning' style='width:50%;'>
-					<i class="fa fa-warning"></i>
-						Votre panier est vide.
-			 </div><br />
-			<?php }
-		}
-		?>
-	</table>
-	</form>
+    </div>
+</div>
 
 <br />
 

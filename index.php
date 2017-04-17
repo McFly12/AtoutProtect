@@ -214,7 +214,7 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajout&amp;logiciel=Logiciel1&amp;quantite=1&amp;prix=100&amp;type=debutant">Ajouter au panier</a></button>
+  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel1">Ajouter au panier</a></button>
   								</li>
   							</ul>
   					</div>
@@ -234,7 +234,7 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajout&amp;id_logiciel=Logiciel1&amp;quantite=1&amp;prix=100&amp;type=standard">Ajouter au panier</a></button>
+  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel1">Ajouter au panier</a></button>
   								</li>
   							</ul>
   					</div>
@@ -254,7 +254,7 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajout&amp;id_logiciel=Logiciel1&amp;quantite=1&amp;prix=100&amp;type=pro">Ajouter au panier</a></button>
+  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel1">Ajouter au panier</a></button>
   								</li>
   							</ul>
   					</div>
@@ -279,7 +279,7 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajout&amp;logiciel=Logiciel2&amp;quantite=1&amp;prix=100&amp;type=debutant">Ajouter au panier</a></button>
+      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel2">Ajouter au panier</a></button>
       								</li>
       							</ul>
       					</div>
@@ -299,7 +299,7 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajout&amp;id_logiciel=Logiciel2&amp;quantite=1&amp;prix=100&amp;type=standard">Ajouter au panier</a></button>
+      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel2">Ajouter au panier</a></button>
       								</li>
       							</ul>
       					</div>
@@ -319,7 +319,7 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajout&amp;id_logiciel=Logiciel2&amp;quantite=1&amp;prix=100&amp;type=pro">Ajouter au panier</a></button>
+      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel2">Ajouter au panier</a></button>
       								</li>
       							</ul>
       					</div>
@@ -340,6 +340,7 @@
             12 000 RODEZ (FRANCE)
 					</p>
 				</div><!-- /col-lg-4 -->
+
 
 				<div class="col-lg-4">
 					<h4><i class="fa fa-building-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;ATOUT S.A.</h4>

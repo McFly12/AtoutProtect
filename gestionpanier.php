@@ -1,144 +1,122 @@
 <?php
 
-/**
- * Verifie si le panier existe, le créé sinon
- * @return booleen
- */
-function creationPanier(){
-   if (!isset($_SESSION['panier'])){
-      $_SESSION['panier'] = array();
-      $_SESSION['panier']['id_logiciel'] = array();
-      $_SESSION['panier']['qte'] = array();
-      $_SESSION['panier']['prix'] = array();
-   }
-   return true;
-}
+session_start();
 
-/**
- * Ajoute un article dans le panier
- * @param string $libelleProduit
- * @param int $qteProduit
- * @param float $prixProduit
- * @return void
- */
-function ajouterArticle($libelleProduit,$qteProduit,$prixProduit){
+/* Initialisation du panier */
+ if(!isset($_SESSION['panier']))
+ {
+   $_SESSION['panier'] = array();
+ }
 
-   //Si le panier existe
-   if (creationPanier())
-   {
-      //Si le produit existe déjà on ajoute seulement la quantité
-      $positionProduit = array_search($libelleProduit, $_SESSION['panier']['id_logiciel']);
-      if ($positionProduit != false)
+  /**
+  * Ajoute un article dans le panier après vérification que nous ne somme pas en phase de paiement
+  *
+  * @param array  $select variable tableau associatif contenant les valeurs de l'article
+  * @return Mixed Retourne VRAI si l'ajout est effectué, FAUX sinon voire une autre valeur si l'ajout
+  *               est renvoyé vers la modification de quantité.
+  * @see {@link modif_qte()}
+  */
+  function ajouterArticle($nom,$quantite,$prix,$type)
+  {
+      $ajout = false;
+      if(!verif_panier($nom,$type))
       {
-         $_SESSION['panier']['qte'][$positionProduit] += $qteProduit ;
+          $array_caddy = array(
+            'logiciel' => array($nom),
+            'quantite' => array($quantite),
+            'prix' => array($prix),
+            'type' => array($type)
+          );
+
+          # Mise en session du tableau
+          if(sizeof($_SESSION['panier']) == 0) {
+            $_SESSION['panier'] = $array_caddy;
+          }
+          else {
+            //Sinon on ajoute le produit
+             array_push( $_SESSION['panier']['logiciel'], $nom);
+             array_push( $_SESSION['panier']['quantite'], $quantite);
+             array_push( $_SESSION['panier']['prix'], $prix);
+             array_push( $_SESSION['panier']['type'], $type);
+          }
+
+          $ajout = true;
       }
       else
       {
-         //Sinon on ajoute le produit
-         array_push( $_SESSION['panier']['id_logiciel'],$libelleProduit);
-         array_push( $_SESSION['panier']['qte'],$qteProduit);
-         array_push( $_SESSION['panier']['prix'],$prixProduit);
+        $nouvel_quantite = "";
+        foreach($_SESSION['panier']['quantite'] as $key => $value) {
+          $nouvel_quantite = $value + 1;
+        }
+        $ajout = modif_qte($nom,$type,$nouvel_quantite);
       }
-   }
-   else
-   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
-}
+      return $ajout;
+  }
 
-/**
- * Modifie la quantité d'un article
- * @param $libelleProduit
- * @param $qteProduit
- * @return void
+  /**
+ * Vérifie la présence d'un article dans le panier
+ *
+ * @param String $ref_article référence de l'article à vérifier
+ * @return Boolean Renvoie Vrai si l'article est trouvé dans le panier, Faux sinon
  */
-function modifierQTeArticle($libelleProduit,$qteProduit){
-   //Si le panier éxiste
-   if (creationPanier())
-   {
-      //Si la quantité est positive on modifie sinon on supprime l'article
-      if ($qteProduit > 0)
-      {
-         //Recharche du produit dans le panier
-         $positionProduit = array_search($libelleProduit,  $_SESSION['panier']['id_logiciel']);
-
-         if ($positionProduit !== false)
-         {
-            $_SESSION['panier']['qte'][$positionProduit] = $qteProduit ;
-         }
-      }
-      else
-      supprimerArticle($libelleProduit);
-   }
-   else
-   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
-}
-
-/**
- * Supprime un article du panier
- * @param $libelleProduit
- * @return unknown_type
- */
-function supprimerArticle($libelleProduit){
-   //Si le panier existe
-   if (creationPanier())
-   {
-      //Nous allons passer par un panier temporaire
-      $tmp=array();
-      $tmp['libelleProduit'] = array();
-      $tmp['qteProduit'] = array();
-      $tmp['prixProduit'] = array();
-
-      for($i = 0; $i < count($_SESSION['panier']['id_logiciel']); $i++)
-      {
-         if ($_SESSION['panier']['libelleProduit'][$i] !== $libelleProduit)
-         {
-            array_push( $tmp['libelleProduit'],$_SESSION['panier']['id_logiciel'][$i]);
-            array_push( $tmp['qte'],$_SESSION['panier']['qte'][$i]);
-            array_push( $tmp['prix'],$_SESSION['panier']['prix'][$i]);
-         }
-      }
-      //On remplace le panier en session par notre panier temporaire à jour
-      $_SESSION['panier'] =  $tmp;
-      //On efface notre panier temporaire
-      unset($tmp);
-   }
-   else
-   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
-}
-
-
-/**
- * Montant total du panier
- * @return int
- */
-function MontantGlobal(){
-   $total=0;
-   for($i = 0; $i < count($_SESSION['panier']['id_logiciel']); $i++)
-   {
-      $total += $_SESSION['panier']['qte'][$i] * $_SESSION['panier']['prix'][$i];
-   }
-   return $total;
-}
-
-
-/**
- * Fonction de suppression du panier
- * @return void
- */
-function supprimePanier(){
-   unset($_SESSION['panier']);
-}
-
-
-/**
- * Compte le nombre d'articles différents dans le panier
- * @return int
- */
-function compterArticles()
+function verif_panier($nom,$type)
 {
-   if (isset($_SESSION['panier']))
-   return count($_SESSION['panier']['id_logiciel']);
-   else
-   return 0;
+    /* On initialise la variable de retour */
+    $present = false;
+    /* On vérifie les numéros de références des articles et on compare avec l'article à vérifier */
+    if( count($_SESSION['panier']) > 0 && array_search($nom,$_SESSION['panier']['logiciel']) !== false && array_search($type,$_SESSION['panier']['type']) !== false)
+    {
+        $present = true;
+    }
+    return $present;
+}
+
+
+/**
+ * Modifie la quantité d'un article dans le panier
+ *
+ * @param String $ref_article   Identifiant de l'article à modifier
+ * @param Int $qte              Nouvelle quantité à enregistrer
+ * @return Boolean              Retourne VRAI si la modification a bien eu lieu, FAUX sinon.
+ */
+function modif_qte($ref_article,$type_article,$qte)
+{
+    /* On compte le nombre d'articles différents dans le panier */
+    $nb_articles = count($_SESSION['panier']['logiciel']);
+
+    /* On initialise la variable de retour */
+    $ajoute = false;
+
+    /* On parcoure le tableau de session pour modifier l'article précis. */
+    for($i = 0; $i < $nb_articles; $i++)
+    {
+      if($ref_article == $_SESSION['panier']['logiciel'][$i] && $type_article == $_SESSION['panier']['type'][$i])
+      {
+          $_SESSION['panier']['quantite'][$i] = $qte;
+          $ajoute = true;
+      }
+    }
+    return $ajoute;
+}
+
+/**
+ * Calcule le montant total du panier
+ *
+ * @return Double
+ */
+function montant_panier()
+{
+    /* On initialise le montant */
+    $montant = 0;
+    /* Comptage des articles du panier */
+    $nb_articles = count($_SESSION['panier']['logiciel']);
+    /* On va calculer le total par article */
+    for($i = 0; $i < $nb_articles; $i++)
+    {
+        $montant += $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
+    }
+    /* On retourne le résultat */
+    return $montant;
 }
 
 ?>
