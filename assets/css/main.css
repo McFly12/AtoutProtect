@@ -29,14 +29,6 @@ body {
 
     -webkit-font-smoothing: antialiased;
     -webkit-overflow-scrolling: touch;
-
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                         supported by Chrome and Opera */
 }
 
 /* Titles */
@@ -355,11 +347,6 @@ hr {
 	background-color: #5AA844;
   border: 1px solid #5AA844;
   border-radius: 4px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-       -o-user-select: none;
-          user-select: none;
 }
 .btnmodalValid:hover{
 	color: white;
@@ -384,11 +371,7 @@ hr {
 	background-color: #D14C40;
   border: 1px solid #D14C40;
   border-radius: 4px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-       -o-user-select: none;
-          user-select: none;
+
 }
 .btnmodalCancel:hover{
 	color: white;
@@ -423,4 +406,64 @@ hr {
 .btn-custom-pagination {
 	width: 6%;
 	height: 6%;
+}
+
+
+/******************************************************************************************/
+/* CHOIX DE LA METHODE DE PAIEMENT */
+/* Create three columns of equal width */
+.columns {
+    float: left;
+    width: 33.3%;
+    padding: 8px;
+}
+/* Style the list */
+.price {
+    list-style-type: none;
+    border: 1px solid #eee;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+/* Add shadows on hover */
+.price:hover {
+    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2)
+}
+/* Pricing header */
+.price .header {
+    background-color: #31343D;
+    color: white;
+    font-size: 25px;
+}
+/* List items */
+.price li {
+    border-bottom: 1px solid #eee;
+    padding: 20px;
+    text-align: center;
+}
+/* Grey list item */
+.price .grey {
+    background-color: #eee;
+    font-size: 20px;
+}
+/* The "Access" button */
+.button {
+    background-color: #31343D;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+}
+.button:hover {
+    background-color: #31343D;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+		color:#000000;
 }

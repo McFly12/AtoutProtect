@@ -1,5 +1,6 @@
 <?php
 	include_once("gestionpanier.php");
+  require("class/PayPal.php");
 
 $erreur = false;
 
@@ -130,6 +131,21 @@ if (!$erreur){
 		});
 	</script>
 
+	<!-- PARAMETRAGE REDIRECTION -->
+<script>
+  $(document).ready(function () {
+
+    // INIT : A L'OUVERTURE DE LA PAGE
+		if(window.location.search == '?PayPalOk') {
+      var element = document.getElementById('D');
+      element.style.display = "block";
+
+      var tab_parents = document.getElementsByClassName("tablinks");
+      tab_parents[3].className += " active_tab";
+    }
+	});
+	</script>
+
 
 	</head>
 
@@ -170,7 +186,10 @@ if (!$erreur){
         <div class="navbar-collapse collapse" id="menu" name="menu">
           <ul class="nav navbar-nav navbar-right" id="menu_ul" name="menu_ul">
 						<li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
-            <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier</a></li>
+            <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
+						<?php if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+							<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+						<?php } ?></a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -195,13 +214,13 @@ if (!$erreur){
     <ul class="nav nav-tabs">
         <li class="nav active" style="width:25%"><a href="#A" data-toggle="tab">
 					<i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-						&nbsp;&nbsp;<font color="#555555">Panier</font>
+						&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Panier</font>
 					</a>
 				</li>
         <li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
 					<a href="#B" data-toggle="tab">
 						<span class="glyphicon glyphicon-user" style="font-size:inherit;color:#555555"></span>
-							&nbsp;&nbsp;<font color="#555555">Inscription / Connexion</font>
+							&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Inscription / Connexion</font>
 					</a>
 				</li>
 
@@ -209,30 +228,41 @@ if (!$erreur){
 	        <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
 						<a>
 							<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-								&nbsp;&nbsp;<font color="#555555">Paiement</font>
+								&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
 						</a>
 					</li>
 					<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
 						<a>
 							<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-								&nbsp;&nbsp;<font color="#555555">Validation</font>
+								&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
 						</a>
 					</li>
 				<?php }
 				 	else { ?>
-						<li class="nav" style="width:25%">
+						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
 							<a href="#C" data-toggle="tab">
 								<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-									&nbsp;&nbsp;<font color="#555555">Paiement</font>
+									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
 							</a>
 						</li>
-						<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-							<a>
-								<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-									&nbsp;&nbsp;<font color="#555555">Validation</font>
-							</a>
-						</li>
-					<?php } ?>
+						<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+							if(parse_url($url, PHP_URL_QUERY) == "PayPalOk") { ?>
+							<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
+								<a href="#D" data-toggle="tab">
+									<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
+								</a>
+							</li>
+						<?php }
+						 else { ?>
+							 <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
+ 								<a>
+ 									<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+ 										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
+ 								</a>
+ 							</li>
+					<?php }
+					} ?>
 
     </ul>
 
@@ -250,7 +280,7 @@ if (!$erreur){
 							<div class="table-responsive">
 								<table class="table table-striped">
 									<thead>
-										<tr>
+										<tr style="font-size:18px;">
 											<th style="width:25%;">
 												Nom
 											</th>
@@ -268,8 +298,9 @@ if (!$erreur){
 									<tbody>
 										<?php
 												$nbArticles = count($_SESSION['panier']['logiciel']);
-												if ($nbArticles <= 0)
-													echo "<tr><td>Votre panier est vide.</td></tr>";
+												if ($nbArticles <= 0) {
+
+												}
 												else
 												{
 													for ($i=0 ;$i < $nbArticles ; $i++)
@@ -291,17 +322,61 @@ if (!$erreur){
 													}
 													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"4\"></td></tr>";
 
-													echo "<tr><td colspan=\"2\"></td>";
-														echo "<td colspan=\"2\" style=\"text-align:center\">";
 														if($nbArticles == 1) {
-																$number = montant_panier();
+																$numberHT = montant_panier();
 
-															echo "<b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." article ) : ".number_format((float)$number, 2, ',', ' ')." &euro;</b></font>";
+																echo "<tr><td colspan=\"2\"></td>";
+	 															echo "<td><b><font style=\"font-size:20px;\">Total HT</font></b></td>";
+																echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" >".number_format((float)$numberHT, 2, ',', ' ')." &euro;</font></b></td>";
+
+																echo "<tr><td colspan=\"2\"></td>";
+																echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>";
+																echo "<td style=\"font-size:20px;\">0,00 &euro;</td></tr>";
+
+																echo "<tr><td colspan=\"2\"></td>";
+																echo "<td><b><font style=\"font-size:20px;\">TVA</font></b></td>";
+																echo "<td style=\"font-size:20px;\">20,00 %</td></tr>";
+
+																$numberAvecTVA = "";
+																$numberAvecTVA = $numberHT * (1 + (20 / 100));
+                                $_SESSION['totalTVA'] = $numberAvecTVA;
+
+																$remise = 0;
+																if($remise != 0) {
+																	// $remiseADeduire = $numberHT
+																}
+
+																echo "<tr><td colspan=\"2\"></td>";
+	 															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles )</font></b></td>";
+																echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
 														}
 														else {
-																$number = montant_panier();
+															$numberHT = montant_panier();
 
-															echo "<b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles ) : <font color=\"#e82323!important\">".number_format((float)$number, 2, ',', ' ')." &euro;</font></font></b>";
+															echo "<tr><td colspan=\"2\"></td>";
+															echo "<td><b><font style=\"font-size:20px;\">Total HT</font></b></td>";
+															echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" >".number_format((float)$numberHT, 2, ',', ' ')." &euro;</font></b></td>";
+
+															echo "<tr><td colspan=\"2\"></td>";
+															echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>";
+															echo "<td style=\"font-size:20px;\">0,00 &euro;</td></tr>";
+
+															echo "<tr><td colspan=\"2\"></td>";
+															echo "<td><b><font style=\"font-size:20px;\">TVA</font></b></td>";
+															echo "<td style=\"font-size:20px;\">20,00 %</td></tr>";
+
+															$numberAvecTVA = "";
+															$numberAvecTVA = $numberHT * (1 + (20 / 100));
+                              $_SESSION['totalTVA'] = $numberAvecTVA;
+
+															$remise = 0;
+															if($remise != 0) {
+																// $remiseADeduire = $numberHT
+															}
+
+															echo "<tr><td colspan=\"2\"></td>";
+															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles )</font></b></td>";
+															echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
 														}
 													echo "</td></tr>";
 
@@ -313,7 +388,7 @@ if (!$erreur){
 
 								<br />
 
-								<button type="button" class="btn btn-primary" style="float:left;width:20%">
+								<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;">
 									<a href="index.php" style="text-decoration:none;color:inherit;">
 										<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
 											&nbsp;&nbsp;Poursuivre mes achats
@@ -323,13 +398,16 @@ if (!$erreur){
 							</div>
 							<?php
 						}
-						else { // Message si le panier est vide
-							echo 'Votre panier est vide';
-						}
+						else { // Message si le panier est vide ?>
+							 <br/> <br/>
+							<div class="alert alert-info" style="width:50%;text-align:center;float: none;margin: 0 auto;">
+							  <strong> <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Votre panier est vide. </strong>
+							</div>
+						<?php }
 						echo "</ul>"; ?>
 					</div>
 
-        <div class="tab-pane fade" id="B">
+        <div class="tab-pane fade" id="B"><br />
 					<?php if(!isset($_SESSION['nom'])) { ?>
 
 						<div class="row mt">
@@ -364,15 +442,87 @@ if (!$erreur){
 			  		</div><!-- /row -->
 
 					<?php }
-					else { ?>
-						Vous êtes connecté en tant que <?php echo $_SESSION['nom'];?> <?php echo $_SESSION['prenom']; ?>.
+					else { ?><br />
+
+						<div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+							<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
+							<h3><span style="color:#aab2bc;"></span>Vous êtes connecté en tant que <?php echo $_SESSION['prenom'];?> <?php echo $_SESSION['nom']; ?>.</h3>
+							<p>Si vous voulez vous authentifier avec un autre compte, veuillez vous rendre sur la page de connexion, en vous ayant <a href="modules/session_destroyer.php">déconnecté</a> au préalable.</p>
+						</div>
+
 					<?php } ?>
 				</div>
 
-				<div class="tab-pane fade" id="C">PAIEMENT</div>
+				<div class="tab-pane fade" id="C">
+					<?php
 
-    </div>
-</div>
+          $paypal = new PayPal();
+
+					    $params = array(
+					      'RETURNURL' => 'http://localhost/atoutprotect/process.php',
+					      'CANCELURL' => 'http://localhost/atoutprotect/basket.php?ErrPayPal',
+
+					      'PAYMENTREQUEST_0_AMT' => $numberAvecTVA,
+					      'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR'
+					    );
+
+                foreach ($_SESSION['panier'] as $key => $value)
+                {
+                  $params["L_PAYMENTREQUEST_0_NAME$key"] = $_SESSION['panier']['logiciel'];
+                  $params["L_PAYMENTREQUEST_0_DESC$key"] = '';
+                  $params["L_PAYMENTREQUEST_0_AMT$key"] = $_SESSION['panier']['prix'];
+                  $params["L_PAYMENTREQUEST_0_QTY$key"] = $_SESSION['panier']['quantite'];
+                }
+
+                $reponse = $paypal->request('SetExpressCheckout', $params);
+
+                if($reponse) {
+                  $paypal = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$reponse['TOKEN'];
+                }
+                else {
+                  var_dump($paypal->errors);
+                  die('Erreur');
+                }
+
+							?>
+
+              <br />
+              <h4 align="center" style="font-size:16px;">Veuillez choisir votre mode de paiement :</h4><hr> <!-- PayPal Logo --><br /><br />
+									<br />
+										<div class="container">
+											<div class="row" >
+
+												<div class="columns" style="margin-left:10%;">
+													<ul class="price">
+													<li class="header"><img src="assets/img/PayPal.png" width="20%"></img>&nbsp;PayPal</li>
+													<div style=""></div>
+													<li class="grey"></li>
+													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" target="_blank" class="button">Accéder</a></li>
+													</ul>
+												</div>
+
+												<div class="columns" style="margin-left:10%;">
+													<ul class="price">
+													<li class="header"><img src="assets/img/MasterCard.png" width="20%"></img>&nbsp;HiPay (ex: AlloPass)</li>
+													<li class="grey"></li>
+													<li class="grey" style="background-color:#FFF"><a href="#C" target="_blank" class="button">Accéder</a></li>
+													</ul>
+												</div>
+
+											</div>
+										</div>
+				</div>
+
+				<div class="tab-pane fade" id="D"><br />
+					<div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
+						<h3><span style="color:#aab2bc;"></span>Votre paiement a été validé.</h3>
+						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
+					</div>
+				</div>
+
+	 </div>
+ </div>
 
 <br />
 

@@ -783,7 +783,7 @@ pre code {
 
 .container {
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 0px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -2264,11 +2264,6 @@ textarea.input-lg {
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-       -o-user-select: none;
-          user-select: none;
 }
 
 .btn:focus {

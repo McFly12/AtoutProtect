@@ -117,7 +117,13 @@
         <div class="navbar-collapse collapse" id="menu" name="menu">
           <ul class="nav navbar-nav navbar-right" id="menu_ul" name="menu_ul">
             <li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
-            <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier</a></li>
+            <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
+							<?php if(isset($_SESSION['panier'])) {
+								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+								<?php }
+							} ?>
+						</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -184,6 +190,24 @@
 
 <br />
 
+<!-- Modal -->
+<div class="modal fade" id="NoSession" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document" style="width:35%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="font-size:28px;">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Connexion requise</h4>
+      </div>
+      <div class="modal-body">
+        Afin de pouvoir ajouter un produit à votre panier, veuillez au préalable <b><a href="login.php" style="color:black;">vous connecter</a></b> .
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 	<!-- +++++ Projects Section +++++ -->
   <section class="container">
@@ -214,8 +238,13 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel1">Ajouter au panier</a></button>
-  								</li>
+                    <?php if(isset($_SESSION['nom'])) { ?>
+  									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel1">Ajouter au panier</a></button>
+                      <?php }
+                      else { ?>
+                        <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                      <?php } ?>
+                  </li>
   							</ul>
   					</div>
 
@@ -234,8 +263,13 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel1">Ajouter au panier</a></button>
-  								</li>
+                    <?php if(isset($_SESSION['nom'])) { ?>
+  									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel1">Ajouter au panier</a></button>
+                      <?php }
+                      else { ?>
+                        <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                      <?php } ?>
+                  </li>
   							</ul>
   					</div>
 
@@ -243,7 +277,7 @@
   							<ul class="pricing p-red">
   								<li>
   									<img src="http://bread.pp.ua/n/settings_r.svg" alt="">
-  									<big>Pro</big>
+  									<big>Professionnel</big>
   								</li>
   								<li>Accès total</li>
   								<li>Color Customization</li>
@@ -254,8 +288,13 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-  									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel1">Ajouter au panier</a></button>
-  								</li>
+                    <?php if(isset($_SESSION['nom'])) { ?>
+  									   <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel1">Ajouter au panier</a></button>
+                       <?php }
+                       else { ?>
+                        <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                       <?php } ?>
+                  </li>
   							</ul>
   					</div>
 
@@ -279,8 +318,13 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel2">Ajouter au panier</a></button>
-      								</li>
+                        <?php if(isset($_SESSION['nom'])) { ?>
+      									   <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel2">Ajouter au panier</a></button>
+                           <?php }
+                           else { ?>
+                              <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                           <?php } ?>
+                      </li>
       							</ul>
       					</div>
 
@@ -299,8 +343,13 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel2">Ajouter au panier</a></button>
-      								</li>
+                        <?php if(isset($_SESSION['nom'])) { ?>
+      									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel2">Ajouter au panier</a></button>
+                          <?php }
+                          else { ?>
+                            <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                          <?php } ?>
+                      </li>
       							</ul>
       					</div>
 
@@ -308,7 +357,7 @@
       							<ul class="pricing p-red">
       								<li>
       									<img src="http://bread.pp.ua/n/settings_r.svg" alt="">
-      									<big>Pro</big>
+      									<big>Professionnel</big>
       								</li>
       								<li>Accès total</li>
       								<li>Color Customization</li>
@@ -319,8 +368,13 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-      									<button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel2">Ajouter au panier</a></button>
-      								</li>
+                        <?php if(isset($_SESSION['nom'])) { ?>
+      									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel2">Ajouter au panier</a></button>
+                        <?php }
+                        else { ?>
+                          <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                        <?php } ?>
+                      </li>
       							</ul>
       					</div>
 

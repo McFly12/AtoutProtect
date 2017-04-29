@@ -117,7 +117,13 @@
         <div class="navbar-collapse collapse" id="menu" name="menu">
           <ul class="nav navbar-nav navbar-right" id="menu_ul" name="menu_ul">
             <li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
-            <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier</a></li>
+            <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
+							<?php if(isset($_SESSION['panier'])) {
+								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+								<?php }
+							} ?>
+						</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
