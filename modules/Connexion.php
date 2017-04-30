@@ -17,6 +17,7 @@ $mdp = $_POST['InputPassword1'];
         $_SESSION['nom'] = $donnees['Nom'];
         $_SESSION['prenom'] = $donnees['Prenom'];
         $_SESSION['droit'] = $donnees['Droit'];
+        $_SESSION['email'] = $donnees['Email'];
         $_SESSION['id'] = $donnees['id'];
       }
       header('Location: ../account.php');

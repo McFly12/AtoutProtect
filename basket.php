@@ -95,23 +95,23 @@ if (!$erreur){
 							 $(this).find('ul').toggle();
 					});
 			});
-	</script>
+		</script>
 
 	<script>
-	$(document).ready(function () {
-		var url = window.location.pathname,
-				urlRegExp = new RegExp(url.replace(/\/$/,'') + "$");
+		$(document).ready(function () {
+			var url = window.location.pathname,
+					urlRegExp = new RegExp(url.replace(/\/$/,'') + "$");
 
-			$(document).ready(function () {
-				$("#menu li a").hover(function () {
-							if(urlRegExp.test(this.href.replace(/\/$/,''))) {
-							}
-							else {
-								$(this).find('i').toggle();
-							}
+				$(document).ready(function () {
+					$("#menu li a").hover(function () {
+								if(urlRegExp.test(this.href.replace(/\/$/,''))) {
+								}
+								else {
+									$(this).find('i').toggle();
+								}
+					});
 				});
-			});
-	});
+		});
 	</script>
 
 	<script>
@@ -132,26 +132,36 @@ if (!$erreur){
 	</script>
 
 	<!-- PARAMETRAGE REDIRECTION -->
-<script>
-  $(document).ready(function () {
+	<script>
+		$(document).ready(function () {
 
-    // INIT : A L'OUVERTURE DE LA PAGE
-		if(window.location.search == '?PayPalOk') {
-      var element = document.getElementById('D');
-      element.style.display = "block";
+			// INIT : A L'OUVERTURE DE LA PAGE
+			if(window.location.search == '?PayPalOk') {
 
-      var tab_parents = document.getElementsByClassName("tablinks");
-      tab_parents[3].className += " active_tab";
-    }
-	});
+				// IMPOSSIBLE DE RE-PAYER
+				$('#C').attr('disabled', true);
+				$('#lienTabC').attr('href', '');
+
+				// SUPPRIMER LE ACTIF SUR LES li
+				$('#lienTabA').removeClass( "nav active" );
+				$('#lienTabA').addClass( "nav" );
+
+				// OUVERTURE DU DIV DE LA VALIDATION DU PAIEMENT
+				$('#D').addClass( "active in" );
+				$('.nav-tabs a[href="#D"]').tab('show');
+				$('#lienTabD').addClass( "active" );
+
+			}
+
+		});
 	</script>
-
 
 	</head>
 
 	<body>
 
 		<!-- Static navbar -->
+		<!-- MENU -->
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-header">
@@ -210,9 +220,12 @@ if (!$erreur){
 	</div><br />
 <?php } ?>
 
+<!-- Static navbar -->
+<!-- ONGLETS -->
 <div class="container" style="width:100%">
     <ul class="nav nav-tabs">
-        <li class="nav active" style="width:25%"><a href="#A" data-toggle="tab">
+        <li class="nav active" style="width:25%" id="lienTabA" name="lienTabA">
+					<a href="#A" data-toggle="tab">
 					<i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
 						&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Panier</font>
 					</a>
@@ -238,16 +251,16 @@ if (!$erreur){
 						</a>
 					</li>
 				<?php }
-				 	else { ?>
+				 	else {?>
 						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
-							<a href="#C" data-toggle="tab">
+							<a href="#C" data-toggle="tab" id="lienTabC">
 								<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
 									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
 							</a>
 						</li>
 						<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 							if(parse_url($url, PHP_URL_QUERY) == "PayPalOk") { ?>
-							<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
+							<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
 								<a href="#D" data-toggle="tab">
 									<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
 										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
@@ -267,8 +280,9 @@ if (!$erreur){
     </ul>
 
     <!-- Tab panes -->
+		<!-- Content de chaque onglet -->
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="A">
+        <div class="tab-pane fade in active" id="A" name="A">
 
 					<?php if (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) { ?>
 							<div class="col-lg-6 col-lg-offset-3 centered">
@@ -388,12 +402,15 @@ if (!$erreur){
 
 								<br />
 
+								<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+									if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") { ?>
 								<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;">
 									<a href="index.php" style="text-decoration:none;color:inherit;">
 										<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
 											&nbsp;&nbsp;Poursuivre mes achats
 									</a>
 								</button> <br /><br /><br />
+								<?php } ?>
 
 							</div>
 							<?php
@@ -407,7 +424,7 @@ if (!$erreur){
 						echo "</ul>"; ?>
 					</div>
 
-        <div class="tab-pane fade" id="B"><br />
+        <div class="tab-pane fade" id="B" name="B"><br />
 					<?php if(!isset($_SESSION['nom'])) { ?>
 
 						<div class="row mt">
@@ -453,7 +470,7 @@ if (!$erreur){
 					<?php } ?>
 				</div>
 
-				<div class="tab-pane fade" id="C">
+				<div class="tab-pane fade" id="C" name="C">
 					<?php
 
           $paypal = new PayPal();
@@ -513,12 +530,21 @@ if (!$erreur){
 										</div>
 				</div>
 
-				<div class="tab-pane fade" id="D"><br />
-					<div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+				<div class="tab-pane fade" id="D" name="D"><br />
+
+					<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
 						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
 						<h3><span style="color:#aab2bc;"></span>Votre paiement a été validé.</h3>
 						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
+						<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
 					</div>
+
+					<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+						if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") {
+							unset($_SESSION['panier']);
+							// OU => $_SESSION['panier'] = "";
+						} ?>
+
 				</div>
 
 	 </div>

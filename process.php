@@ -8,6 +8,9 @@
   ));
 
   if($reponse) {
+    if($reponse['CHECKOUTSTATUS'] == 'PaymentActionCompleted') {
+      die("Ce paiement a déjà été validé.");
+    }
   }
   else {
     var_dump($paypal->errors);
@@ -46,7 +49,7 @@
   }
   else {
     var_dump($paypal->errors);
+    die();
   }
-
 
  ?>
