@@ -71,6 +71,7 @@ if (!$erreur){
 		<link rel="shortcut icon" href="assets/img/logo.png">
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Font Awesome core CSS -->
     <link href="assets/css/font-awesome.css" rel="stylesheet">
@@ -153,6 +154,13 @@ if (!$erreur){
 
 			}
 
+		});
+	</script>
+	<script>
+		$(document).ready(function () {
+			$( "#GoToPayment" ).click(function() {
+			  $('.nav-tabs a[href="#C"]').tab('show');
+			});
 		});
 	</script>
 
@@ -409,6 +417,10 @@ if (!$erreur){
 										<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
 											&nbsp;&nbsp;Poursuivre mes achats
 									</a>
+								</button>
+								<button id="GoToPayment" name="GoToPayment" type="button" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;">
+										<span class="glyphicon glyphicon-credit-card" style="font-size:14px;color:white;"></span>
+											&nbsp;&nbsp;Procéder au paiement
 								</button> <br /><br /><br />
 								<?php } ?>
 
@@ -514,7 +526,7 @@ if (!$erreur){
 													<li class="header"><img src="assets/img/PayPal.png" width="20%"></img>&nbsp;PayPal</li>
 													<div style=""></div>
 													<li class="grey"></li>
-													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" target="_blank" class="button">Accéder</a></li>
+													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
@@ -522,7 +534,7 @@ if (!$erreur){
 													<ul class="price">
 													<li class="header"><img src="assets/img/MasterCard.png" width="20%"></img>&nbsp;HiPay (ex: AlloPass)</li>
 													<li class="grey"></li>
-													<li class="grey" style="background-color:#FFF"><a href="#C" target="_blank" class="button">Accéder</a></li>
+													<li class="grey" style="background-color:#FFF"><a href="#C" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
@@ -538,12 +550,6 @@ if (!$erreur){
 						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
 						<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
 					</div>
-
-					<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-						if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") {
-							unset($_SESSION['panier']);
-							// OU => $_SESSION['panier'] = "";
-						} ?>
 
 				</div>
 

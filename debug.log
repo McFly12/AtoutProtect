@@ -1,3 +1,0 @@
-[0428/195919.186:ERROR:process_reader_win.cc(142)] SuspendThread: Accès refusé. (0x5)
-[0428/195919.187:ERROR:exception_snapshot_win.cc(87)] thread ID 9012 not found in process
-[0428/195919.187:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed
