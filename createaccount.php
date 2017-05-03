@@ -150,8 +150,10 @@
 								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
 									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
 								<?php }
-							} ?>
-						</a></li>
+							} else { ?>
+								<span class="badge">0</span>
+							<?php }?>
+			</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>

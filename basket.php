@@ -156,6 +156,15 @@ if (!$erreur){
 		});
 	</script>
 
+	<script>
+		$(document).ready(function () {
+			$( "#GoToPayment" ).click(function() {
+				$('#C').addClass( "active in" );
+			  $('.nav-tabs a[href="#C"]').tab('show');
+			});
+		});
+	</script>
+
 	</head>
 
 	<body>
@@ -197,9 +206,14 @@ if (!$erreur){
           <ul class="nav navbar-nav navbar-right" id="menu_ul" name="menu_ul">
 						<li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
             <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
-						<?php if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
-							<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
-						<?php } ?></a></li>
+							<?php if(isset($_SESSION['panier'])) {
+								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+								<?php }
+							} else { ?>
+								<span class="badge">0</span>
+							<?php }?>
+			</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -404,12 +418,16 @@ if (!$erreur){
 
 								<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 									if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") { ?>
-								<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;">
-									<a href="index.php" style="text-decoration:none;color:inherit;">
-										<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
-											&nbsp;&nbsp;Poursuivre mes achats
-									</a>
-								</button> <br /><br /><br />
+										<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;">
+											<a href="index.php" style="text-decoration:none;color:inherit;">
+												<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
+													&nbsp;&nbsp;Poursuivre mes achats
+											</a>
+										</button>
+										<button type="button" id="GoToPayment" name="GoToPayment" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;">
+												<span class="glyphicon glyphicon-credit-card" style="font-size:14px;color:white;"></span>
+													&nbsp;&nbsp;Procéder au paiement
+										</button><br /><br /><br />
 								<?php } ?>
 
 							</div>
@@ -514,7 +532,7 @@ if (!$erreur){
 													<li class="header"><img src="assets/img/PayPal.png" width="20%"></img>&nbsp;PayPal</li>
 													<div style=""></div>
 													<li class="grey"></li>
-													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" target="_blank" class="button">Accéder</a></li>
+													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
@@ -522,7 +540,7 @@ if (!$erreur){
 													<ul class="price">
 													<li class="header"><img src="assets/img/MasterCard.png" width="20%"></img>&nbsp;HiPay (ex: AlloPass)</li>
 													<li class="grey"></li>
-													<li class="grey" style="background-color:#FFF"><a href="#C" target="_blank" class="button">Accéder</a></li>
+													<li class="grey" style="background-color:#FFF"><a href="#C" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
@@ -539,11 +557,55 @@ if (!$erreur){
 						<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
 					</div>
 
-					<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-						if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") {
-							unset($_SESSION['panier']);
-							// OU => $_SESSION['panier'] = "";
-						} ?>
+					<?php $to = "atoutlicencemanagement@gmail.com";
+						    $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
+
+								// Générer une licence unique et aléatoire
+									function generation_clefs() {
+										// CARACTERES ACCECPTES DANS UNE CLEF DE LICENCE
+										$caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+											// NOMBRE DE CARACTERES PAR SEGMENT DE LA CLEF DE LICENCE
+										$segment_chars = 4;
+											// NOMBRE DE SEGMENTS DE LA CLEF DE LICENCE
+										$num_segments = 4;
+											// CLEF GENEREE
+										$clef = '';
+
+											// GENERE CHAQUE SEGMENT
+										for ($i = 0; $i < $num_segments; $i++) {
+											$segment = '';
+
+													// POUR CHAQUE SEGMENT => HASARD DE 5 CARCTERES AUTORISE VIA $caracteres
+											for ($j = 0; $j < $segment_chars; $j++) {
+											  $segment .= $caracteres[rand(0, 35)];
+											}
+													// CONCATENE DANS LA CLEF GENEREE
+											$clef .= $segment;
+
+											if ($i < ($num_segments - 1)) {
+													$clef .= '-';
+											}
+										}
+										return $clef;
+									}
+
+								$nbArticles = count($_SESSION['panier']['quantite']);
+
+								if($nbArticles == 1) {
+									$clef_simple = generation_clefs();
+
+									$content = "Licence 1 : ".$clef_simple;
+								}
+								else if($nbArticles > 1) {
+									// $chaine = generation_clefs();
+
+									// $content = "Licence 1 : ".$each_clef;
+								}
+
+						    $headers = 'MIME-Version: 1.0' . "\r\n";
+						    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+						    mail($to,$subject, $content, $headers); ?>
 
 				</div>
 

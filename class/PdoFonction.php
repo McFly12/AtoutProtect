@@ -19,7 +19,7 @@ class PdoFonction extends PdoBdd {
 	/* 				VERIFIE CONNECTE, SINON REDIRECTION Index.php 			*/
 	public function VerifierLogin($mail,$mdp){
 		parent::connexion();
-		$result = parent::requete('	SELECT U.Nom,U.Prenom,U.Droit_id,U.id
+		$result = parent::requete('	SELECT U.Nom,U.Prenom,U.Droit_id,U.id,U.Email
 																FROM utilisateur U
 																WHERE BINARY U.Email="' . $mail . '" AND BINARY U.Mdp="' . $mdp . '"');
 		parent::deconnexion();
