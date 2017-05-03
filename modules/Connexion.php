@@ -16,7 +16,7 @@ $mdp = $_POST['InputPassword1'];
 			while($donnees = $req->fetch()) {
         $_SESSION['nom'] = $donnees['Nom'];
         $_SESSION['prenom'] = $donnees['Prenom'];
-        $_SESSION['droit'] = $donnees['Droit_id'];
+        $_SESSION['droit'] = $donnees['Droit'];
         $_SESSION['email'] = $donnees['Email'];
         $_SESSION['id'] = $donnees['id'];
       }
