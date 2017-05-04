@@ -16,6 +16,24 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
+	/* 											RECUP LOGICIELS 											*/
+	public function Logiciels() {
+		parent::connexion();
+		$result = parent::requete('SELECT Nom FROM logiciel');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/*									RECUP TYPES D'ABONNEMENTS									*/
+	public function Abonnements() {
+		parent::connexion();
+		$result = parent::requete('SELECT id,nom,durée FROM abonnement');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
 	/* 				VERIFIE CONNECTE, SINON REDIRECTION Index.php 			*/
 	public function VerifierLogin($mail,$mdp){
 		parent::connexion();
@@ -66,12 +84,12 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 			VERIFIE L'ENREGISTREMENT DU NOUVEAU COMPTE			 			*/
-	public function InformationsUtilisateur($nom) {
+	/* 			RECUPERE LES INFORMATIONS D'UN COMPTE			 			*/
+	public function InformationsUtilisateur($mail) {
 		parent::connexion();
-		$result = parent::requete('SELECT U.Prenom,U.Tel,U.Email,U.Mdp,U.Adresse,U.CodePostal,U.Ville,U.Droit_id,U.DateDeCreation,U.DateDerniereConnexion,U.HeureDerniereConnexion
+		$result = parent::requete('SELECT DISTINCT U.Nom,U.Prenom,U.Tel,U.Mdp,U.Adresse,U.CodePostal,U.Ville,U.Droit_id,U.DateDeCreation,U.DateDerniereConnexion,U.HeureDerniereConnexion
 															 FROM utilisateur U
-															 WHERE U.Nom = "'.$nom.'"');
+															 WHERE U.Email = "'.$mail.'"');
 		parent::deconnexion();
 		return $result;
 	}
@@ -95,7 +113,7 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 			ADMINISTRATEUR : -> COMMANDES			 			*/
+	/* 			ADMINISTRATEUR : -> AFFICHAGE DE TOUTE LES COMMANDES 			*/
 	public function Commande() {
 		parent::connexion();
 		$result = parent::requete('SELECT * FROM commande');
@@ -104,10 +122,30 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 											RECUP LOGICIELS 											*/
-	public function Logiciels() {
+	/* 			CLIENT OU AUTRE : -> AFFICHAGE DE TOUTE LES COMMANDES 			*/
+	public function CommandePerso($nom) {
 		parent::connexion();
-		$result = parent::requete('SELECT Nom FROM logiciel');
+		$result = parent::requete('SELECT * FROM commande WHERE emetteur = "'.$nom.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					ENREGISTRE UNE NOUVELLE COMMANDE EN BASE	 				*/
+	public function EnregistrerCommandePayPal($numtransaction,$montant,$nom) {
+		parent::connexion();
+		$result = parent::requete('INSERT INTO commande (numtransaction,date,montant,typedepaiement_id,emetteur)
+															 VALUES ("'.$numtransaction.'",CURDATE(),"'.$montant.'",1,"'.$nom.'")');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					ENREGISTRE UNE NOUVELLE COMMANDE EN BASE	 				*/
+	public function EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id) {
+		parent::connexion();
+		$result = parent::requete('INSERT INTO licence (clef,proprietaire,logiciel_id,typelicence,abonnement_id,date_creation)
+															 VALUES ("'.$clef.'","'.$nom.'","'.$logiciel.'","'.$type_logiciel.'","'.$abo_id.'",CURDATE())');
 		parent::deconnexion();
 		return $result;
 	}

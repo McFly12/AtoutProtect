@@ -125,7 +125,7 @@
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
             <div id="moncompte">
-              <font color="#D8D6D6"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
+              <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
                 <ul style="display:none;">
                   <li id="compte" style='color:white'>
                     <a href="account.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Mon Compte</a>
@@ -133,6 +133,11 @@
                   <li id="commandes" style='color:white'>
                     <a href="orders.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-files-o" aria-hidden="true"></i>&nbsp;Mes Commandes</a>
                   </li>
+                  <?php if($_SESSION['droit'] == 1 || $_SESSION['droit'] == 2) { ?>
+										<li id="admin" style='color:white'>
+	                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
+	                  </li>
+									<?php } ?>
                   <li id="disconnect" style='color:white'>
                     <a href="modules/session_destroyer.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Me déconnecter</a>
                   </li>
@@ -147,13 +152,18 @@
             <li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
             <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
 							<?php if(isset($_SESSION['panier'])) {
-								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
-									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+								if(isset($_SESSION['panier']['logiciel'])) {
+									if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+										<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+									<?php }
+								}
+								else { ?>
+									<span class="badge">0</span>
 								<?php }
 							} else { ?>
 								<span class="badge">0</span>
 							<?php }?>
-			</a></li>
+						</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>

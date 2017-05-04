@@ -4,11 +4,11 @@
 		include '../class/PdoFonction.php';
 		$maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoFonction
 
-	$nom = $_GET['nom'];
+if(isset($_GET['email'])) {
 
-if(isset($_GET['nom'])) {
+		$email = $_GET['email'];
 
-		$reponse = $maPdoFonction->InformationsUtilisateur($nom);
+		$reponse = $maPdoFonction->InformationsUtilisateur($email);
 			$tab_req = $reponse->fetchAll(PDO::FETCH_ASSOC);
 			$retour = array(
 										"success" => true,

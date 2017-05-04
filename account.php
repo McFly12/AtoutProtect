@@ -68,20 +68,20 @@ ini_set('error_reporting', E_ALL);
 
   <script>
     $(document).ready(function () {
-      var php_nomsession = '<?php echo $_SESSION["nom"]; ?>';
+      var php_emailsession = '<?php echo $_SESSION["email"]; ?>';
       $.ajax({
         type: "GET",
-        data: {'nom': php_nomsession},
+        data: {'email': php_emailsession},
         url: 'modules/InfosUser.php',
         dataType: 'json',
         success: function(json) {
           var len = json.length;
             if(len > 0) {
               $.each(json, function(value, key) {
-                $("#nom").val(php_nomsession);
+                $("#nom").val(key.Nom);
                 $("#prenom").val(key.Prenom);
                 $("#tel").val(key.Tel);
-                $("#email").val(key.Email);
+                $("#email").val(php_emailsession);
                 $("#adresse").val(key.Adresse);
                 $("#codepostal").val(key.CodePostal);
                 $("#ville").val(key.Ville);
@@ -112,10 +112,8 @@ ini_set('error_reporting', E_ALL);
     <script>
       $(document).ready(function () {
         $("#supmoncompte").on('click', function () {
-            var php_nomsession = '<?php echo $_SESSION["nom"]; ?>';
           $.ajax({
             type: "POST",
-            data: {'nom': php_nomsession},
             url: "modules/SupCompte.php"
           });
         });
@@ -137,7 +135,7 @@ ini_set('error_reporting', E_ALL);
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
             <div id="moncompte">
-              <font color="#D8D6D6"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
+              <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
                 <ul style="display:none;">
                   <li id="compte" style='color:white'>
                     <a href="account.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Mon Compte</a>
@@ -145,9 +143,11 @@ ini_set('error_reporting', E_ALL);
                   <li id="commandes" style='color:white'>
                     <a href="orders.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-files-o" aria-hidden="true"></i>&nbsp;Mes Commandes</a>
                   </li>
-                  <li id="admin" style='color:white'>
-                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
-                  </li>
+                  <?php if($_SESSION['droit'] == 1 || $_SESSION['droit'] == 2) { ?>
+										<li id="admin" style='color:white'>
+	                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
+	                  </li>
+									<?php } ?>
                   <li id="disconnect" style='color:white'>
                     <a href="modules/session_destroyer.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Me déconnecter</a>
                   </li>
@@ -161,14 +161,19 @@ ini_set('error_reporting', E_ALL);
           <ul class="nav navbar-nav navbar-right" id="menu_ul" name="menu_ul">
             <li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
             <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
-							<?php if(isset($_SESSION['panier'])) {
-								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
-									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
-								<?php }
-							} else { ?>
-								<span class="badge">0</span>
-							<?php }?>
-			</a></li>
+              <?php if(isset($_SESSION['panier'])) {
+                if(isset($_SESSION['panier']['logiciel'])) {
+                  if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+                    <span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+                  <?php }
+                }
+                else { ?>
+                  <span class="badge">0</span>
+                <?php }
+              } else { ?>
+                <span class="badge">0</span>
+              <?php }?>
+            </a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -241,7 +246,7 @@ ini_set('error_reporting', E_ALL);
         <div style="float:right;padding-right:10px;width:38%">
           <div role="form" class="col-lg-8 col-lg-offset-2">
               <div width="20%;"><br /><br /><br /><br />
-                <?php $req = $maPdoFonction->InformationsUtilisateur($_SESSION['nom']);
+                <?php $req = $maPdoFonction->InformationsUtilisateur($_SESSION['email']);
                   			if($req->rowCount() >= 1) { ?>
                           <h4><i class="fa fa-cogs" aria-hidden="true"></i>&nbsp;&nbsp;Historique :</h4>
                           <?php while($donnees = $req->fetch()) { ?>

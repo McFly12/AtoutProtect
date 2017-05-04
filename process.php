@@ -3,6 +3,9 @@
   require('class/PayPal.php');
   $paypal = new PayPal();
 
+  include 'class/PdoFonction.php';
+  $maPdoFonction = new PdoFonction();
+
   $reponse = $paypal->request('GetExpressCheckoutDetails', array(
     'TOKEN' => $_GET['token']
   ));
@@ -41,6 +44,10 @@
 
   if($reponse) {
     var_dump($reponse);
+
+    // ENREGISTREMENT DE LA COMMANDE
+    $req = $maPdoFonction->EnregistrerCommandePayPal($reponse['PAYMENTINFO_0_TRANSACTIONID'],$reponse['PAYMENTINFO_0_AMT'],$_SESSION['nom']);
+
     $idtransaction = $reponse['PAYMENTINFO_0_TRANSACTIONID'];
     $montanttransaction = $reponse['PAYMENTINFO_0_AMT'];
     $_SESSION['id_transaction'] = $idtransaction;

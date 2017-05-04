@@ -16,16 +16,17 @@ session_start();
   *               est renvoyé vers la modification de quantité.
   * @see {@link modif_qte()}
   */
-  function ajouterArticle($nom,$quantite,$prix,$type)
+  function ajouterArticle($nom,$quantite,$prix,$type,$abonnement)
   {
       $ajout = false;
-      if(!verif_panier($nom,$type))
+      if(!verif_panier($nom,$type,$abonnement))
       {
           $array_caddy = array(
             'logiciel' => array($nom),
             'quantite' => array($quantite),
             'prix' => array($prix),
-            'type' => array($type)
+            'type' => array($type),
+            'abonnement' => array($abonnement)
           );
 
           # Mise en session du tableau
@@ -38,6 +39,7 @@ session_start();
              array_push( $_SESSION['panier']['quantite'], $quantite);
              array_push( $_SESSION['panier']['prix'], $prix);
              array_push( $_SESSION['panier']['type'], $type);
+             array_push( $_SESSION['panier']['abonnement'], $abonnement);
           }
 
           $ajout = true;
@@ -48,7 +50,7 @@ session_start();
         foreach($_SESSION['panier']['quantite'] as $key => $value) {
           $nouvel_quantite = $value + 1;
         }
-        $ajout = modif_qte($nom,$type,$nouvel_quantite);
+        $ajout = modif_qte($nom,$type,$abonnement,$nouvel_quantite);
       }
       return $ajout;
   }
@@ -59,15 +61,17 @@ session_start();
  * @param String $ref_article référence de l'article à vérifier
  * @return Boolean Renvoie Vrai si l'article est trouvé dans le panier, Faux sinon
  */
-function verif_panier($nom,$type)
+function verif_panier($nom,$type,$abonnement)
 {
     /* On initialise la variable de retour */
     $present = false;
     /* On vérifie les numéros de références des articles et on compare avec l'article à vérifier */
-    if( count($_SESSION['panier']) > 0 && array_search($nom,$_SESSION['panier']['logiciel']) !== false && array_search($type,$_SESSION['panier']['type']) !== false)
-    {
-        $present = true;
-    }
+    if( count($_SESSION['panier']) > 0 && array_search($nom,$_SESSION['panier']['logiciel']) !== false
+        && array_search($type,$_SESSION['panier']['type']) !== false
+        && array_search($abonnement,$_SESSION['panier']['abonnement']) !== false)
+        {
+          $present = true;
+        }
     return $present;
 }
 
@@ -79,7 +83,7 @@ function verif_panier($nom,$type)
  * @param Int $qte              Nouvelle quantité à enregistrer
  * @return Boolean              Retourne VRAI si la modification a bien eu lieu, FAUX sinon.
  */
-function modif_qte($ref_article,$type_article,$qte)
+function modif_qte($ref_article,$type_article,$abonnement,$qte)
 {
     /* On compte le nombre d'articles différents dans le panier */
     $nb_articles = count($_SESSION['panier']['logiciel']);
@@ -90,7 +94,7 @@ function modif_qte($ref_article,$type_article,$qte)
     /* On parcoure le tableau de session pour modifier l'article précis. */
     for($i = 0; $i < $nb_articles; $i++)
     {
-      if($ref_article == $_SESSION['panier']['logiciel'][$i] && $type_article == $_SESSION['panier']['type'][$i])
+      if($ref_article == $_SESSION['panier']['logiciel'][$i] && $type_article == $_SESSION['panier']['type'][$i] && $abonnement == $_SESSION['panier']['abonnement'][$i])
       {
           $_SESSION['panier']['quantite'][$i] = $qte;
           $ajoute = true;

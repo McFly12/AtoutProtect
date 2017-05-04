@@ -15,6 +15,7 @@ if($action !== null)
    $quantite = (isset($_POST['quantite_logiciel'])? $_POST['quantite_logiciel']:  (isset($_GET['quantite_logiciel'])? $_GET['quantite_logiciel']:null ));
    $prix = (isset($_POST['prix_logiciel'])? $_POST['prix_logiciel']:  (isset($_GET['prix_logiciel'])? $_GET['prix_logiciel']:null ));
 	 $type = (isset($_POST['type_logiciel'])? $_POST['type_logiciel']:  (isset($_GET['type_logiciel'])? $_GET['type_logiciel']:null ));
+	 $abonnement = (isset($_POST['type_abonnement'])? $_POST['type_abonnement']:  (isset($_GET['type_abonnement'])? $_GET['type_abonnement']:null ));
 
    //Suppression des espaces verticaux
    $nom = preg_replace('#\v#', '',$nom);
@@ -39,7 +40,7 @@ if($action !== null)
 if (!$erreur){
    switch($action){
       Case "ajouter":
-         ajouterArticle($nom,$quantite,$prix,$type);
+         ajouterArticle($nom,$quantite,$prix,$type,$abonnement);
          break;
 
       Case "suppression":
@@ -182,7 +183,7 @@ if (!$erreur){
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
             <div id="moncompte">
-              <font color="#D8D6D6"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
+              <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
 								<ul style="display:none;">
 									<li id="compte" style='color:white'>
 										<a href="account.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Mon Compte</a>
@@ -190,9 +191,11 @@ if (!$erreur){
 									<li id="commandes" style='color:white'>
 										<a href="orders.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-files-o" aria-hidden="true"></i>&nbsp;Mes Commandes</a>
 									</li>
-									<li id="admin" style='color:white'>
-                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
-                  </li>
+									<?php if($_SESSION['droit'] == 1 || $_SESSION['droit'] == 2) { ?>
+										<li id="admin" style='color:white'>
+	                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
+	                  </li>
+									<?php } ?>
 									<li id="disconnect" style='color:white'>
 										<a href="modules/session_destroyer.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Me déconnecter</a>
 									</li>
@@ -207,13 +210,18 @@ if (!$erreur){
 						<li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
             <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
 							<?php if(isset($_SESSION['panier'])) {
-								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
-									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+								if(isset($_SESSION['panier']['logiciel'])) {
+									if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+										<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+									<?php }
+								}
+								else { ?>
+									<span class="badge">0</span>
 								<?php }
 							} else { ?>
 								<span class="badge">0</span>
 							<?php }?>
-			</a></li>
+						</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -309,16 +317,19 @@ if (!$erreur){
 								<table class="table table-striped">
 									<thead>
 										<tr style="font-size:18px;">
-											<th style="width:25%;">
+											<th style="width:20%;">
 												Nom
 											</th>
-											<th style="width:25%">
+											<th style="width:20%">
 												Type
 											</th>
-											<th style="width:25%">
+											<th style="width:20%">
+												Abonnement
+											</th>
+											<th style="width:20%">
 												Quantité
 											</th>
-											<th style="width:25%">
+											<th style="width:20%">
 												Prix Unitaire (EUR)
 											</th>
 										</tr>
@@ -344,24 +355,45 @@ if (!$erreur){
 															else if($_SESSION['panier']['type'][$i] == "prologiciel1" || $_SESSION['panier']['type'][$i] == "prologiciel2") {
 																echo "<td>Professionnel</td>";
 															}
+
+															if($_SESSION['panier']['abonnement'][$i] == "1") {
+																echo "<td>1 mois</td>";
+															}
+															else if($_SESSION['panier']['abonnement'][$i] == "3") {
+																echo "<td>3 mois</td>";
+															}
+															else if($_SESSION['panier']['abonnement'][$i] == "6") {
+																echo "<td>6 mois</td>";
+															}
+															else if($_SESSION['panier']['abonnement'][$i] == "12") {
+																echo "<td>1 an</td>";
+															}
+															else if($_SESSION['panier']['abonnement'][$i] == "0") {
+																echo "<td>A vie</td>";
+															}
+
 															echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
-															echo "<td>".htmlspecialchars($_SESSION['panier']['prix'][$i])." &euro;</td>";
+
+															echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
 														echo "</tr>";
 													}
-													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"4\"></td></tr>";
+													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"5\"></td></tr>";
 
-														if($nbArticles == 1) {
 																$numberHT = montant_panier();
 
-																echo "<tr><td colspan=\"2\"></td>";
+																echo "<tr><td colspan=\"3\"></td>";
 	 															echo "<td><b><font style=\"font-size:20px;\">Total HT</font></b></td>";
 																echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" >".number_format((float)$numberHT, 2, ',', ' ')." &euro;</font></b></td>";
 
-																echo "<tr><td colspan=\"2\"></td>";
-																echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>";
-																echo "<td style=\"font-size:20px;\">0,00 &euro;</td></tr>";
+																$remise = 0.00;
+																if($remise != 0) {
+																	$numberHT = $numberHT - $remise;
+																}
+																echo "<tr><td colspan=\"3\"></td>";
+																echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>"; ?>
+																			<td style="font-size:20px;"><b><font><?php echo number_format($remise, 2, ',', ' '); ?> &euro;</font></b></td>
 
-																echo "<tr><td colspan=\"2\"></td>";
+																<?php echo "<tr><td colspan=\"3\"></td>";
 																echo "<td><b><font style=\"font-size:20px;\">TVA</font></b></td>";
 																echo "<td style=\"font-size:20px;\">20,00 %</td></tr>";
 
@@ -369,43 +401,18 @@ if (!$erreur){
 																$numberAvecTVA = $numberHT * (1 + (20 / 100));
                                 $_SESSION['totalTVA'] = $numberAvecTVA;
 
-																$remise = 0;
-																if($remise != 0) {
-																	// $remiseADeduire = $numberHT
+																if($nbArticles == 1) {
+																	echo "<tr><td colspan=\"3\"></td>";
+		 															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." article )</font></b></td>";
+																	echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
+																}
+																else if($nbArticles > 1) {
+																	echo "<tr><td colspan=\"3\"></td>";
+		 															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles )</font></b></td>";
+																	echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
 																}
 
-																echo "<tr><td colspan=\"2\"></td>";
-	 															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles )</font></b></td>";
-																echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
-														}
-														else {
-															$numberHT = montant_panier();
 
-															echo "<tr><td colspan=\"2\"></td>";
-															echo "<td><b><font style=\"font-size:20px;\">Total HT</font></b></td>";
-															echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" >".number_format((float)$numberHT, 2, ',', ' ')." &euro;</font></b></td>";
-
-															echo "<tr><td colspan=\"2\"></td>";
-															echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>";
-															echo "<td style=\"font-size:20px;\">0,00 &euro;</td></tr>";
-
-															echo "<tr><td colspan=\"2\"></td>";
-															echo "<td><b><font style=\"font-size:20px;\">TVA</font></b></td>";
-															echo "<td style=\"font-size:20px;\">20,00 %</td></tr>";
-
-															$numberAvecTVA = "";
-															$numberAvecTVA = $numberHT * (1 + (20 / 100));
-                              $_SESSION['totalTVA'] = $numberAvecTVA;
-
-															$remise = 0;
-															if($remise != 0) {
-																// $remiseADeduire = $numberHT
-															}
-
-															echo "<tr><td colspan=\"2\"></td>";
-															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles )</font></b></td>";
-															echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
-														}
 													echo "</td></tr>";
 
 													echo "</td></tr>";
@@ -589,23 +596,39 @@ if (!$erreur){
 										return $clef;
 									}
 
-								$nbArticles = count($_SESSION['panier']['quantite']);
+									// array_sum — Calcule la somme des valeurs du tableau
+								$nbArticles = array_sum($_SESSION['panier']['quantite']);
+
+								$content = '';
 
 								if($nbArticles == 1) {
 									$clef_simple = generation_clefs();
 
 									$content = "Licence 1 : ".$clef_simple;
+
+										for ($i=0 ;$i < $nbArticles ; $i++)
+										{
+											$clef = $clef_simple;
+											$nom = $_SESSION['nom'];
+											$logiciel = '1';
+											$type_logiciel = $_SESSION['nom']['type'][$i];
+											$abo_id = $_SESSION['nom']['abonnement'][$i];
+										}
+
+										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
+										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id); ?>
+
+										<script> var destinataire = '<?php echo $to; ?>';
+														window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
+										</script> <?php
+
 								}
 								else if($nbArticles > 1) {
-									// $chaine = generation_clefs();
+									for ($i=0 ;$i < $nbArticles ; $i++)
+									{
 
-									// $content = "Licence 1 : ".$each_clef;
-								}
-
-						    $headers = 'MIME-Version: 1.0' . "\r\n";
-						    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-						    mail($to,$subject, $content, $headers); ?>
+									}
+								} ?>
 
 				</div>
 

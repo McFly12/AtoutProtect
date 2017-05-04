@@ -78,6 +78,18 @@
   			});
 			});
 		</script>
+
+    <script>
+      $(document).ready(function () {
+        $( ".add-to-cart" ).click(function() {
+          var type_abo_choisi = $(this).closest('div').find('select').val();
+          var a = $(this).closest('div').find('a');
+          var href = a.attr('href') ;
+              a.attr('href', href + '&type_abonnement='+type_abo_choisi);
+        });
+      });
+    </script>
+
   </head>
 
   <body>
@@ -94,7 +106,7 @@
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
             <div id="moncompte">
-              <font color="#D8D6D6"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
+              <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
                 <ul style="display:none;">
                   <li id="compte" style='color:white'>
                     <a href="account.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Mon Compte</a>
@@ -102,9 +114,11 @@
                   <li id="commandes" style='color:white'>
                     <a href="orders.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-files-o" aria-hidden="true"></i>&nbsp;Mes Commandes</a>
                   </li>
-                  <li id="admin" style='color:white'>
-                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
-                  </li>
+                  <?php if($_SESSION['droit'] == 1 || $_SESSION['droit'] == 2) { ?>
+										<li id="admin" style='color:white'>
+	                    <a href="admin.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Administration</a>
+	                  </li>
+									<?php } ?>
                   <li id="disconnect" style='color:white'>
                     <a href="modules/session_destroyer.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Me déconnecter</a>
                   </li>
@@ -119,13 +133,18 @@
             <li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
             <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
 							<?php if(isset($_SESSION['panier'])) {
-								if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
-									<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+								if(isset($_SESSION['panier']['logiciel'])) {
+									if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+										<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+									<?php }
+								}
+								else { ?>
+									<span class="badge">0</span>
 								<?php }
 							} else { ?>
 								<span class="badge">0</span>
 							<?php }?>
-			</a></li>
+						</a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -151,22 +170,22 @@
 
     <!-- Carousel -->
 		<div class="carousel-inner">
-      <div class="item active" style="height:860px;">
-          <img src="assets/img/slide1.jpg" alt="First Slide" width="100%">
+      <div class="item active" style="height:auto;">
+          <img src="assets/img/slide1.jpg" alt="First Slide" width="auto">
           <div class="carousel-caption">
   					<h2 style="color:white;">Gestion des licences vendues ou disponibles</h2>
 					  <p>&nbsp;</p>
 				</div>
       </div>
-      <div class="item" style="height:860px;">
-          <img src="assets/img/slide2.png" alt="Second Slide" width="100%">
+      <div class="item" style="height:auto;">
+          <img src="assets/img/slide2.png" alt="Second Slide" width="auto">
           <div class="carousel-caption">
   					<h2 style="color:white;">Des licences disponibles pour tout vos logiciels du quotidien</h2>
 					  <p>&nbsp;</p>
 				</div>
       </div>
-      <div class="item" style="height:860px;">
-          <img src="assets/img/slide3.jpg" alt="Third Slide" width="100%">
+      <div class="item" style="height:autox;">
+          <img src="assets/img/slide3.jpg" alt="Third Slide" width="auto">
           <div class="carousel-caption">
   					<h2 style="color:white;">Disponible 24/24j 7/7j</h2>
 					  <p>&nbsp;</p>
@@ -235,6 +254,17 @@
   								<li>Color Customization</li>
   								<li>HTML5 & CSS3</li>
   								<li>Styled elements</li>
+                  <li>
+                    <select width="auto" id="type_abo" name="type_abo">
+                      <?php $req = $maPdoFonction->Abonnements();
+                            if($req->rowCount() >= 1) {
+                              while($donnees = $req->fetch()) { ?>
+                                  <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                              <?php }
+                            }
+                      ?>
+                    </select>
+                  </li>
   								<li>
   									<h3>100 &euro;</h3>
   									<!-- <span>per month</span> -->
@@ -260,6 +290,17 @@
   								<li>Color Customization</li>
   								<li>HTML5 & CSS3</li>
   								<li>Styled elements</li>
+                  <li>
+                    <select width="auto" id="type_abo" name="type_abo">
+                      <?php $req = $maPdoFonction->Abonnements();
+                            if($req->rowCount() >= 1) {
+                              while($donnees = $req->fetch()) { ?>
+                                  <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                              <?php }
+                            }
+                      ?>
+                    </select>
+                  </li>
   								<li>
   									<h3>100 &euro;</h3>
   									<!-- <span>per month</span> -->
@@ -285,6 +326,17 @@
   								<li>Color Customization</li>
   								<li>HTML5 & CSS3</li>
   								<li>Styled elements</li>
+                  <li>
+                    <select width="auto" id="type_abo" name="type_abo">
+                      <?php $req = $maPdoFonction->Abonnements();
+                            if($req->rowCount() >= 1) {
+                              while($donnees = $req->fetch()) { ?>
+                                  <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                              <?php }
+                            }
+                      ?>
+                    </select>
+                  </li>
   								<li>
   									<h3>100 &euro;</h3>
   									<!-- <span>per month</span> -->
@@ -301,7 +353,9 @@
   					</div>
 
   				</div><!-- /block -->
-          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
           <h1 style="margin-bottom:15px;"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo $arr_nom_logiciel[1]; ?></h1>
           <hr>
       				<div class="block" style="width:100%; margin-left:12%;">
@@ -315,6 +369,17 @@
       								<li>Color Customization</li>
       								<li>HTML5 & CSS3</li>
       								<li>Styled elements</li>
+                      <li>
+                        <select width="auto" id="type_abo" name="type_abo">
+                          <?php $req = $maPdoFonction->Abonnements();
+                                if($req->rowCount() >= 1) {
+                                  while($donnees = $req->fetch()) { ?>
+                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                                  <?php }
+                                }
+                          ?>
+                        </select>
+                      </li>
       								<li>
       									<h3>100 &euro;</h3>
       									<!-- <span>per month</span> -->
@@ -340,6 +405,17 @@
       								<li>Color Customization</li>
       								<li>HTML5 & CSS3</li>
       								<li>Styled elements</li>
+                      <li>
+                        <select width="auto" id="type_abo" name="type_abo">
+                          <?php $req = $maPdoFonction->Abonnements();
+                                if($req->rowCount() >= 1) {
+                                  while($donnees = $req->fetch()) { ?>
+                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                                  <?php }
+                                }
+                          ?>
+                        </select>
+                      </li>
       								<li>
       									<h3>100 &euro;</h3>
       									<!-- <span>per month</span> -->
@@ -365,6 +441,17 @@
       								<li>Color Customization</li>
       								<li>HTML5 & CSS3</li>
       								<li>Styled elements</li>
+                      <li>
+                        <select width="auto" id="type_abo" name="type_abo">
+                          <?php $req = $maPdoFonction->Abonnements();
+                                if($req->rowCount() >= 1) {
+                                  while($donnees = $req->fetch()) { ?>
+                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                                  <?php }
+                                }
+                          ?>
+                        </select>
+                      </li>
       								<li>
       									<h3>100 &euro;</h3>
       									<!-- <span>per month</span> -->
