@@ -4,7 +4,7 @@ ATOUT PROTECT - Study project (school)
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+This a project for our studies. So, it will be never a commercial website.
 
 ### Prerequisites
 
@@ -23,6 +23,8 @@ Go to see ## Running the tests
 * [ATOM](http://atom.io/) - GitHub Editor
 * [Bootstrap](http://getbootstrap.com/) - Styling
 * [MySQL](https://www.mysql.com/) - Database SQL
+* [PayPal](https://www.paypal.com/fr/home) - PayPal API Sandbox
+* [HiPay](https://hipay.com/fr) - HiPay (= AlloPass) API
 
 ## Versioning
 
