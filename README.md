@@ -10,9 +10,6 @@ These instructions will get you a copy of the project up and running on your loc
 
 MYSQL Database, WAMP, ATOM Editor
 
-```
-Give examples
-```
 ## Running the tests
 
 Just launch project on WAMP, add database to PHPMyAdmin, and here we go!
