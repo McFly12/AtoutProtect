@@ -35,4 +35,4 @@ You can follow this project. Each days, or maximum, each week, we do a new push 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details. Before use it, contact me.
+This project is licensed under the MIT License. Before use it, contact me for details.
