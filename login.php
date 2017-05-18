@@ -182,7 +182,10 @@
                 <input type="password" class="form-control" style="width:75%;" name="InputPassword1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
               </div><br />
               <div align="center">
-                <button type="submit" class="btn btn-success" style="width:75%" id="seconnecter"><span class="glyphicon glyphicon-log-in" style="color:white;font-size:12px;"></span>&nbsp;&nbsp;SE CONNECTER</button>
+                <button type="submit" class="btn btn-success" style="width:76%;margin-left:-136px" id="seconnecter">
+                  <span class="glyphicon glyphicon-log-in" style="color:white;font-size:12px;"></span>
+                  &nbsp;&nbsp;SE CONNECTER
+                </button>
               </div>
     				</form>
     			</div>

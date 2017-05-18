@@ -144,8 +144,7 @@ class PdoFonction extends PdoBdd {
 	/* 					ENREGISTRE UNE NOUVELLE COMMANDE EN BASE	 				*/
 	public function EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id) {
 		parent::connexion();
-		$result = parent::requete('INSERT INTO licence (clef,proprietaire,logiciel_id,typelicence,abonnement_id,date_creation)
-															 VALUES ("'.$clef.'","'.$nom.'","'.$logiciel.'","'.$type_logiciel.'","'.$abo_id.'",CURDATE())');
+		$result = parent::requete('INSERT INTO licence VALUES ("'.$clef.'","'.$nom.'","'.$logiciel.'","'.$type_logiciel.'","'.$abo_id.'",CURDATE(),NULL,NULL)');
 		parent::deconnexion();
 		return $result;
 	}

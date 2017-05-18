@@ -199,7 +199,7 @@ ini_set('error_reporting', E_ALL);
       <div style="float:left;padding-left:10px;width:62%">
   			<div role="form" class="col-lg-8 col-lg-offset-2">
   				<form method="POST" action="modules/Connexion.php" id="login">
-            <img src="http://nregs-mp.org/eService/images/User.png" width="140" height="140" class="img-circle" style="margin-left:36%;">
+            <img src="assets/img/user.png" width="140" height="140" class="img-circle" style="margin-left:36%;">
   				  <div class="form-group"><br />
               Nom :
               <input type="text" class="form-control" name="nom" id="nom" />

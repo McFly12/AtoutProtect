@@ -83,6 +83,11 @@ if (!$erreur){
 		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="assets/js/jquery-ui.js"></script>
 
+		<?php  include 'class/PdoFonction.php';
+					 $maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoFonction
+					 error_reporting(E_ALL);
+					 ini_set('error_reporting', E_ALL); ?>
+
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -345,7 +350,12 @@ if (!$erreur){
 													for ($i=0 ;$i < $nbArticles ; $i++)
 													{
 														echo "<tr>";
-															echo "<td style=\"font-weight:bold;text-align:center\">".htmlspecialchars($_SESSION['panier']['logiciel'][$i])."</ d>";
+															if($_SESSION['panier']['logiciel'][$i] == "Logiciel1") {
+																echo "<td style=\"font-weight:bold;text-align:center\">Logiciel 1</td>";
+															}
+															else if($_SESSION['panier']['logiciel'][$i] == "Logiciel2") {
+																echo "<td style=\"font-weight:bold;text-align:center\">Logiciel 2</td>";
+															}
 															if($_SESSION['panier']['type'][$i] == "debutantlogiciel1" || $_SESSION['panier']['type'][$i] == "debutantlogiciel2") {
 																echo "<td>Débutant</td>";
 															}
@@ -529,37 +539,37 @@ if (!$erreur){
 							?>
 
               <br />
-              <h4 align="center" style="font-size:16px;">Veuillez choisir votre mode de paiement :</h4><hr> <!-- PayPal Logo --><br /><br />
-									<br />
-										<div class="container">
-											<div class="row" >
+              <h3 align="center" style="font-size:20px;">Veuillez choisir votre mode de paiement :</h3><hr>
+							<br /><br />
+										<!-- <div class="container">
+											<div class="row" > -->
 
 												<div class="columns" style="margin-left:10%;">
 													<ul class="price">
-													<li class="header"><img src="assets/img/PayPal.png" width="20%"></img>&nbsp;PayPal</li>
+													<li class="header"><img src="assets/img/PayPal.png"></img>&nbsp;PayPal</li>
 													<div style=""></div>
-													<li class="grey"></li>
+													<li class="grey" style="font-size:14px">PayPal est un service de paiement en ligne qui permet de payer des achats, de recevoir des paiements, ou d’envoyer et de recevoir de l’argent.</li>
 													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
 												<div class="columns" style="margin-left:10%;">
 													<ul class="price">
-													<li class="header"><img src="assets/img/MasterCard.png" width="20%"></img>&nbsp;HiPay (ex: AlloPass)</li>
-													<li class="grey"></li>
+													<li class="header"><img src="assets/img/MasterCard.png"></img>&nbsp;HiPay (ex: AlloPass)</li>
+													<li class="grey" style="font-size:14px">AlloPass s’adresse aux marchands et aux internautes pour le micropaiement de biens digitaux (inscriptions ou options payantes sur les sites internet, achat d’articles de presse, ...).</li>
 													<li class="grey" style="background-color:#FFF"><a href="#C" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
-											</div>
-										</div>
+											<!-- </div>
+										</div> -->
 				</div>
 
 				<div class="tab-pane fade" id="D" name="D"><br />
 
 					<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
 						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
-						<h3><span style="color:#aab2bc;"></span>Votre paiement a été validé.</h3>
+						<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
 						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
 						<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
 					</div>
@@ -604,31 +614,52 @@ if (!$erreur){
 								if($nbArticles == 1) {
 									$clef_simple = generation_clefs();
 
-									$content = "Licence 1 : ".$clef_simple;
-
 										for ($i=0 ;$i < $nbArticles ; $i++)
 										{
 											$clef = $clef_simple;
 											$nom = $_SESSION['nom'];
-											$logiciel = '1';
-											$type_logiciel = $_SESSION['nom']['type'][$i];
-											$abo_id = $_SESSION['nom']['abonnement'][$i];
+
+											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
+												$logiciel = '1';
+											}
+											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
+												$logiciel = '2';
+											}
+
+											if($_SESSION['panier']['type'][$i] == 'debutantlogiciel1' || $_SESSION['panier']['type'][$i] == 'debutantlogiciel2') {
+												$type_logiciel = 'debutant';
+											}
+											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
+												$type_logiciel = 'standard';
+											}
+											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
+												$type_logiciel = 'pro';
+											}
+
+											$type_logiciel = $_SESSION['panier']['type'][$i];
+											$abo_id = $_SESSION['panier']['abonnement'][$i];
 										}
 
 										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
-										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id); ?>
+										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id);
 
-										<script> var destinataire = '<?php echo $to; ?>';
-														window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
-										</script> <?php
+										$content = "Licence 1 : ".$clef_simple;
+										?>
 
-								}
+										<script>if(window.location.search == '?PayPalOk') {
+															var destinataire = '<?php echo $to; ?>';
+															window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
+														}
+										</script>
+					<?php	}
 								else if($nbArticles > 1) {
 									for ($i=0 ;$i < $nbArticles ; $i++)
 									{
 
 									}
 								} ?>
+
+									<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p>
 
 				</div>
 
