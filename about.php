@@ -200,7 +200,7 @@
   </div>
 </div>
 
-				&nbsp;&nbsp;&nbsp;Photoshop
+				&nbsp;&nbsp;&nbsp;Service de maitenance
         <div class="progress">
   <div class="progress-bar progress-bar-striped active" role="progressbar"
   aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
@@ -208,7 +208,7 @@
   </div>
 </div>
 
-				&nbsp;&nbsp;&nbsp;Web Design
+				&nbsp;&nbsp;&nbsp;Disponibilité
         <div class="progress">
   <div class="progress-bar progress-bar-striped active" role="progressbar"
   aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">

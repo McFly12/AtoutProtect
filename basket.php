@@ -319,7 +319,7 @@ if (!$erreur){
 							</div>
 
 							<div class="table-responsive">
-								<table class="table table-striped">
+								<table class="table table-striped table-bordered" style="margin-left:0 auto;margin-left: 5px;">
 									<thead>
 										<tr style="font-size:18px;">
 											<th style="width:20%;">
@@ -435,14 +435,14 @@ if (!$erreur){
 
 								<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 									if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") { ?>
-										<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;">
+										<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;font-size: 17px;">
 											<a href="index.php" style="text-decoration:none;color:inherit;">
-												<span class="glyphicon glyphicon-backward" style="font-size:14px;color:white;"></span>
+												<span class="glyphicon glyphicon-backward" style="font-size:15px;color:white;"></span>
 													&nbsp;&nbsp;Poursuivre mes achats
 											</a>
 										</button>
-										<button type="button" id="GoToPayment" name="GoToPayment" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;">
-												<span class="glyphicon glyphicon-credit-card" style="font-size:14px;color:white;"></span>
+										<button type="button" id="GoToPayment" name="GoToPayment" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;font-size: 17px;">
+												<span class="glyphicon glyphicon-credit-card" style="font-size:16px;color:white;"></span>
 													&nbsp;&nbsp;Procéder au paiement
 										</button><br /><br /><br />
 								<?php } ?>
