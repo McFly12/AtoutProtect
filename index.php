@@ -247,34 +247,24 @@
   					<div class="col-xs-12 col-sm-6 col-md-3">
   							<ul class="pricing p-green">
   								<li>
-  									<img src="http://bread.pp.ua/n/settings_g.svg" alt="">
-  									<big>Débutant</big>
+  									<img src="assets/img/settings.svg" alt="">
+  									<big>Shareware</big>
   								</li>
   								<li>Responsive Design</li>
   								<li>Color Customization</li>
   								<li>HTML5 & CSS3</li>
   								<li>Styled elements</li>
-                  <li>
-                    <select width="auto" id="type_abo" name="type_abo">
-                      <?php $req = $maPdoFonction->Abonnements();
-                            if($req->rowCount() >= 1) {
-                              while($donnees = $req->fetch()) { ?>
-                                  <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                              <?php }
-                            }
-                      ?>
-                    </select>
-                  </li>
+                  <li><br/></li>
   								<li>
-  									<h3>100 &euro;</h3>
+  									<h3><br/></h3>
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
                     <?php if(isset($_SESSION['nom'])) { ?>
-  									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel1">Ajouter au panier</a></button>
+  									  <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" >Activer</a></button>
                       <?php }
                       else { ?>
-                        <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                        <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button>
                       <?php } ?>
                   </li>
   							</ul>
@@ -283,7 +273,7 @@
   					<div class="col-xs-12 col-sm-6 col-md-3">
   							<ul class="pricing p-yel">
   								<li>
-  									<img src="http://bread.pp.ua/n/settings_y.svg" alt="">
+  									<img src="assets/img/settings.svg" alt="">
   									<big>Standard</big>
   								</li>
   								<li>Responsive Design</li>
@@ -319,7 +309,7 @@
   					<div class="col-xs-12 col-sm-6 col-md-3">
   							<ul class="pricing p-red">
   								<li>
-  									<img src="http://bread.pp.ua/n/settings_r.svg" alt="">
+  									<img src="assets/img/settings.svg" alt="">
   									<big>Professionnel</big>
   								</li>
   								<li>Accès total</li>
@@ -362,34 +352,24 @@
       					<div class="col-xs-12 col-sm-6 col-md-3">
       							<ul class="pricing p-green">
       								<li>
-      									<img src="http://bread.pp.ua/n/settings_g.svg" alt="">
-      									<big>Débutant</big>
+      									<img src="assets/img/settings.svg" alt="">
+      									<big>Shareware</big>
       								</li>
       								<li>Responsive Design</li>
       								<li>Color Customization</li>
       								<li>HTML5 & CSS3</li>
       								<li>Styled elements</li>
-                      <li>
-                        <select width="auto" id="type_abo" name="type_abo">
-                          <?php $req = $maPdoFonction->Abonnements();
-                                if($req->rowCount() >= 1) {
-                                  while($donnees = $req->fetch()) { ?>
-                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                                  <?php }
-                                }
-                          ?>
-                        </select>
-                      </li>
+                      <li><br/></li>
       								<li>
-      									<h3>100 &euro;</h3>
+      									<h3><br/></h3>
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
                         <?php if(isset($_SESSION['nom'])) { ?>
-      									   <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=debutantlogiciel2">Ajouter au panier</a></button>
+      									   <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;">Activer</a></button>
                            <?php }
                            else { ?>
-                              <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
+                              <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button>
                            <?php } ?>
                       </li>
       							</ul>
@@ -398,7 +378,7 @@
       					<div class="col-xs-12 col-sm-6 col-md-3">
       							<ul class="pricing p-yel">
       								<li>
-      									<img src="http://bread.pp.ua/n/settings_y.svg" alt="">
+      									<img src="assets/img/settings.svg" alt="">
       									<big>Standard</big>
       								</li>
       								<li>Responsive Design</li>
@@ -434,7 +414,7 @@
       					<div class="col-xs-12 col-sm-6 col-md-3">
       							<ul class="pricing p-red">
       								<li>
-      									<img src="http://bread.pp.ua/n/settings_r.svg" alt="">
+      									<img src="assets/img/settings.svg" alt="">
       									<big>Professionnel</big>
       								</li>
       								<li>Accès total</li>
