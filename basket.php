@@ -567,14 +567,18 @@ if (!$erreur){
 
 				<div class="tab-pane fade" id="D" name="D"><br />
 
-					<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
-						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
-						<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
-						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
-						<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
-					</div>
+					<?php
+						if(!empty($_SESSION['id_transaction'])) { ?>
 
-					<?php $to = "atoutlicencemanagement@gmail.com";
+							<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+								<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
+								<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
+								<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
+								<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
+							</div>
+
+							<?php
+							$to = "atoutlicencemanagement@gmail.com";
 						    $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
 
 								// Générer une licence unique et aléatoire
@@ -626,9 +630,6 @@ if (!$erreur){
 												$logiciel = '2';
 											}
 
-											if($_SESSION['panier']['type'][$i] == 'debutantlogiciel1' || $_SESSION['panier']['type'][$i] == 'debutantlogiciel2') {
-												$type_logiciel = 'debutant';
-											}
 											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
 												$type_logiciel = 'standard';
 											}
@@ -651,15 +652,21 @@ if (!$erreur){
 															window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
 														}
 										</script>
+										<?php $_SESSION['id_transaction']=''; ?>
 					<?php	}
 								else if($nbArticles > 1) {
 									for ($i=0 ;$i < $nbArticles ; $i++)
 									{
 
 									}
-								} ?>
 
-									<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p>
+									?><p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p><?php
+						}
+						else {
+							?><script>alert();</script><?php
+						}
+
+								} ?>
 
 				</div>
 
