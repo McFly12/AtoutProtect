@@ -149,5 +149,14 @@ class PdoFonction extends PdoBdd {
 		return $result;
 	}
 
+	/***************************************************************/
+	/* 					RECUPERE LES CODES PROMOTIONS ENREGISTRES	 				*/
+	public function RecupCodesPromo() {
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM codepromo');
+		parent::deconnexion();
+		return $result;
+	}
+
 }
 ?>

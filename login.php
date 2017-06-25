@@ -95,6 +95,7 @@
           </button>
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
+            <br /><br /><br /><br />
             <div id="moncompte">
               <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;
               <img src="assets/img/submenu.png"></img>

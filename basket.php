@@ -54,7 +54,7 @@ if (!$erreur){
          }
          break;
 
-      Default:
+      default:
          break;
    }
 }
@@ -171,6 +171,20 @@ if (!$erreur){
 		});
 	</script>
 
+	<script>
+		$(document).ready(function () {
+			$( "#deleteItemBasket" ).click(function() {
+			  var nom_logiciel = $(this).closest('tr').find('td:eq(0)').text();
+				var type_logiciel = $(this).closest('tr').find('td:eq(1)').text();
+				var abo_logiciel = $(this).closest('tr').find('td:eq(1)').text();
+				var quantite_logiciel = $(this).closest('tr').find('td:eq(1)').text();
+				var prix_logiciel = $(this).closest('tr').find('td:eq(1)').text();
+
+				$(this).closest('tr').remove();
+			});
+		});
+	</script>
+
 	</head>
 
 	<body>
@@ -187,6 +201,7 @@ if (!$erreur){
           </button>
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
+						<br /><br /><br /><br />
             <div id="moncompte">
               <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
 								<ul style="display:none;">
@@ -316,26 +331,29 @@ if (!$erreur){
 								<h3>VOTRE PANIER :</h3>
 								<hr>
 								<p></p> <br />
-							</div>
+							</div><br /><br /><br /><br /><br />
 
 							<div class="table-responsive">
 								<table class="table table-striped table-bordered" style="margin-left:0 auto;margin-left: 5px;">
 									<thead>
 										<tr style="font-size:18px;">
-											<th style="width:20%;">
+											<th style="width:18%;">
 												Nom
 											</th>
-											<th style="width:20%">
+											<th style="width:18%">
 												Type
 											</th>
-											<th style="width:20%">
+											<th style="width:18%">
 												Abonnement
 											</th>
-											<th style="width:20%">
+											<th style="width:18%">
 												Quantité
 											</th>
-											<th style="width:20%">
+											<th style="width:18%">
 												Prix Unitaire (EUR)
+											</th>
+											<th style="width:10%">
+												Action
 											</th>
 										</tr>
 									</thead>
@@ -349,7 +367,7 @@ if (!$erreur){
 												{
 													for ($i=0 ;$i < $nbArticles ; $i++)
 													{
-														echo "<tr>";
+														echo "<tr style='paddin:2px;'>";
 															if($_SESSION['panier']['logiciel'][$i] == "Logiciel1") {
 																echo "<td style=\"font-weight:bold;text-align:center\">Logiciel 1</td>";
 															}
@@ -385,13 +403,23 @@ if (!$erreur){
 															echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
 
 															echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
+
+															echo '<td>
+															<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
+																<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
+															</button><br/><br />
+																<button type="button" class="btn btn-danger" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
+																	<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
+																</button>
+															</td>';
+
 														echo "</tr>";
 													}
-													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"5\"></td></tr>";
+													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"6\"></td></tr>";
 
 																$numberHT = montant_panier();
 
-																echo "<tr><td colspan=\"3\"></td>";
+																echo "<tr><td colspan=\"4\"></td>";
 	 															echo "<td><b><font style=\"font-size:20px;\">Total HT</font></b></td>";
 																echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" >".number_format((float)$numberHT, 2, ',', ' ')." &euro;</font></b></td>";
 
@@ -399,11 +427,11 @@ if (!$erreur){
 																if($remise != 0) {
 																	$numberHT = $numberHT - $remise;
 																}
-																echo "<tr><td colspan=\"3\"></td>";
+																echo "<tr><td colspan=\"4\"></td>";
 																echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>"; ?>
 																			<td style="font-size:20px;"><b><font><?php echo number_format($remise, 2, ',', ' '); ?> &euro;</font></b></td>
 
-																<?php echo "<tr><td colspan=\"3\"></td>";
+																<?php echo "<tr><td colspan=\"4\"></td>";
 																echo "<td><b><font style=\"font-size:20px;\">TVA</font></b></td>";
 																echo "<td style=\"font-size:20px;\">20,00 %</td></tr>";
 
@@ -412,12 +440,12 @@ if (!$erreur){
                                 $_SESSION['totalTVA'] = $numberAvecTVA;
 
 																if($nbArticles == 1) {
-																	echo "<tr><td colspan=\"3\"></td>";
+																	echo "<tr><td colspan=\"4\"></td>";
 		 															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." article )</font></b></td>";
 																	echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
 																}
 																else if($nbArticles > 1) {
-																	echo "<tr><td colspan=\"3\"></td>";
+																	echo "<tr><td colspan=\"4\"></td>";
 		 															echo "<td><b><font style=\"font-size:20px;\">Total TTC ( ".$nbArticles." articles )</font></b></td>";
 																	echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" color=\"#e82323!important\">".number_format((float)$numberAvecTVA, 2, ',', ' ')." &euro;</font></b></td>";
 																}
@@ -578,7 +606,7 @@ if (!$erreur){
 							</div>
 
 							<?php
-							$to = "atoutlicencemanagement@gmail.com";
+							$to = $_SESSION['email'];
 						    $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
 
 								// Générer une licence unique et aléatoire
@@ -615,7 +643,70 @@ if (!$erreur){
 
 								$content = '';
 
+								$clef = '';
+								$logiciel = '';
+								$type_logiciel = '';
+								$id_logiciel = '';
+								$abo_id = '';
+
 								if($nbArticles == 1) {
+									$clef = generation_clefs();
+
+										for ($i=0 ;$i < $nbArticles ; $i++)
+										{
+											$nom = $_SESSION['nom'];
+
+											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
+												$logiciel = 'Logiciel 1';
+												$id_logiciel = '1';
+											}
+											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
+												$logiciel = 'Logiciel 2';
+												$id_logiciel = '2';
+											}
+
+											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
+												$type_logiciel = 'Standard';
+											}
+											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
+												$type_logiciel = 'Professionnel';
+											}
+
+											if($_SESSION['panier']['abonnement'][$i] == "1") {
+												$abo_id = "1 mois";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "3") {
+												$abo_id = "3 mois";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "6") {
+												$abo_id = "6 mois";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "12") {
+												$abo_id = "1 an";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "0") {
+												$abo_id = "A vie";
+											}
+										}
+
+										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
+										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$id_logiciel,$type_logiciel,$abo_id);
+
+										$content = $logiciel.' -- '.$type_logiciel.' -- '.$abo_id.'  : '.$clef;
+										?>
+
+										<script>if(window.location.search == '?PayPalOk') {
+															var destinataire = '<?php echo $to; ?>';
+															window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
+														}
+										</script>
+
+										<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p>
+
+										<?php $_SESSION['id_transaction']='';
+												 // session_unset($_SESSION['panier']); ?>
+					<?php	}
+								else if($nbArticles > 1) {
 									$clef_simple = generation_clefs();
 
 										for ($i=0 ;$i < $nbArticles ; $i++)
@@ -624,28 +715,40 @@ if (!$erreur){
 											$nom = $_SESSION['nom'];
 
 											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
-												$logiciel = '1';
+												$logiciel = 'Logiciel 1';
 											}
 											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
-												$logiciel = '2';
+												$logiciel = 'Logiciel 2';
 											}
 
 											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-												$type_logiciel = 'standard';
+												$type_logiciel = 'Standard';
 											}
 											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-												$type_logiciel = 'pro';
+												$type_logiciel = 'Professionnel';
 											}
 
-											$type_logiciel = $_SESSION['panier']['type'][$i];
-											$abo_id = $_SESSION['panier']['abonnement'][$i];
-										}
+											if($_SESSION['panier']['abonnement'][$i] == "1") {
+												$abo_id = "1 mois";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "3") {
+												$abo_id = "3 mois";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "6") {
+												$abo_id = "6 mois";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "12") {
+												$abo_id = "1 an";
+											}
+											else if($_SESSION['panier']['abonnement'][$i] == "0") {
+												$abo_id = "A vie";
+											}
 
-										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
-										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id);
+											$content .= $logiciel.' -- '.$type_logiciel.' -- '.$abo_id.'  : '.$clef.'%0D%0A';
 
-										$content = "Licence 1 : ".$clef_simple;
-										?>
+											// PARAMETRES : $clef,$nom,$logiciel,$abo_id
+											$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id);
+										} ?>
 
 										<script>if(window.location.search == '?PayPalOk') {
 															var destinataire = '<?php echo $to; ?>';
@@ -653,20 +756,16 @@ if (!$erreur){
 														}
 										</script>
 										<?php $_SESSION['id_transaction']=''; ?>
-					<?php	}
-								else if($nbArticles > 1) {
-									for ($i=0 ;$i < $nbArticles ; $i++)
-									{
 
-									}
+									<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p><?php
 
-									?><p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p><?php
-						}
-						else {
-							?><script>alert();</script><?php
+									// session_unset($_SESSION['panier']);
 						}
 
-								} ?>
+						}
+						else if(empty($_SESSION['panier'])) {
+								?><script>document.location.href="http://localhost/atoutprotect/basket.php";</script><?php
+						} ?>
 
 				</div>
 

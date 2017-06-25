@@ -93,6 +93,7 @@
           </button>
           <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
+            <br /><br /><br /><br />
             <div id="moncompte">
               <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
                 <ul style="display:none;">
@@ -149,9 +150,103 @@
 	<!-- +++++ Projects Section +++++ -->
   <section class="container">
 
+    <script>
+    function openCity(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    </script>
+
+    <br /><br />
+
+    <div class="tab">
+      <button class="tablinks" onclick="openCity(event, 'Acheteurs')">Acheteurs</button>
+        &nbsp;&nbsp;&nbsp;
+      <button class="tablinks" onclick="openCity(event, 'LicencesVendues')">Licences vendues</button>
+        &nbsp;&nbsp;&nbsp;
+      <button class="tablinks" onclick="openCity(event, 'ExportationDeDonnees')">Exportation de données</button>
+        &nbsp;&nbsp;&nbsp;
+      <button class="tablinks" onclick="openCity(event, 'CodePromotion')">Code promotion</button>
+    </div>
+
+    <div id="Acheteurs" class="tabcontent">
+      <h3>London</h3>
+      <p>London is the capital city of England.</p>
+    </div>
+
+    <div id="LicencesVendues" class="tabcontent">
+      <h3>Paris</h3>
+      <p>Paris is the capital of France.</p>
+    </div>
+
+    <div id="ExportationDeDonnees" class="tabcontent">
+      <h3>Paris</h3>
+      <p>Paris is the capital of France.</p>
+    </div>
+
+    <div id="CodePromotion" class="tabcontent">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 style="padding:0;">Gestion des codes promotions</h3>
+          </div>
+        </div>
+
+        <div class="panel-body row btn-toolbar">
+          <div style="padding:0;" class='btn-group'>
+            <button class="btn btn-success" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;">Nouveau Code Promotion</button>
+            <?php $req = $maPdoFonction->RecupCodesPromo();
+            			if($req->rowCount() >= 1) {
+                    ?><button class="btn btn-danger" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;">Supprimer selection</button><?php
+                  } ?>
+          </div>
+        </div>
+
+        <div class="list-group" style="margin:10px;">
+          <?php $req = $maPdoFonction->RecupCodesPromo();
+              if($req->rowCount() >= 1) {
+                ?> <ul class="list-group"> <?php
+                while($donnees = $req->fetch()) {
+                  if($donnees['statut'] == "Activé") { ?>
+                    <li class="list-group-item" style="background-color:#DFF0D8;">
+                      <b><?php echo $donnees['code']; ?></b> -- <b><?php echo $donnees['pourcentage_reduc']; ?> %</b> -- utilisé par <b><?php echo $donnees['beneficiaire']; ?></b>
+                    </li>
+                  <?php }
+                  else { ?>
+                      <li class="list-group-item">
+                        <input type="checkbox" value="">
+                          &nbsp;&nbsp;&nbsp;
+                        <b><?php echo $donnees['code']; ?></b> -- <b><?php echo $donnees['pourcentage_reduc']; ?> %</b> -- <b>Non utilisé</b>
+                      </li>
+                  <?php }
+                } ?> </ul>
+        <?php  }
+        else { ?>
+          <div class="alert alert-info">
+            <strong>Aucuns code promotions utilisés ou a été généré.</strong>
+          </div>
+        <?php } ?>
+        </div>
+    </div>
+    <br />
   </section>
 
-<br />
+  <br />
 
 	<!-- +++++ Footer Section +++++ -->
 	<div id="footer">
