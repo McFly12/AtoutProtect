@@ -1,4 +1,4 @@
-<?php session_start();
+<?php session_start(); unset($_SESSION['remise']);
 
   require('class/PayPal.php');
   $paypal = new PayPal();

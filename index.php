@@ -28,7 +28,8 @@
     <?php  include 'class/PdoFonction.php';
            $maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoFonction
            error_reporting(E_ALL);
-           ini_set('error_reporting', E_ALL); ?>
+           ini_set('error_reporting', E_ALL);
+    ?>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

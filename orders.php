@@ -175,54 +175,7 @@
 				</div>
 		</div>
 
-<?php if($_SESSION['droit'] == 1) {
-	$req = $maPdoFonction->Commande();
-			if($req->rowCount() >= 1) { ?>
-
-				<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
-			  	<strong> En tant que administrateur, vous accès à l'ensemble de commandes du site. </strong>
-				</div>
-
-				<table class="table table-bordered table-responsive table-striped" style="margin-left:5%;width:91%;" id="list_commandes" name="list_commandes">
-					<thead>
-						<tr style="background-color:#2f2f2f;text-align:center;color:white;">
-								<th>
-									N° Commande
-								</th>
-								<th>
-									Date
-								</th>
-								<th>
-									Montant total
-								</th>
-								<th>
-									Type de paiement
-								</th>
-								<th>
-									Client
-								</th>
-						</tr>
-					</thead>
-				<?php while($donnees = $req->fetch()) { ?>
-					<tr>
-									<td name='numcommande' id='numcommande' style="text-align:center;"><?php echo $donnees["numTransaction"]; ?></td>
-									<td name='datecommande' id='datecommande' ><?php echo date("d/m/Y", strtotime($donnees["date"])); ?></td>
-									<td name='montanttotalcommande' id='montanttotalcommande' ><?php echo $donnees["montant"]; ?> €</td>
-									<td name='typepaeiementcommande' id='typepaeiementcommande' >
-										<?php if($donnees["typedepaiement_id"] == 1) {
-											echo "PayPal";
-										}
-										else if($donnees["typedepaiement_id"] == 2) {
-											echo "AlloPass";
-										}?>
-									</td>
-									<td name='clientcommande' id='clientcommande' ><?php echo $donnees["emetteur"]; ?></td>
-							</tr>
-				<?php } ?>
-				</table>
-			<?php }
-} else {
-	$req = $maPdoFonction->CommandePerso($_SESSION['nom']);
+	<?php $req = $maPdoFonction->CommandePerso($_SESSION['nom']);
 			if($req->rowCount() >= 1) { ?>
 
 				<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
@@ -267,9 +220,8 @@
 		<div class="isa_error_" style="width:66%;">
 			<i class="fa fa-times-circle"></i>
 				Il n'y a aucune commande enregistré à votre nom.
-		</div>
-	<?php }
-} ?>
+		</div><br/><br /><br /><br />
+	<?php } ?>
 
 <br />
 

@@ -95,8 +95,8 @@ div.tab {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
-		width:auto;
-		margin: auto;
+		width:1659px;
+    margin-left: -262px;
 }
 
 /* Style the buttons inside the tab */
@@ -126,4 +126,13 @@ div.tab button.active {
     padding: 0;
     border: 1px solid #ccc;
     border-top: none;
+    width:1659px;
+    margin-left: -262px;
+}
+
+#link_codepromo {
+	color: #2f2f2f;
+}
+#link_codepromo:hover {
+	color: red;
 }

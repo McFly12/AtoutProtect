@@ -25,6 +25,15 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
+	/* 									 SUPPRIME UN COMPTE									 			*/
+	public function DeleteLogiciel($nomlogiciel) {
+		parent::connexion();
+		$result = parent::requete('DELETE FROM logiciel WHERE nom = "'.$nomlogiciel.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
 	/*									RECUP TYPES D'ABONNEMENTS									*/
 	public function Abonnements() {
 		parent::connexion();
@@ -154,6 +163,43 @@ class PdoFonction extends PdoBdd {
 	public function RecupCodesPromo() {
 		parent::connexion();
 		$result = parent::requete('SELECT * FROM codepromo');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					RECUPERE LES CODES PROMOTIONS ENREGISTRES	 				*/
+	public function RecupLicences() {
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM licence');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					ENREGISTRE UN NOUVEAU CODE PROMO	 				*/
+	public function SaveNouvCodePromo($pourcentage,$codepromo) {
+		parent::connexion();
+		$result = parent::requete('INSERT INTO codepromo (`code`, `pourcentage_reduc`, `statut`, `beneficiaire`) VALUES ("'.$codepromo.'","'.$pourcentage.'","Non-Activé",NULL)');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					VERIFIER UN CODE PROMO	 				*/
+	public function VerifierCodePromotion($code) {
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM codepromo WHERE code = "'.$code.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 							 ENREGISTRE LE NOUVEAU COMPTE						 			*/
+	public function SaveNouvLogiciel($nom) {
+		parent::connexion();
+		$result = parent::requete("INSERT INTO `logiciel`(`id`,`Nom`)
+															 VALUES (default,'$nom')");
 		parent::deconnexion();
 		return $result;
 	}

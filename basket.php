@@ -86,7 +86,8 @@ if (!$erreur){
 		<?php  include 'class/PdoFonction.php';
 					 $maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoFonction
 					 error_reporting(E_ALL);
-					 ini_set('error_reporting', E_ALL); ?>
+					 ini_set('error_reporting', E_ALL);
+		?>
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -149,14 +150,10 @@ if (!$erreur){
 				$('#lienTabC').attr('href', '');
 
 				// SUPPRIMER LE ACTIF SUR LES li
-				$('#lienTabA').removeClass( "nav active" );
-				$('#lienTabA').addClass( "nav" );
+				$('#lienTabA').removeClass( "active" );
 
 				// OUVERTURE DU DIV DE LA VALIDATION DU PAIEMENT
-				$('#D').addClass( "active in" );
 				$('.nav-tabs a[href="#D"]').tab('show');
-				$('#lienTabD').addClass( "active" );
-
 			}
 
 		});
@@ -173,21 +170,133 @@ if (!$erreur){
 
 	<script>
 		$(document).ready(function () {
-			$( "#deleteItemBasket" ).click(function() {
-			  var nom_logiciel = $(this).closest('tr').find('td:eq(0)').text();
-				var type_logiciel = $(this).closest('tr').find('td:eq(1)').text();
-				var abo_logiciel = $(this).closest('tr').find('td:eq(1)').text();
-				var quantite_logiciel = $(this).closest('tr').find('td:eq(1)').text();
-				var prix_logiciel = $(this).closest('tr').find('td:eq(1)').text();
+			$( "#ModifierItemBasket" ).click(function() {
+				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
 
-				$(this).closest('tr').remove();
+				$(this).closest('tr').find('td:eq(3)').html(' <input type="number" name="nouv_quantite" min="0" value='+quantite_logiciel+'> ');
+
+				var val = $(this).closest('tr').find('td:eq(3)').find('input').val();
+				$(this).closest('tr').find('td:eq(3)').find('input').val(val);
+
+				if( $(this).closest('tr').find('td:eq(5)').find('button.btn-success').length == 0 ) {
+					$(this).closest('tr').find('td:eq(5)').append(' <br /><br /><button type="button" class="btn btn-success" style="height:30px;font-size:15px;padding:0;" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
+				}
+				else
+				{
+					$(this).closest('tr').find('td:eq(5)').find('button.btn-success').remove();
+					$(this).closest('tr').find('td:eq(5)').append('<button type="button" class="btn btn-success" style="height:30px;font-size:15px;padding:0;" name="button_save_baket" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
+				}
+
 			});
 		});
 	</script>
 
+	<script>
+		function SaveFullBasket(button_id) {
+			var button = document.getElementById(button_id);
+
+			var nom_logiciel = $(button).closest('tr').find('td:eq(0)').text();
+			var type_logiciel = $(button).closest('tr').find('td:eq(1)').text();
+			var abo_logiciel = $(button).closest('tr').find('td:eq(2)').text();
+			var quantite_logiciel = $(button).closest('tr').find('td:eq(3)').find('input').val();
+
+			$(button).closest('tr').find('td:eq(3)').html(quantite_logiciel);
+
+				$.ajax({
+					url: "modules/SaveModifFullBasket.php",
+					data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel},
+					success: function(){
+						// similar behavior as an HTTP redirect
+						window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
+		    	}
+			});
+
+			$(button).remove();
+		}
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			$( "#deleteItemBasket" ).click(function() {
+
+				var nom_logiciel = $(this).closest('tr').find('td:eq(0)').text();
+				var type_logiciel = $(this).closest('tr').find('td:eq(1)').text();
+				var abo_logiciel = $(this).closest('tr').find('td:eq(2)').text();
+				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
+				var th = $(this);
+
+					$.ajax({
+						url: "modules/SaveSupprimerFullBasket.php",
+						data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel},
+						success: function(){
+							// similar behavior as an HTTP redirect
+							$(th).closest('tr').remove();
+							window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
+						}
+					});
+			});
+		});
+	</script>
+
+		<script>
+			function InputCodePromo() {
+				$('#CodePromoModalInput').modal();
+			}
+		</script>
+
+		<script>
+			function ApplyPromo() {
+				var code = document.getElementById('codepromo_input').value;
+
+				var pourcentage_reduc = "";
+
+				$.ajax({
+					type: "GET",
+					data: {'code': code},
+					url: 'modules/VerifCodePromo.php',
+					dataType: 'json',
+					success: function(json) {
+						var len = json.length;
+							if(len > 0) {
+								$.each(json, function(value, key) {
+										pourcentage_reduc = key.pourcentage_reduc;
+										$.ajax({
+											type: "GET",
+											data: {'pourcentage_reduc': pourcentage_reduc},
+											url: 'modules/UpdateRemise.php',
+											success: function() {
+												$('#CodePromoModalInput').modal('toggle');
+												location.reload();
+											}
+										});
+								});
+							}
+						}
+					});
+
+			}
+		</script>
+
 	</head>
 
 	<body>
+		<div class="modal fade" id="CodePromoModalInput" tabindex="-1" role="dialog" aria-labelledby="CodePromoModalInput" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		            <h4 class="modal-title" id="myModalLabel">Votre code promotion</h4>
+		            </div>
+		            <div class="modal-body">
+		                <input id="codepromo_input" type="text" class="form-control" maxlength="10" name="codepromo_input" placeholder="Code promotion" required />
+		            </div>
+		            <div class="modal-footer">
+									<button type="button" class="btn btn-primary" style="width:100px;height:35px;" onclick="ApplyPromo();">Appliquer</button>
+		              <button type="button" class="btn btn-default" data-dismiss="modal" style="width:100px;height:35px;">Annuler</button>
+		        </div>
+		    </div>
+		  </div>
+		</div>
 
 		<!-- Static navbar -->
 		<!-- MENU -->
@@ -256,11 +365,21 @@ if (!$erreur){
 
 <br />
 
-<?php if(isset($_SESSION['nom'])) { ?>
+<?php if(isset($_SESSION['nom']) && !isset($_GET['PayPalOk'])) { ?>
 	<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
   	<strong> Attention ! Si vous vous déconnectez de votre compte, votre panier sera perdu. </strong>
 	</div><br />
-<?php } ?>
+<?php }
+else {
+	if(isset($_SESSION['id_transaction']) && count($_SESSION['panier']) > 0) { ?>
+	<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+		<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
+		<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
+		<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
+		<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p><br />
+		<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p>
+	</div>
+<?php } } ?>
 
 <!-- Static navbar -->
 <!-- ONGLETS -->
@@ -374,10 +493,8 @@ if (!$erreur){
 															else if($_SESSION['panier']['logiciel'][$i] == "Logiciel2") {
 																echo "<td style=\"font-weight:bold;text-align:center\">Logiciel 2</td>";
 															}
-															if($_SESSION['panier']['type'][$i] == "debutantlogiciel1" || $_SESSION['panier']['type'][$i] == "debutantlogiciel2") {
-																echo "<td>Débutant</td>";
-															}
-															else if($_SESSION['panier']['type'][$i] == "standardlogiciel1" || $_SESSION['panier']['type'][$i] == "standardlogiciel2") {
+
+															if($_SESSION['panier']['type'][$i] == "standardlogiciel1" || $_SESSION['panier']['type'][$i] == "standardlogiciel2") {
 																echo "<td>Standard</td>";
 															}
 															else if($_SESSION['panier']['type'][$i] == "prologiciel1" || $_SESSION['panier']['type'][$i] == "prologiciel2") {
@@ -404,17 +521,20 @@ if (!$erreur){
 
 															echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
 
-															echo '<td>
-															<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
-																<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
-															</button><br/><br />
-																<button type="button" class="btn btn-danger" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
-																	<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
-																</button>
-															</td>';
+															echo '<td>';
+															if(!isset($_GET['PayPalOk'])) { ?>
+																<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
+																	<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
+																</button><br/><br />
+																	<button type="button" class="btn btn-danger" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
+																		<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
+																	</button>
+															<?php }
+															else { } ?>
+															</td>
 
-														echo "</tr>";
-													}
+														</tr>
+													<?php }
 													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"6\"></td></tr>";
 
 																$numberHT = montant_panier();
@@ -423,13 +543,10 @@ if (!$erreur){
 	 															echo "<td><b><font style=\"font-size:20px;\">Total HT</font></b></td>";
 																echo "<td style=\"font-size:20px;\"><b><font style=\"font-size:20px;\" >".number_format((float)$numberHT, 2, ',', ' ')." &euro;</font></b></td>";
 
-																$remise = 0.00;
-																if($remise != 0) {
-																	$numberHT = $numberHT - $remise;
-																}
-																echo "<tr><td colspan=\"4\"></td>";
-																echo "<td><b><font style=\"font-size:20px;\">Remise</font></b></td>"; ?>
-																			<td style="font-size:20px;"><b><font><?php echo number_format($remise, 2, ',', ' '); ?> &euro;</font></b></td>
+																if(!isset($_SESSION['remise'])) {
+																	$_SESSION['remise'] = 0.00;
+																	$_SESSION['nouvprix'] = $numberHT;
+																} ?>
 
 																<?php echo "<tr><td colspan=\"4\"></td>";
 																echo "<td><b><font style=\"font-size:20px;\">TVA</font></b></td>";
@@ -458,8 +575,15 @@ if (!$erreur){
 											?>
 									</tbody>
 								</table>
+								<?php if(!isset($_GET['PayPalOk'])) { ?>
+									<p style="margin-left:0 auto;margin-left: 7px;margin-top: -20px;" id="link_codepromo" onclick="InputCodePromo();">
+										<a style="cursor:pointer;">
+											Vous avez un code promotion ?
+										</a>
+									</p>
+								<?php } ?>
 
-								<br />
+								<br /><br />
 
 								<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 									if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") { ?>
@@ -572,7 +696,7 @@ if (!$erreur){
 										<!-- <div class="container">
 											<div class="row" > -->
 
-												<div class="columns" style="margin-left:10%;">
+												<div class="columns" style="margin-left:30%;">
 													<ul class="price">
 													<li class="header"><img src="assets/img/PayPal.png"></img>&nbsp;PayPal</li>
 													<div style=""></div>
@@ -581,13 +705,13 @@ if (!$erreur){
 													</ul>
 												</div>
 
-												<div class="columns" style="margin-left:10%;">
+												<!-- <div class="columns" style="margin-left:10%;">
 													<ul class="price">
 													<li class="header"><img src="assets/img/MasterCard.png"></img>&nbsp;HiPay (ex: AlloPass)</li>
 													<li class="grey" style="font-size:14px">AlloPass s’adresse aux marchands et aux internautes pour le micropaiement de biens digitaux (inscriptions ou options payantes sur les sites internet, achat d’articles de presse, ...).</li>
 													<li class="grey" style="background-color:#FFF"><a href="#C" class="button">Accéder</a></li>
 													</ul>
-												</div>
+												</div> -->
 
 											<!-- </div>
 										</div> -->
@@ -597,14 +721,6 @@ if (!$erreur){
 
 					<?php
 						if(!empty($_SESSION['id_transaction'])) { ?>
-
-							<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
-								<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
-								<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
-								<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
-								<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p>
-							</div>
-
 							<?php
 							$to = $_SESSION['email'];
 						    $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
@@ -648,6 +764,9 @@ if (!$erreur){
 								$type_logiciel = '';
 								$id_logiciel = '';
 								$abo_id = '';
+								$abo = '';
+								$idlogiciel = '';
+								$type_logiciel_mail = '';
 
 								if($nbArticles == 1) {
 									$clef = generation_clefs();
@@ -658,109 +777,148 @@ if (!$erreur){
 
 											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
 												$logiciel = 'Logiciel 1';
-												$id_logiciel = '1';
+												$idlogiciel = 1;
 											}
 											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
 												$logiciel = 'Logiciel 2';
-												$id_logiciel = '2';
+												$idlogiciel = 2;
 											}
 
 											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-												$type_logiciel = 'Standard';
+												$type_logiciel_mail = 'Standard';
 											}
 											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-												$type_logiciel = 'Professionnel';
+												$type_logiciel_mail = 'Professionnel';
 											}
 
+											$type_logiciel = $_SESSION['panier']['type'][$i];
+
 											if($_SESSION['panier']['abonnement'][$i] == "1") {
-												$abo_id = "1 mois";
+												$abo = "1 mois";
+												$abo_id = 1;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "3") {
-												$abo_id = "3 mois";
+												$abo = "3 mois";
+												$abo_id = 3;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "6") {
-												$abo_id = "6 mois";
+												$abo = "6 mois";
+												$abo_id = 6;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "12") {
-												$abo_id = "1 an";
+												$abo = "1 an";
+												$abo_id = 12;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "0") {
-												$abo_id = "A vie";
+												$abo = "A vie";
+												$abo_id = 0;
 											}
 										}
 
 										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
-										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$id_logiciel,$type_logiciel,$abo_id);
+										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$idlogiciel,$type_logiciel_mail,$abo_id);
 
-										$content = $logiciel.' -- '.$type_logiciel.' -- '.$abo_id.'  : '.$clef;
+										$content = $logiciel.' -- '.$type_logiciel.' -- '.$abo.'  : '.$clef;
 										?>
 
-										<script>if(window.location.search == '?PayPalOk') {
-															var destinataire = '<?php echo $to; ?>';
-															window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
-														}
+										<?php
+										ini_set("sendmail_from", "atoutlicencemanagement@gmail.com");
+										ini_set("auth_username", "atoutlicencemanagement@gmail.com");
+										ini_set("auth_password", "atoutprotect");
+										$to      = 'yvanmarty@live.fr';
+										$headers = 'From: atoutlicencemanagement@gmail.com' . "\r\n" .
+										'Reply-To: atoutlicencemanagement@gmail.com' . "\r\n" .
+										'X-Mailer: PHP/' . phpversion();
+
+										mail($to, $subject, $content, $headers); ?>
+
+										<script>/* if(window.location.search == '?PayPalOk') {
+															var destinataire = '<?php // echo $to; ?>';
+															window.location = "mailto:" + destinataire + "?subject=<?php // echo $subject; ?>&body=<?php // echo $content;?>";
+														} */
 										</script>
-
-										<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p>
-
-										<?php $_SESSION['id_transaction']='';
-												 // session_unset($_SESSION['panier']); ?>
+										<?php $_SESSION['id_transaction']=''; ?>
 					<?php	}
 								else if($nbArticles > 1) {
-									$clef_simple = generation_clefs();
 
 										for ($i=0 ;$i < $nbArticles ; $i++)
 										{
-											$clef = $clef_simple;
+											$clef = generation_clefs();
 											$nom = $_SESSION['nom'];
 
 											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
 												$logiciel = 'Logiciel 1';
+												$idlogiciel = 1;
 											}
 											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
 												$logiciel = 'Logiciel 2';
+												$idlogiciel = 2;
 											}
 
 											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-												$type_logiciel = 'Standard';
+												$type_logiciel_mail = 'Standard';
 											}
 											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-												$type_logiciel = 'Professionnel';
+												$type_logiciel_mail = 'Professionnel';
 											}
+
+											$type_logiciel = $_SESSION['panier']['type'][$i];
 
 											if($_SESSION['panier']['abonnement'][$i] == "1") {
-												$abo_id = "1 mois";
+												$abo = "1 mois";
+												$abo_id = 1;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "3") {
-												$abo_id = "3 mois";
+												$abo = "3 mois";
+												$abo_id = 3;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "6") {
-												$abo_id = "6 mois";
+												$abo = "6 mois";
+												$abo_id = 6;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "12") {
-												$abo_id = "1 an";
+												$abo = "1 an";
+												$abo_id = 12;
 											}
 											else if($_SESSION['panier']['abonnement'][$i] == "0") {
-												$abo_id = "A vie";
+												$abo = "A vie";
+												$abo_id = 0;
 											}
 
-											$content .= $logiciel.' -- '.$type_logiciel.' -- '.$abo_id.'  : '.$clef.'%0D%0A';
+											$content .= $logiciel.' -- '.$type_logiciel_mail.' -- '.$abo.'  : '.$clef.'%0D%0A';
 
 											// PARAMETRES : $clef,$nom,$logiciel,$abo_id
-											$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id);
+											$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$idlogiciel,$type_logiciel,$abo_id);
 										} ?>
 
-										<script>if(window.location.search == '?PayPalOk') {
-															var destinataire = '<?php echo $to; ?>';
-															window.location = "mailto:" + destinataire + "?subject=<?php echo $subject; ?>&body=<?php echo $content;?>";
-														}
+										<?php
+										ini_set("SMTP", "smtp.google.com");
+										ini_set("smtp_port", 587 );
+										ini_set("sendmail_from", "atoutlicencemanagement@gmail.com");
+										ini_set("auth_username", "atoutlicencemanagement@gmail.com");
+										ini_set("auth_password", "atoutprotect");
+										$to      = 'yvanmarty@live.fr';
+										$headers = 'From: atoutlicencemanagement@gmail.com' . "\r\n" .
+										'Reply-To: atoutlicencemanagement@gmail.com' . "\r\n" .
+										'X-Mailer: PHP/' . phpversion();
+
+										mail($to, $subject, $content, $headers); ?>
+
+										<script>/* if(window.location.search == '?PayPalOk') {
+															var destinataire = '<?php // echo $to; ?>';
+															window.location = "mailto:" + destinataire + "?subject=<?php // echo $subject; ?>&body=<?php //echo $content;?>";
+														} */
 										</script>
 										<?php $_SESSION['id_transaction']=''; ?>
+						<?php }
 
-									<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p><?php
-
-									// session_unset($_SESSION['panier']);
-						}
+						sleep(8);
+						unset($_SESSION['panier']);
+						unset($_SESSION['panier']['logiciel']);
+						unset($_SESSION['panier']['quantite']);
+						unset($_SESSION['panier']['prix']);
+						unset($_SESSION['panier']['type']);
+						unset($_SESSION['panier']['abonnement']);
 
 						}
 						else if(empty($_SESSION['panier'])) {
