@@ -217,20 +217,20 @@ if (!$erreur){
 
 	<script>
 		$(document).ready(function () {
-			$( "#deleteItemBasket" ).click(function() {
+			$( ".deleteItemBasket" ).click(function() {
 
 				var nom_logiciel = $(this).closest('tr').find('td:eq(0)').text();
 				var type_logiciel = $(this).closest('tr').find('td:eq(1)').text();
 				var abo_logiciel = $(this).closest('tr').find('td:eq(2)').text();
 				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
 				var th = $(this);
+				$(this).closest('tr').remove();
 
 					$.ajax({
 						url: "modules/SaveSupprimerFullBasket.php",
 						data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel},
 						success: function(){
 							// similar behavior as an HTTP redirect
-							$(th).closest('tr').remove();
 							window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
 						}
 					});
@@ -526,7 +526,7 @@ else {
 																<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
 																	<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
 																</button><br/><br />
-																	<button type="button" class="btn btn-danger" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
+																	<button type="button" class="btn btn-danger deleteItemBasket" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
 																		<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
 																	</button>
 															<?php }
@@ -576,11 +576,11 @@ else {
 									</tbody>
 								</table>
 								<?php if(!isset($_GET['PayPalOk'])) { ?>
-									<p style="margin-left:0 auto;margin-left: 7px;margin-top: -20px;" id="link_codepromo" onclick="InputCodePromo();">
+									<!-- <p style="margin-left:0 auto;margin-left: 7px;margin-top: -20px;" id="link_codepromo" onclick="InputCodePromo();">
 										<a style="cursor:pointer;">
 											Vous avez un code promotion ?
 										</a>
-									</p>
+									</p> -->
 								<?php } ?>
 
 								<br /><br />
@@ -822,21 +822,16 @@ else {
 										?>
 
 										<?php
-										ini_set("sendmail_from", "atoutlicencemanagement@gmail.com");
-										ini_set("auth_username", "atoutlicencemanagement@gmail.com");
-										ini_set("auth_password", "atoutprotect");
-										$to      = 'yvanmarty@live.fr';
-										$headers = 'From: atoutlicencemanagement@gmail.com' . "\r\n" .
-										'Reply-To: atoutlicencemanagement@gmail.com' . "\r\n" .
-										'X-Mailer: PHP/' . phpversion();
+										$to      = $_SESSION['email'];
+										$headers  = 'From: atoutlicencemanagement@gmail.com'."\r\n";
+										$headers .= 'Reply-To: atoutlicencemanagement@gmail.com'."\r\n";
+										$headers .= "MIME-Version: 1.0 \n";
+										$headers .= "Content-Transfer-Encoding: 8bit \n";
+										$headers .= "Content-type: text/html; charset=utf-8 \n";
 
-										mail($to, $subject, $content, $headers); ?>
+										if( mail($to, $subject, $content,$headers) ) {
+										} ?>
 
-										<script>/* if(window.location.search == '?PayPalOk') {
-															var destinataire = '<?php // echo $to; ?>';
-															window.location = "mailto:" + destinataire + "?subject=<?php // echo $subject; ?>&body=<?php // echo $content;?>";
-														} */
-										</script>
 										<?php $_SESSION['id_transaction']=''; ?>
 					<?php	}
 								else if($nbArticles > 1) {
@@ -892,23 +887,16 @@ else {
 										} ?>
 
 										<?php
-										ini_set("SMTP", "smtp.google.com");
-										ini_set("smtp_port", 587 );
-										ini_set("sendmail_from", "atoutlicencemanagement@gmail.com");
-										ini_set("auth_username", "atoutlicencemanagement@gmail.com");
-										ini_set("auth_password", "atoutprotect");
 										$to      = 'yvanmarty@live.fr';
-										$headers = 'From: atoutlicencemanagement@gmail.com' . "\r\n" .
-										'Reply-To: atoutlicencemanagement@gmail.com' . "\r\n" .
-										'X-Mailer: PHP/' . phpversion();
+										$headers  = 'From: atoutlicencemanagement@gmail.com'."\r\n";
+										$headers .= 'Reply-To: atoutlicencemanagement@gmail.com'."\r\n";
+										$headers .= "MIME-Version: 1.0 \n";
+										$headers .= "Content-Transfer-Encoding: 8bit \n";
+										$headers .= "Content-type: text/html; charset=utf-8 \n";
 
-										mail($to, $subject, $content, $headers); ?>
+										if( mail($to, $subject, $content,$headers) ) {
+										} ?>
 
-										<script>/* if(window.location.search == '?PayPalOk') {
-															var destinataire = '<?php // echo $to; ?>';
-															window.location = "mailto:" + destinataire + "?subject=<?php // echo $subject; ?>&body=<?php //echo $content;?>";
-														} */
-										</script>
 										<?php $_SESSION['id_transaction']=''; ?>
 						<?php }
 
@@ -919,6 +907,9 @@ else {
 						unset($_SESSION['panier']['prix']);
 						unset($_SESSION['panier']['type']);
 						unset($_SESSION['panier']['abonnement']);
+
+						// PARAMETRES : $numtransaction,$montant,$nom
+						$req = $maPdoFonction->EnregistrerCommandePayPal($_SESSION['id_transaction'],$_SESSION['montant_transaction'],$_SESSION['nom']);
 
 						}
 						else if(empty($_SESSION['panier'])) {

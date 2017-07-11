@@ -150,7 +150,7 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 					ENREGISTRE UNE NOUVELLE COMMANDE EN BASE	 				*/
+	/* 					ENREGISTRE UNE NOUVELLE LICENCE EN BASE	 				*/
 	public function EnregistrerLicenceBase($clef,$nom,$logiciel,$type_logiciel,$abo_id) {
 		parent::connexion();
 		$result = parent::requete('INSERT INTO licence VALUES ("'.$clef.'","'.$nom.'","'.$logiciel.'","'.$type_logiciel.'","'.$abo_id.'",CURDATE(),NULL,NULL)');
@@ -195,7 +195,7 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 							 ENREGISTRE LE NOUVEAU COMPTE						 			*/
+	/* 							 ENREGISTRE LE NOUVEAU LOGICIEL						 			*/
 	public function SaveNouvLogiciel($nom) {
 		parent::connexion();
 		$result = parent::requete("INSERT INTO `logiciel`(`id`,`Nom`)
