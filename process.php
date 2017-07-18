@@ -33,17 +33,17 @@
 
     foreach ($_SESSION['panier'] as $key => $value)
     {
-      $params["L_PAYMENTREQUEST_0_NAME$key"] = $_SESSION['panier']['logiciel'];
-      $params["L_PAYMENTREQUEST_0_DESC$key"] = '';
-      $params["L_PAYMENTREQUEST_0_AMT$key"] = $_SESSION['panier']['prix'];
-      $params["L_PAYMENTREQUEST_0_QTY$key"] = $_SESSION['panier']['quantite'];
+    //  $params["L_PAYMENTREQUEST_0_NAME$key"] = $_SESSION['panier']['logiciel'];
+    //  $params["L_PAYMENTREQUEST_0_DESC$key"] = '';
+      //$params["L_PAYMENTREQUEST_0_AMT$key"] = $_SESSION['panier']['prix'];
+    //  $params["L_PAYMENTREQUEST_0_QTY$key"] = $_SESSION['panier']['quantite'];
     }
 
   // PRELEVEMENT POUR LE PAIEMENT
   $reponse = $paypal->request('DoExpressCheckoutPayment', $params);
 
   if($reponse) {
-    var_dump($reponse);
+  //  var_dump($reponse);
 
     // ENREGISTREMENT DE LA COMMANDE
     $req = $maPdoFonction->EnregistrerCommandePayPal($reponse['PAYMENTINFO_0_TRANSACTIONID'],$reponse['PAYMENTINFO_0_AMT'],$_SESSION['nom']);

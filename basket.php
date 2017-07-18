@@ -1,6 +1,10 @@
 <?php
 	include_once("gestionpanier.php");
   require("class/PayPal.php");
+	require('class/PDF.php');
+	ob_start();
+// header("Content-type:application/pdf;charset=UTF-8");
+// header("Content-disposition:attachment;charset=UTF-8");
 
 $erreur = false;
 
@@ -280,6 +284,7 @@ if (!$erreur){
 	</head>
 
 	<body>
+
 		<div class="modal fade" id="CodePromoModalInput" tabindex="-1" role="dialog" aria-labelledby="CodePromoModalInput" aria-hidden="true">
 		    <div class="modal-dialog">
 		        <div class="modal-content">
@@ -365,21 +370,15 @@ if (!$erreur){
 
 <br />
 
-<?php if(isset($_SESSION['nom']) && !isset($_GET['PayPalOk'])) { ?>
+
+
+<?php if(!isset($_GET['PayPalOk'])) { ?>
 	<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
   	<strong> Attention ! Si vous vous déconnectez de votre compte, votre panier sera perdu. </strong>
 	</div><br />
 <?php }
-else {
-	if(isset($_SESSION['id_transaction']) && count($_SESSION['panier']) > 0) { ?>
-	<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
-		<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
-		<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
-		<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
-		<br /><p>Les clefs de licences commandées vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p><br />
-		<p style="margin-left:38px;">Pour télécharger votre facture au format PDF, veuillez cliquer sur le lien suivant : </p>
-	</div>
-<?php } } ?>
+else if(isset($_GET['PayPalOk'])) {
+} ?>
 
 <!-- Static navbar -->
 <!-- ONGLETS -->
@@ -555,6 +554,7 @@ else {
 																$numberAvecTVA = "";
 																$numberAvecTVA = $numberHT * (1 + (20 / 100));
                                 $_SESSION['totalTVA'] = $numberAvecTVA;
+																$_SESSION['numberHT'] = $numberHT;
 
 																if($nbArticles == 1) {
 																	echo "<tr><td colspan=\"4\"></td>";
@@ -719,6 +719,16 @@ else {
 
 				<div class="tab-pane fade" id="D" name="D"><br />
 
+					<?php if(isset($_SESSION['id_transaction']) && count($_SESSION['panier']) > 0 && isset($_GET['PayPalOk'])) { ?>
+
+					<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
+						<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
+						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
+						<br /><p>Les clefs de licences commandées ainsi que la facture, vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p><br />
+					</div>
+				<?php	} ?>
+
 					<?php
 						if(!empty($_SESSION['id_transaction'])) { ?>
 							<?php
@@ -758,6 +768,8 @@ else {
 								$nbArticles = array_sum($_SESSION['panier']['quantite']);
 
 								$content = '';
+								$headers = '';
+								$to = '';
 
 								$clef = '';
 								$logiciel = '';
@@ -829,11 +841,7 @@ else {
 										$headers .= "Content-Transfer-Encoding: 8bit \n";
 										$headers .= "Content-type: text/html; charset=utf-8 \n";
 
-										if( mail($to, $subject, $content,$headers) ) {
-										} ?>
-
-										<?php $_SESSION['id_transaction']=''; ?>
-					<?php	}
+						}
 								else if($nbArticles > 1) {
 
 										for ($i=0 ;$i < $nbArticles ; $i++)
@@ -887,29 +895,26 @@ else {
 										} ?>
 
 										<?php
-										$to      = 'yvanmarty@live.fr';
+										$to      = $_SESSION['email'];
 										$headers  = 'From: atoutlicencemanagement@gmail.com'."\r\n";
 										$headers .= 'Reply-To: atoutlicencemanagement@gmail.com'."\r\n";
 										$headers .= "MIME-Version: 1.0 \n";
 										$headers .= "Content-Transfer-Encoding: 8bit \n";
 										$headers .= "Content-type: text/html; charset=utf-8 \n";
+						 }
 
-										if( mail($to, $subject, $content,$headers) ) {
-										} ?>
-
-										<?php $_SESSION['id_transaction']=''; ?>
-						<?php }
-
-						sleep(8);
-						unset($_SESSION['panier']);
-						unset($_SESSION['panier']['logiciel']);
-						unset($_SESSION['panier']['quantite']);
-						unset($_SESSION['panier']['prix']);
-						unset($_SESSION['panier']['type']);
-						unset($_SESSION['panier']['abonnement']);
-
-						// PARAMETRES : $numtransaction,$montant,$nom
-						$req = $maPdoFonction->EnregistrerCommandePayPal($_SESSION['id_transaction'],$_SESSION['montant_transaction'],$_SESSION['nom']);
+						 if( mail($to, $subject, $content,$headers) ) {
+							 sleep(3);
+							 pdf();
+							 sleep(3);
+							 unset($_SESSION['panier']);
+							 unset($_SESSION['panier']['logiciel']);
+							 unset($_SESSION['panier']['quantite']);
+							 unset($_SESSION['panier']['prix']);
+							 unset($_SESSION['panier']['type']);
+							 unset($_SESSION['panier']['abonnement']);
+							 $_SESSION['id_transaction']='';
+						 }
 
 						}
 						else if(empty($_SESSION['panier'])) {
@@ -959,4 +964,102 @@ else {
       <!-- Placed at the end of the document so the pages load faster -->
       <script src="assets/js/bootstrap.min.js"></script>
 	</body>
+
+	<?php
+
+	function pdf() {
+
+		// (c) Xavier Nicolay
+		// Exemple de génération de devis/facture PDF
+
+		$date = date('d/m/Y');
+
+		$pdf = new PDF( 'P', 'mm', 'A4' );
+		$pdf->AddPage();
+		$pdf->addSociete( "\n\n\n\n\n\n\n\n\n\n\n\nATOUT S.A.",
+		                  "                    ".utf8_decode("52 Rue de Limayrac,\n").
+		                  "                    31 000 TOULOUSE (FRANCE)\n");
+		$pdf->fact_dev( "Facture_".$_SESSION['id_transaction'], "TEMPO" );
+		$pdf->temporaire( "ATOUT S.A." );
+		$pdf->addDate(date('d/m/Y'));
+		$pdf->addPageNumber("1 / 1");
+		$adresse = "                                                                                                                                     ".utf8_decode($_SESSION['adresse'].",\n")."                                                                                                                                     ".utf8_decode($_SESSION['codepostal'])." ".utf8_decode($_SESSION['ville']);
+		$nom = utf8_decode($_SESSION['nom']).' '.utf8_decode($_SESSION['prenom']);
+		$pdf->addClientAdresse($nom, $adresse);
+		$pdf->addReglement("PayPal");
+		$pdf->addEcheance( date('d/m/Y', strtotime("+31 days")) );
+
+		$cols=array( "NOM" => 29,
+								 "TYPE"  => 35,
+								 "ABONNEMENT" => 35,
+								 "QUANTITE" => 26,
+								 "P.U. H.T." => 30,
+								 "MONTANT H.T." => 35 );
+		$pdf->addCols($cols);
+		// ALIGNEMENT DU TEXTE
+		$cols=array( "NOM"    => "C",
+								 "TYPE"  => "C",
+								 "ABONNEMENT"     => "C",
+								 "QUANTITE"      => "C",
+								 "P.U. H.T." => "C",
+								 "MONTANT H.T."          => "C" );
+		$pdf->addLineFormat($cols);
+		$pdf->addLineFormat($cols);
+
+		$y    = 109;
+
+		$nbArticles = count($_SESSION['panier']['logiciel']);
+		for ($i=0 ;$i < $nbArticles ; $i++) {
+			$logiciel = "";
+			$type_logiciel = "";
+			$abo = "";
+			if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
+				$logiciel = 'Logiciel 1';
+			}
+			else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
+				$logiciel = 'Logiciel 2';
+			}
+			if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
+				$type_logiciel = 'Standard';
+			}
+			if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
+				$type_logiciel = 'Professionnel';
+			}
+
+			if($_SESSION['panier']['abonnement'][$i] == "1") {
+				$abo = "1 mois";
+			}
+			else if($_SESSION['panier']['abonnement'][$i] == "3") {
+				$abo = "3 mois";
+			}
+			else if($_SESSION['panier']['abonnement'][$i] == "6") {
+				$abo = "6 mois";
+			}
+			else if($_SESSION['panier']['abonnement'][$i] == "12") {
+				$abo = "1 an";
+			}
+			else if($_SESSION['panier']['abonnement'][$i] == "0") {
+				$abo = "A vie";
+			}
+
+			$amountHT = $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
+
+			$line = array( "NOM"    => $logiciel,
+										 "TYPE"  => $type_logiciel,
+										 "ABONNEMENT"     => $abo,
+										 "QUANTITE"      => $_SESSION['panier']['quantite'][$i],
+										 "P.U. H.T." => number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '),
+										 "MONTANT H.T."          => number_format($amountHT, 2, ',', ' ') );
+			$size = $pdf->addLine( $y, $line );
+			$y   += $size + 2;
+		}
+
+
+		$pdf->addTVAs($_SESSION['numberHT'],$_SESSION['totalTVA']);
+		$pdf->addCadreEurosFrancs($_SESSION['numberHT'],$_SESSION['totalTVA']);
+		$pdf->Output("Facture_ATOUTSA.pdf","D");
+		echo pdf();
+	} ?>
+
+
 </html>

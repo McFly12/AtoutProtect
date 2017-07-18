@@ -95,6 +95,13 @@
 
   <body>
 
+    <?php /* require('class/PDF.php');
+    		$pdf = new PDF();
+    		$pdf->AddPage();
+    		$pdf->SetFont('Arial','B',16);
+    		$pdf->Cell(40,10,'Hello World!');
+    		//$pdf->Output('D','Facture_Commande_.pdf'); */ ?>
+
     <!-- Static navbar -->
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
@@ -262,11 +269,11 @@
   									<!-- <span>per month</span> -->
   								</li>
   								<li>
-                    <?php if(isset($_SESSION['nom'])) { ?>
-  									  <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" >Activer</a></button>
+                    <?php if(isset($_SESSION['nom'])) { ?><br /><br />
+  									  <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" >Activer</a></button> -->
                       <?php }
-                      else { ?>
-                        <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button>
+                      else { ?><br /><br />
+                        <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button> -->
                       <?php } ?>
                   </li>
   							</ul>
@@ -367,11 +374,11 @@
       									<!-- <span>per month</span> -->
       								</li>
       								<li>
-                        <?php if(isset($_SESSION['nom'])) { ?>
-      									   <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;">Activer</a></button>
+                        <?php if(isset($_SESSION['nom'])) { ?><br /><br />
+      									   <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;">Activer</a></button> -->
                            <?php }
-                           else { ?>
-                              <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button>
+                           else { ?><br /><br />
+                              <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button> -->
                            <?php } ?>
                       </li>
       							</ul>

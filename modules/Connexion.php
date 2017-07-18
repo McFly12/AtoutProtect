@@ -19,6 +19,9 @@ $mdp = $_POST['InputPassword1'];
         $_SESSION['droit'] = $donnees['Droit_id'];
         $_SESSION['email'] = $donnees['Email'];
         $_SESSION['id'] = $donnees['id'];
+        $_SESSION['adresse'] = $donnees['Adresse'];
+        $_SESSION['codepostal'] = $donnees['CodePostal'];
+        $_SESSION['ville'] = $donnees['Ville'];
       }
       header('Location: ../account.php');
     }
