@@ -187,6 +187,24 @@ ini_set('error_reporting', E_ALL);
       </div>
     </div>
 
+    <?php
+			if (isset($_GET['SaveOk'])) {
+				echo '<br/>
+					<div class="isa_success_" style="width:50%;">
+						<i class="fa fa-check"></i>
+							L\'enregistrement des modifications apportées à votre compte a réussi.
+					</div>';
+			}	?>
+      <?php
+        if (isset($_GET['ErrSave'])) {
+          echo '<br/>
+            <div class="isa_error_" style="width:50%;">
+              <i class="fa fa-times-circle"></i>
+                L\'enregistrement des modifications apportées à votre compte a échoué. Veuillez ré-essayer.<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;Si l\'erreur persiste, veuillez <a href="contact.php" target="_blank">contacter l\'administrateur</a>.
+            </div>';
+        }	?>
+
 	<!-- +++++ Contact Section +++++ -->
 	<div class="container pt">
 		<div class="row mt">
@@ -199,45 +217,48 @@ ini_set('error_reporting', E_ALL);
 		<div class="row mt">
       <div style="float:left;padding-left:10px;width:62%">
   			<div role="form" class="col-lg-8 col-lg-offset-2">
-  				<form method="POST" action="modules/Connexion.php" id="login">
+  				<form method="POST" action="modules/SaveInfosUser.php" id="login">
             <img src="assets/img/user.png" width="140" height="140" class="img-circle" style="margin-left:36%;">
   				  <div class="form-group"><br />
               Nom :
-              <input type="text" class="form-control" name="nom" id="nom" />
+              <input type="text" class="form-control" name="nom" id="nom" autocomplete="off"/>
   				    <br>
   				  </div>
   				  <div class="form-group">
               Prénom :
-              <input type="text" class="form-control" name="prenom" id="prenom" />
+              <input type="text" class="form-control" name="prenom" id="prenom" autocomplete="off"/>
   				    <br>
   				  </div>
             <div class="form-group">
               Téléphone :
-              <input type="text" class="form-control" name="tel" id="tel" />
+              <input type="text" class="form-control" name="tel" id="tel" autocomplete="off" maxlength="10"/>
   				    <br>
   				  </div>
             <div class="form-group">
               Adresse email :
-              <input type="email" class="form-control" name="email" id="email" disabled />
+              <input type="email" class="form-control" name="email" id="email" disabled autocomplete="off"/>
   				    <br>
   				  </div>
             <div class="form-group">
               Adresse :
-              <input type="text" class="form-control" name="adresse" id="adresse" />
+              <input type="text" class="form-control" name="adresse" id="adresse" autocomplete="off"/>
   				    <br>
   				  </div>
             <div class="form-group">
               Code Postal :
-              <input type="text" class="form-control" name="codepostal" id="codepostal" />
+              <input type="text" class="form-control" name="codepostal" id="codepostal" autocomplete="off" maxlength="5"/>
   				    <br>
   				  </div>
             <div class="form-group">
               Ville :
-              <input type="text" class="form-control" name="ville" id="ville" />
+              <input type="text" class="form-control" name="ville" id="ville" autocomplete="off"/>
   				    <br>
   				  </div>
             <div align="center"><br />
-              <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;ENREGISTRER</button>
+              <button type="submit" class="btn btn-success">
+                <span style="font-size:15px;color:white;" class="glyphicon glyphicon-floppy-save"></span>
+                &nbsp;&nbsp;ENREGISTRER
+              </button>
             </div>
   				</form>
 			  </div>

@@ -204,5 +204,24 @@ class PdoFonction extends PdoBdd {
 		return $result;
 	}
 
+	/***************************************************************/
+	/* 					 MET A JOUR LES INFOS DE L'UTILISATEUR 	 		 	*/
+	public function SaveInfosUtilisateur($nom,$prenom,$adresse,$tel,$cp,$ville){
+		parent::connexion();
+		$result = parent::requete('UPDATE utilisateur U SET U.Adresse="'.$adresse.'", U.Tel="'.$tel.'", U.CodePostal="'.$cp.'", U.Ville="'.$ville.'"
+															 WHERE U.Nom="'.$nom.'" AND U.Prenom="'.$prenom.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					CSV UTILISATEURS	 				*/
+	public function CSV_Utilisateurs() {
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM utilisateur');
+		parent::deconnexion();
+		return $result;
+	}
+
 }
 ?>

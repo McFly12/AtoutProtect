@@ -2,6 +2,8 @@
 	include_once("gestionpanier.php");
   require("class/PayPal.php");
 	require('class/PDF.php');
+	require 'PHPMailer/PHPMailerAutoload.php';
+
 	ob_start();
 
 $erreur = false;
@@ -746,9 +748,8 @@ else if(isset($_GET['PayPalOk'])) {
 							$idlogiciel = '';
 							$type_logiciel_mail = '';
 
-							$mail = "pas ok";
 							$to = $_SESSION['email'];
-						    $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
+						  $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
 
 								// Générer une licence unique et aléatoire
 									function generation_clefs() {
@@ -837,12 +838,6 @@ else if(isset($_GET['PayPalOk'])) {
 
 										<?php
 										$to      = $_SESSION['email'];
-										$headers  = 'From: atoutlicencemanagement@gmail.com'."\r\n";
-										$headers .= 'Reply-To: atoutlicencemanagement@gmail.com'."\r\n";
-										$headers .= "MIME-Version: 1.0 \n";
-										$headers .= "Content-Transfer-Encoding: 8bit \n";
-										$headers .= "Content-type: text/html; charset=utf-8 \n";
-
 						}
 								else if($nbArticles > 1) {
 
@@ -898,24 +893,140 @@ else if(isset($_GET['PayPalOk'])) {
 
 										<?php
 										$to      = $_SESSION['email'];
-										$headers  = 'From: atoutlicencemanagement@gmail.com'."\r\n";
-										$headers .= 'Reply-To: atoutlicencemanagement@gmail.com'."\r\n";
-										$headers .= "MIME-Version: 1.0 \n";
-										$headers .= "Content-Transfer-Encoding: 8bit \n";
-										$headers .= "Content-type: text/html; charset=utf-8 \n";
 						 }
 
-						 if( mail($to, $subject, $content,$headers) ) {
-							 	//echo pdf();
-								sleep(3);
-								/* unset($_SESSION['panier']);
-								unset($_SESSION['panier']['logiciel']);
-								unset($_SESSION['panier']['quantite']);
-								unset($_SESSION['panier']['prix']);
-								unset($_SESSION['panier']['type']);
-								unset($_SESSION['panier']['abonnement']); */
-								$_GET['token']='';
-						 }
+							 // Exemple de génération de devis/facture PDF
+
+							 $date = date('d/m/Y');
+
+							 $pdf = new PDF( 'P', 'mm', 'A4' );
+							 $pdf->AddPage();
+							 $pdf->addSociete( "\n\n\n\n\n\n\n\n\n\n\n\nATOUT S.A.",
+																 "                    ".utf8_decode("52 Rue de Limayrac,\n").
+																 "                    31 000 TOULOUSE (FRANCE)\n");
+							 $pdf->fact_dev( "Facture_".$_GET['token'], "TEMPO" );
+							 $pdf->temporaire( "ATOUT S.A." );
+							 $pdf->addDate(date('d/m/Y'));
+							 $pdf->addPageNumber("1 / 1");
+							 $adresse = "                                                                                                                                     ".utf8_decode($_SESSION['adresse'].",\n")."                                                                                                                                     ".utf8_decode($_SESSION['codepostal'])." ".utf8_decode($_SESSION['ville']);
+							 $nom = utf8_decode($_SESSION['nom']).' '.utf8_decode($_SESSION['prenom']);
+							 $pdf->addClientAdresse($nom, $adresse);
+							 $pdf->addReglement("PayPal");
+							 $pdf->addEcheance( date('d/m/Y', strtotime("+31 days")) );
+
+							 $cols=array( "NOM" => 29,
+														"TYPE"  => 35,
+														"ABONNEMENT" => 35,
+														"QUANTITE" => 26,
+														"P.U. H.T." => 30,
+														"MONTANT H.T." => 35 );
+							 $pdf->addCols($cols);
+							 // ALIGNEMENT DU TEXTE
+							 $cols=array( "NOM"    => "C",
+														"TYPE"  => "C",
+														"ABONNEMENT"     => "C",
+														"QUANTITE"      => "C",
+														"P.U. H.T." => "C",
+														"MONTANT H.T."          => "C" );
+							 $pdf->addLineFormat($cols);
+							 $pdf->addLineFormat($cols);
+
+							 $y    = 109;
+
+							 $nbArticles = count($_SESSION['panier']['logiciel']);
+							 for ($i=0 ;$i < $nbArticles ; $i++) {
+								 $logiciel = "";
+								 $type_logiciel = "";
+								 $abo = "";
+								 if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
+									 $logiciel = 'Logiciel 1';
+								 }
+								 else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
+									 $logiciel = 'Logiciel 2';
+								 }
+								 if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
+									 $type_logiciel = 'Standard';
+								 }
+								 if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
+									 $type_logiciel = 'Professionnel';
+								 }
+
+								 if($_SESSION['panier']['abonnement'][$i] == "1") {
+									 $abo = "1 mois";
+								 }
+								 else if($_SESSION['panier']['abonnement'][$i] == "3") {
+									 $abo = "3 mois";
+								 }
+								 else if($_SESSION['panier']['abonnement'][$i] == "6") {
+									 $abo = "6 mois";
+								 }
+								 else if($_SESSION['panier']['abonnement'][$i] == "12") {
+									 $abo = "1 an";
+								 }
+								 else if($_SESSION['panier']['abonnement'][$i] == "0") {
+									 $abo = "A vie";
+								 }
+
+								 $amountHT = $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
+
+								 $line = array( "NOM"    => $logiciel,
+																"TYPE"  => $type_logiciel,
+																"ABONNEMENT"     => $abo,
+																"QUANTITE"      => $_SESSION['panier']['quantite'][$i],
+																"P.U. H.T." => number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '),
+																"MONTANT H.T."          => number_format($amountHT, 2, ',', ' ') );
+								 $size = $pdf->addLine( $y, $line );
+								 $y   += $size + 2;
+							 }
+
+
+							 $pdf->addTVAs($_SESSION['numberHT'],$_SESSION['totalTVA']);
+							 $pdf->addCadreEurosFrancs($_SESSION['numberHT'],$_SESSION['totalTVA']);
+
+							 if (file_exists('C:/wamp/www/AtoutProtect/Facture_ATOUTSA.pdf')) {
+								     unlink('C:/wamp/www/AtoutProtect/Facture_ATOUTSA.pdf');
+										 sleep(1);
+										 $pdf->Output("Facture_ATOUTSA.pdf", "F");
+										 sleep(1);
+										 $old = 'C:/wamp/www/AtoutProtect/Facture_ATOUTSA.pdf';
+										 $new = 'C:/wamp/www/AtoutProtect/factures/'.$_SESSION['nom'].'/Facture_ATOUTSA_'.$_GET['token'].'.pdf';
+										 copy($old, $new);
+								} else {
+								    $pdf->Output("Facture_ATOUTSA.pdf", "F");
+								}
+
+								$mail = new PHPMailer;
+
+								$mail->isSMTP();                                      // Set mailer to use SMTP
+								$mail->Host = 'smtp.bbox.fr';  // Specify main and backup SMTP servers
+								$mail->SMTPAuth = false;                               // Enable SMTP authentication
+								$mail->Username = 'atoutlicencemanagement@gmail.com';                 // SMTP username
+								$mail->Password = 'atoutprotect';                           // SMTP password
+								$mail->SMTPSecure = '';                            // Enable TLS encryption, `ssl` also accepted
+								$mail->Port = 25;                                    // TCP port to connect to
+
+								$mail->setFrom('atoutlicencemanagement@gmail.com', 'ATOUT S.A.');
+								$mail->addAddress($to, $_SESSION['nom'].' '.$_SESSION['prenom']);     // Add a recipient
+
+								$mail->addAttachment('Facture_ATOUTSA.pdf');         // Add attachments
+								$mail->isHTML(true);                                  // Set email format to HTML
+
+								$mail->Subject = $subject;
+								$mail->Body    = $content;
+
+								if(!$mail->send()) {
+								    echo 'Message could not be sent.';
+								    echo 'Mailer Error: ' . $mail->ErrorInfo;
+								} else {
+								    echo 'Message has been sent';
+										$_GET['token']='';
+										unset($_SESSION['panier']);
+										unset($_SESSION['panier']['logiciel']);
+										unset($_SESSION['panier']['quantite']);
+										unset($_SESSION['panier']['prix']);
+										unset($_SESSION['panier']['type']);
+										unset($_SESSION['panier']['abonnement']);
+								}
 
 						}
 						else if(empty($_SESSION['panier'])) {
@@ -965,100 +1076,5 @@ else if(isset($_GET['PayPalOk'])) {
       <!-- Placed at the end of the document so the pages load faster -->
       <script src="assets/js/bootstrap.min.js"></script>
 	</body>
-
-	<?php
-
-	function pdf() {
-		// (c) Xavier Nicolay
-		// Exemple de génération de devis/facture PDF
-
-		$date = date('d/m/Y');
-
-		$pdf = new PDF( 'P', 'mm', 'A4' );
-		$pdf->AddPage();
-		$pdf->addSociete( "\n\n\n\n\n\n\n\n\n\n\n\nATOUT S.A.",
-		                  "                    ".utf8_decode("52 Rue de Limayrac,\n").
-		                  "                    31 000 TOULOUSE (FRANCE)\n");
-		$pdf->fact_dev( "Facture_".$_GET['token'], "TEMPO" );
-		$pdf->temporaire( "ATOUT S.A." );
-		$pdf->addDate(date('d/m/Y'));
-		$pdf->addPageNumber("1 / 1");
-		$adresse = "                                                                                                                                     ".utf8_decode($_SESSION['adresse'].",\n")."                                                                                                                                     ".utf8_decode($_SESSION['codepostal'])." ".utf8_decode($_SESSION['ville']);
-		$nom = utf8_decode($_SESSION['nom']).' '.utf8_decode($_SESSION['prenom']);
-		$pdf->addClientAdresse($nom, $adresse);
-		$pdf->addReglement("PayPal");
-		$pdf->addEcheance( date('d/m/Y', strtotime("+31 days")) );
-
-		$cols=array( "NOM" => 29,
-								 "TYPE"  => 35,
-								 "ABONNEMENT" => 35,
-								 "QUANTITE" => 26,
-								 "P.U. H.T." => 30,
-								 "MONTANT H.T." => 35 );
-		$pdf->addCols($cols);
-		// ALIGNEMENT DU TEXTE
-		$cols=array( "NOM"    => "C",
-								 "TYPE"  => "C",
-								 "ABONNEMENT"     => "C",
-								 "QUANTITE"      => "C",
-								 "P.U. H.T." => "C",
-								 "MONTANT H.T."          => "C" );
-		$pdf->addLineFormat($cols);
-		$pdf->addLineFormat($cols);
-
-		$y    = 109;
-
-		$nbArticles = count($_SESSION['panier']['logiciel']);
-		for ($i=0 ;$i < $nbArticles ; $i++) {
-			$logiciel = "";
-			$type_logiciel = "";
-			$abo = "";
-			if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
-				$logiciel = 'Logiciel 1';
-			}
-			else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
-				$logiciel = 'Logiciel 2';
-			}
-			if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-				$type_logiciel = 'Standard';
-			}
-			if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-				$type_logiciel = 'Professionnel';
-			}
-
-			if($_SESSION['panier']['abonnement'][$i] == "1") {
-				$abo = "1 mois";
-			}
-			else if($_SESSION['panier']['abonnement'][$i] == "3") {
-				$abo = "3 mois";
-			}
-			else if($_SESSION['panier']['abonnement'][$i] == "6") {
-				$abo = "6 mois";
-			}
-			else if($_SESSION['panier']['abonnement'][$i] == "12") {
-				$abo = "1 an";
-			}
-			else if($_SESSION['panier']['abonnement'][$i] == "0") {
-				$abo = "A vie";
-			}
-
-			$amountHT = $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
-
-			$line = array( "NOM"    => $logiciel,
-										 "TYPE"  => $type_logiciel,
-										 "ABONNEMENT"     => $abo,
-										 "QUANTITE"      => $_SESSION['panier']['quantite'][$i],
-										 "P.U. H.T." => number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '),
-										 "MONTANT H.T."          => number_format($amountHT, 2, ',', ' ') );
-			$size = $pdf->addLine( $y, $line );
-			$y   += $size + 2;
-		}
-
-
-		$pdf->addTVAs($_SESSION['numberHT'],$_SESSION['totalTVA']);
-		$pdf->addCadreEurosFrancs($_SESSION['numberHT'],$_SESSION['totalTVA']);
-		$pdf->Output("Facture_ATOUTSA.pdf","F");
-	} ?>
-
 
 </html>

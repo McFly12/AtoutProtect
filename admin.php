@@ -397,8 +397,60 @@
     </div>
 
     <div id="Acheteurs" class="tabcontent">
-      <h3>London</h3>
-      <p>London is the capital city of England.</p>
+      <?php $req = $maPdoFonction->Commande();
+          if($req->rowCount() >= 1) { ?> <br />
+
+            <table class="table table-bordered table-responsive table-striped" style="margin-left:5%;width:91%;" id="list_commandes" name="list_commandes">
+              <thead>
+                <tr style="background-color:#2f2f2f;text-align:center;color:white;">
+                    <th>
+                      N° Commande
+                    </th>
+                    <th>
+                      Acheteur
+                    </th>
+                    <th>
+                      Date
+                    </th>
+                    <th>
+                      Montant total
+                    </th>
+                    <th>
+                      Type de paiement
+                    </th>
+                    <th>
+                      Facture
+                    </th>
+                </tr>
+              </thead>
+            <?php while($donnees = $req->fetch()) { ?>
+              <tr>
+                      <td name='numcommande' id='numcommande' style="text-align:center;"><?php echo $donnees["numTransaction"]; ?></td>
+                      <td><?php echo $donnees["emetteur"]; ?></td>
+                      <td name='datecommande' id='datecommande' ><?php echo date("d/m/Y", strtotime($donnees["date"])); ?></td>
+                      <td name='montanttotalcommande' id='montanttotalcommande' ><?php echo $donnees["montant"]; ?> €</td>
+                      <td name='typepaeiementcommande' id='typepaeiementcommande' >
+                        <?php if($donnees["typedepaiement_id"] == 1) {
+                          echo "PayPal";
+                        }
+                        else if($donnees["typedepaiement_id"] == 2) {
+                          echo "AlloPass";
+                        }?>
+                      </td>
+                      <td>
+                        <?php $link = "http://localhost/atoutprotect/factures/".$donnees["emetteur"]."/Facture_ATOUTSA_".$donnees["numTransaction"].".pdf"; ?>
+                        <a href="<?php echo $link ?>" target="_blank"/>Facture-<?php echo $donnees["numTransaction"]; ?>.pdf</a>
+                      </td>
+                  </tr>
+            <?php } ?>
+            </table>
+    <?php }
+      else { ?>
+        <div class="isa_error_" style="width:66%;">
+          <i class="fa fa-times-circle"></i>
+            Il n'y a aucune commande enregistré dans la base de données SQL.
+        </div><br/><br /><br /><br />
+      <?php } ?>
     </div>
 
     <div id="LicencesVendues" class="tabcontent">
@@ -438,6 +490,21 @@
           <h3 style="padding:0;">Exportation de .CSV</h3>
         </div>
       </div>
+
+      <br />
+
+  <?php   $req = $maPdoFonction->CSV_Utilisateurs();
+        if($req->rowCount() >= 1) {
+          $path = 'C:/wamp/www/atoutprotect/csvexport/Export_Donnees_Administration.csv';
+						$monfichier = fopen($path, 'w+'); //sert uniquement a effacer le fichier et le créer s'il n'existe pas
+            fputcsv($monfichier,array('id', `Email`, `Mdp`, `Nom`, `Prenom`, `Adresse`, `Tel`, `CodePostal`, `Ville`, `Droit_id`, `DateDeCreation`, `DateDerniereConnexion`, `HeureDerniereConnexion`),";");
+              while($donnees = $req->fetch()){
+                fputcsv($monfichier,array($donnees['id'],$donnees['Email'],$donnees['Mdp'],$donnees['Nom'],$donnees['Prenom'],$donnees['Adresse'],$donnees['Tel'],$donnees['CodePostal'],$donnees['Ville'],$donnees['Droit_id'],$donnees['DateDeCreation'],$donnees['DateDerniereConnexion'],$donnees['HeureDerniereConnexion']),";");
+              }
+            fclose($monfichier); } ?>
+            <script>
+            window.open('http://localhost/atoutprotect/csvexport/Export_Donnees_Administration.csv', 'Download');
+            </script>
     </div>
 
     <div id="CodePromotion" class="tabcontent">

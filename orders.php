@@ -197,6 +197,9 @@
 								<th>
 									Type de paiement
 								</th>
+								<th>
+									Facture
+								</th>
 						</tr>
 					</thead>
 				<?php while($donnees = $req->fetch()) { ?>
@@ -211,6 +214,10 @@
 										else if($donnees["typedepaiement_id"] == 2) {
 											echo "AlloPass";
 										}?>
+									</td>
+									<td>
+										<?php $link = "http://localhost/atoutprotect/factures/".$_SESSION['nom']."/Facture_ATOUTSA_".$donnees["numTransaction"].".pdf"; ?>
+										<a href="<?php echo $link ?>" target="_blank"/>Facture-<?php echo $donnees["numTransaction"]; ?>.pdf</a>
 									</td>
 							</tr>
 				<?php } ?>
