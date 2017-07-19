@@ -3,8 +3,6 @@
   require("class/PayPal.php");
 	require('class/PDF.php');
 	ob_start();
-// header("Content-type:application/pdf;charset=UTF-8");
-// header("Content-disposition:attachment;charset=UTF-8");
 
 $erreur = false;
 
@@ -146,8 +144,12 @@ if (!$erreur){
 	<script>
 		$(document).ready(function () {
 
+			var url_recup = 	window.location.href;
+			var url = new URL(url_recup);
+			var c = url.searchParams.get("PayPalOk");
+
 			// INIT : A L'OUVERTURE DE LA PAGE
-			if(window.location.search == '?PayPalOk') {
+			if(c == 'OK') {
 
 				// IMPOSSIBLE DE RE-PAYER
 				$('#C').attr('disabled', true);
@@ -418,15 +420,14 @@ else if(isset($_GET['PayPalOk'])) {
 									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
 							</a>
 						</li>
-						<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-							if(parse_url($url, PHP_URL_QUERY) == "PayPalOk") { ?>
-							<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
-								<a href="#D" data-toggle="tab">
-									<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
-								</a>
-							</li>
-						<?php }
+						<?php if(isset($_GET['PayPalOk']) && $_GET['PayPalOk'] == "OK") { ?>
+										<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
+											<a href="#D" data-toggle="tab">
+												<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+													&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
+											</a>
+										</li>
+									<?php }
 						 else { ?>
 							 <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
  								<a>
@@ -663,10 +664,10 @@ else if(isset($_GET['PayPalOk'])) {
           $paypal = new PayPal();
 
 					    $params = array(
-					      'RETURNURL' => 'http://localhost/atoutprotect/process.php',
+					      'RETURNURL' => 'http://localhost/atoutprotect/basket.php?PayPalOk=OK',
 					      'CANCELURL' => 'http://localhost/atoutprotect/basket.php?ErrPayPal',
 
-					      'PAYMENTREQUEST_0_AMT' => $numberAvecTVA,
+					      'PAYMENTREQUEST_0_AMT' => $_SESSION['totalTVA'],
 					      'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR'
 					    );
 
@@ -686,9 +687,7 @@ else if(isset($_GET['PayPalOk'])) {
                 else {
                   var_dump($paypal->errors);
                   die('Erreur');
-                }
-
-							?>
+                }	?>
 
               <br />
               <h3 align="center" style="font-size:20px;">Veuillez choisir votre mode de paiement :</h3><hr>
@@ -719,19 +718,35 @@ else if(isset($_GET['PayPalOk'])) {
 
 				<div class="tab-pane fade" id="D" name="D"><br />
 
-					<?php if(isset($_SESSION['id_transaction']) && count($_SESSION['panier']) > 0 && isset($_GET['PayPalOk'])) { ?>
+					<?php if (isset($_GET['PayerID'])) {
+						// ENREGISTREMENT DE LA COMMANDE
+						$req = $maPdoFonction->EnregistrerCommandePayPal($_GET['token'],$_SESSION['totalTVA'],$_SESSION['nom']);
+				  ?>
 
 					<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
 						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
 						<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
-						<p>Votre numéro de transaction est : <b><?php echo $_SESSION['id_transaction']; ?></b>. Le montant de celle-ci est de <b><?php echo $_SESSION['montant_transaction']; ?> €.</b></p>
+						<p>Votre numéro de transaction est : <b><?php echo $_GET['token']; ?></b>. Le montant de celle-ci est de <b><?php echo number_format($_SESSION['totalTVA'], 2, ',', ' ') ?> €.</b></p>
 						<br /><p>Les clefs de licences commandées ainsi que la facture, vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p><br />
 					</div>
 				<?php	} ?>
 
 					<?php
-						if(!empty($_SESSION['id_transaction'])) { ?>
-							<?php
+						if(!empty($_GET['token'])) {
+							$content = '';
+							$headers = '';
+							$to = '';
+
+							$clef = '';
+							$logiciel = '';
+							$type_logiciel = '';
+							$id_logiciel = '';
+							$abo_id = '';
+							$abo = '';
+							$idlogiciel = '';
+							$type_logiciel_mail = '';
+
+							$mail = "pas ok";
 							$to = $_SESSION['email'];
 						    $subject = "ATOUT PROTECT - ACTIVATION DE LOGCIELS";
 
@@ -766,19 +781,6 @@ else if(isset($_GET['PayPalOk'])) {
 
 									// array_sum — Calcule la somme des valeurs du tableau
 								$nbArticles = array_sum($_SESSION['panier']['quantite']);
-
-								$content = '';
-								$headers = '';
-								$to = '';
-
-								$clef = '';
-								$logiciel = '';
-								$type_logiciel = '';
-								$id_logiciel = '';
-								$abo_id = '';
-								$abo = '';
-								$idlogiciel = '';
-								$type_logiciel_mail = '';
 
 								if($nbArticles == 1) {
 									$clef = generation_clefs();
@@ -830,7 +832,7 @@ else if(isset($_GET['PayPalOk'])) {
 										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
 										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$idlogiciel,$type_logiciel_mail,$abo_id);
 
-										$content = $logiciel.' -- '.$type_logiciel.' -- '.$abo.'  : '.$clef;
+										$content = $logiciel.' -- '.$type_logiciel_mail.' -- '.$abo.'  : '.$clef;
 										?>
 
 										<?php
@@ -904,16 +906,15 @@ else if(isset($_GET['PayPalOk'])) {
 						 }
 
 						 if( mail($to, $subject, $content,$headers) ) {
-							 sleep(3);
-							 pdf();
-							 sleep(3);
-							 unset($_SESSION['panier']);
-							 unset($_SESSION['panier']['logiciel']);
-							 unset($_SESSION['panier']['quantite']);
-							 unset($_SESSION['panier']['prix']);
-							 unset($_SESSION['panier']['type']);
-							 unset($_SESSION['panier']['abonnement']);
-							 $_SESSION['id_transaction']='';
+							 	//echo pdf();
+								sleep(3);
+								/* unset($_SESSION['panier']);
+								unset($_SESSION['panier']['logiciel']);
+								unset($_SESSION['panier']['quantite']);
+								unset($_SESSION['panier']['prix']);
+								unset($_SESSION['panier']['type']);
+								unset($_SESSION['panier']['abonnement']); */
+								$_GET['token']='';
 						 }
 
 						}
@@ -968,7 +969,6 @@ else if(isset($_GET['PayPalOk'])) {
 	<?php
 
 	function pdf() {
-
 		// (c) Xavier Nicolay
 		// Exemple de génération de devis/facture PDF
 
@@ -979,7 +979,7 @@ else if(isset($_GET['PayPalOk'])) {
 		$pdf->addSociete( "\n\n\n\n\n\n\n\n\n\n\n\nATOUT S.A.",
 		                  "                    ".utf8_decode("52 Rue de Limayrac,\n").
 		                  "                    31 000 TOULOUSE (FRANCE)\n");
-		$pdf->fact_dev( "Facture_".$_SESSION['id_transaction'], "TEMPO" );
+		$pdf->fact_dev( "Facture_".$_GET['token'], "TEMPO" );
 		$pdf->temporaire( "ATOUT S.A." );
 		$pdf->addDate(date('d/m/Y'));
 		$pdf->addPageNumber("1 / 1");
@@ -1057,8 +1057,7 @@ else if(isset($_GET['PayPalOk'])) {
 
 		$pdf->addTVAs($_SESSION['numberHT'],$_SESSION['totalTVA']);
 		$pdf->addCadreEurosFrancs($_SESSION['numberHT'],$_SESSION['totalTVA']);
-		$pdf->Output("Facture_ATOUTSA.pdf","D");
-		echo pdf();
+		$pdf->Output("Facture_ATOUTSA.pdf","F");
 	} ?>
 
 

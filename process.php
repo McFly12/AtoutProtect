@@ -6,7 +6,7 @@
   include 'class/PdoFonction.php';
   $maPdoFonction = new PdoFonction();
 
-  $reponse = $paypal->request('GetExpressCheckoutDetails', array(
+  $reponse = $paypal->request('SetExpressCheckout', array(
     'TOKEN' => $_GET['token']
   ));
 
@@ -28,7 +28,9 @@
     'PAYMENTREQUEST_0_AMT' => $_SESSION['totalTVA'],
     'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR',
     'PAYMENTREQUEST_0_SHIPPINGCART' => $_SESSION['totalTVA'],
-    'PAYMENTREQUEST_0_ITEMAMT' => $_SESSION['panier']['quantite']
+    'PAYMENTREQUEST_0_ITEMAMT' => $_SESSION['panier']['quantite'],
+    'RETURNURL' => 'http://localhost/atoutprotect/basket.php?PayPalOk=OK',
+    'CANCELURL' => 'http://localhost/atoutprotect/basket.php?ErrPayPal'
   );
 
     foreach ($_SESSION['panier'] as $key => $value)
@@ -43,16 +45,14 @@
   $reponse = $paypal->request('DoExpressCheckoutPayment', $params);
 
   if($reponse) {
-  //  var_dump($reponse);
-
-    // ENREGISTREMENT DE LA COMMANDE
-    $req = $maPdoFonction->EnregistrerCommandePayPal($reponse['PAYMENTINFO_0_TRANSACTIONID'],$reponse['PAYMENTINFO_0_AMT'],$_SESSION['nom']);
+  var_dump($reponse);
 
     $idtransaction = $reponse['PAYMENTINFO_0_TRANSACTIONID'];
     $montanttransaction = $reponse['PAYMENTINFO_0_AMT'];
     $_SESSION['id_transaction'] = $idtransaction;
     $_SESSION['montant_transaction'] = $montanttransaction;
-    header('Location: basket.php?PayPalOk');
+  //  header('Location: basket.php?PayPalOk');
+    exit();
   }
   else {
     var_dump($paypal->errors);

@@ -24,7 +24,7 @@
 
     public function request($method, $params) {
       $params = array_merge($params, array(
-        'METHOD' => $method,
+        'METHOD' => 'SetExpressCheckout',
         'VERSION' => '74.0',
         'USER' => $this->user,
         'SIGNATURE' => $this->signature,
