@@ -1,0 +1,4 @@
+id;Email;Mdp;Nom;Prenom;Adresse;Tel;CodePostal;Ville;Droit_id;DateDeCreation;DateDerniereConnexion;HeureDerniereConnexion
+1;yvan.marty@limayrac.fr;admin;ADMINISTRATEUR;Yvan;LAX;0565691265;12000;RODEZ;Administrateur;2017-05-03;2017-07-19;20:12:59
+2;webmaster@atoutsa.fr;webmaster;WEBSMASTER;Florent;;0565010203;12000;RODEZ;Webmaster;2017-05-03;2017-05-04;15:25:54
+3;florent.cassagne@limayrac.fr;client;CLIENT;AtoutSA;;0565010203;12000;RODEZ;Client;2017-05-03;2017-05-04;15:26:58

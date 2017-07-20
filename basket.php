@@ -401,7 +401,9 @@ else if(isset($_GET['PayPalOk'])) {
 					</a>
 				</li>
 
-				<?php if(!isset($_SESSION['nom'])) { ?>
+				<?php
+				$nbArticles = count($_SESSION['panier']);
+				if(!isset($_SESSION['nom']) || $nbArticles == 0) {  ?>
 	        <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
 						<a>
 							<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
@@ -606,12 +608,11 @@ else if(isset($_GET['PayPalOk'])) {
 							<?php
 						}
 						else { // Message si le panier est vide ?>
-							 <br/> <br/>
+							 <br/> <br/> <br/> <br/>
 							<div class="alert alert-info" style="width:50%;text-align:center;float: none;margin: 0 auto;">
 							  <strong> <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Votre panier est vide. </strong>
-							</div>
-						<?php }
-						echo "</ul>"; ?>
+							</div> <br/> <br/> <br/> <br/>
+						<?php } ?>
 					</div>
 
         <div class="tab-pane fade" id="B" name="B"><br />
@@ -660,8 +661,10 @@ else if(isset($_GET['PayPalOk'])) {
 					<?php } ?>
 				</div>
 
+
 				<div class="tab-pane fade" id="C" name="C">
-					<?php
+					<?php $nbArticles = count($_SESSION['panier']);
+					if($nbArticles != 0) {
 
           $paypal = new PayPal();
 
@@ -684,7 +687,7 @@ else if(isset($_GET['PayPalOk'])) {
                 $reponse = $paypal->request('SetExpressCheckout', $params);
 
                 if($reponse) {
-                  $paypal = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$reponse['TOKEN'];
+                  //$paypal = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$reponse['TOKEN'];
                 }
                 else {
                   var_dump($paypal->errors);
@@ -716,6 +719,8 @@ else if(isset($_GET['PayPalOk'])) {
 
 											<!-- </div>
 										</div> -->
+
+						<?php } ?>
 				</div>
 
 				<div class="tab-pane fade" id="D" name="D"><br />
@@ -998,7 +1003,7 @@ else if(isset($_GET['PayPalOk'])) {
 								$mail = new PHPMailer;
 
 								$mail->isSMTP();                                      // Set mailer to use SMTP
-								$mail->Host = 'smtp.bbox.fr';  // Specify main and backup SMTP servers
+								$mail->Host = 'smtp.bouygtel.fr';  // Specify main and backup SMTP servers
 								$mail->SMTPAuth = false;                               // Enable SMTP authentication
 								$mail->Username = 'atoutlicencemanagement@gmail.com';                 // SMTP username
 								$mail->Password = 'atoutprotect';                           // SMTP password
@@ -1019,18 +1024,18 @@ else if(isset($_GET['PayPalOk'])) {
 								    echo 'Mailer Error: ' . $mail->ErrorInfo;
 								} else {
 								    echo 'Message has been sent';
-										$_GET['token']='';
-										unset($_SESSION['panier']);
-										unset($_SESSION['panier']['logiciel']);
-										unset($_SESSION['panier']['quantite']);
-										unset($_SESSION['panier']['prix']);
-										unset($_SESSION['panier']['type']);
-										unset($_SESSION['panier']['abonnement']);
+										sleep(1);
+										// similar behavior as an HTTP redirect
+										?><script>
+											var url_recup = window.location.href;
+											var parametres = url_recup.substring(url_recup.lastIndexOf('?')+1);
+												window.location.replace("http://localhost/atoutprotect/basket_success.php?"+parametres);
+										</script><?php
 								}
 
 						}
 						else if(empty($_SESSION['panier'])) {
-								?><script>document.location.href="http://localhost/atoutprotect/basket.php";</script><?php
+
 						} ?>
 
 				</div>

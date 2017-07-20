@@ -223,5 +223,23 @@ class PdoFonction extends PdoBdd {
 		return $result;
 	}
 
+	/***************************************************************/
+	/* 					CSV COMMANDES	 				*/
+	public function CSV_Commandes() {
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM commande');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					CSV UTILISATEURS	 				*/
+	public function CSV_Licences() {
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM licence');
+		parent::deconnexion();
+		return $result;
+	}
+
 }
 ?>

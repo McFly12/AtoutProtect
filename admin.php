@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="assets/img/logo.png">
 
-    <title>Atout Protect - Accueil</title>
+    <title>Atout Protect - Adminsitration</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -491,20 +491,109 @@
         </div>
       </div>
 
-      <br />
+      <h4 align="center">Voici les exports .CSV possible :</h4>
 
-  <?php   $req = $maPdoFonction->CSV_Utilisateurs();
-        if($req->rowCount() >= 1) {
-          $path = 'C:/wamp/www/atoutprotect/csvexport/Export_Donnees_Administration.csv';
-						$monfichier = fopen($path, 'w+'); //sert uniquement a effacer le fichier et le créer s'il n'existe pas
-            fputcsv($monfichier,array('id', `Email`, `Mdp`, `Nom`, `Prenom`, `Adresse`, `Tel`, `CodePostal`, `Ville`, `Droit_id`, `DateDeCreation`, `DateDerniereConnexion`, `HeureDerniereConnexion`),";");
-              while($donnees = $req->fetch()){
-                fputcsv($monfichier,array($donnees['id'],$donnees['Email'],$donnees['Mdp'],$donnees['Nom'],$donnees['Prenom'],$donnees['Adresse'],$donnees['Tel'],$donnees['CodePostal'],$donnees['Ville'],$donnees['Droit_id'],$donnees['DateDeCreation'],$donnees['DateDerniereConnexion'],$donnees['HeureDerniereConnexion']),";");
-              }
-            fclose($monfichier); } ?>
-            <script>
-            window.open('http://localhost/atoutprotect/csvexport/Export_Donnees_Administration.csv', 'Download');
-            </script>
+      <br />
+      <div align="center">
+        <button style="width:auto" id="CSV_Utilisateurs" name="CSV_Utilisateurs" class="btn btncsv">
+          <span style="font-size:14px;color:black;"; class="glyphicon glyphicon-file"></span>
+          &nbsp;&nbsp;Utilisateurs
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button style="width:auto" id="CSV_Commandes" name="CSV_Commandes" type="button" class="btn btncsv">
+          <span style="font-size:14px;color:black;"; class="glyphicon glyphicon-file"></span>
+          &nbsp;&nbsp;Commandes
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button style="width:auto" id="CSV_Licences" name="CSV_Licences" type="button" class="btn btncsv">
+          <span style="font-size:14px;color:black;"; class="glyphicon glyphicon-file"></span>
+          &nbsp;&nbsp;Licences
+          </button><br />
+      </div>
+     <br /> <br />
+
+    <script>
+         $("#CSV_Utilisateurs").click(function(e){
+           <?php $req = $maPdoFonction->CSV_Utilisateurs();
+                 if($req->rowCount() >= 1) {
+                   $path = 'C:/wamp/www/atoutprotect/csvexport/Utilisateurs_Export_Donnees_Administration.csv';
+                    $monfichier = fopen($path, 'w+'); //sert uniquement a effacer le fichier et le créer s'il n'existe pas
+                     fputcsv($monfichier,array('id', 'Email', 'Mdp', 'Nom', 'Prenom', 'Adresse', 'Tel', 'CodePostal', 'Ville', 'Droit_id', 'DateDeCreation', 'DateDerniereConnexion', 'HeureDerniereConnexion'),";");
+                       while($donnees = $req->fetch()){
+                         $droit = "";
+                         if($donnees['Droit_id'] == 1) {
+                           $droit = "Administrateur";
+                         }
+                         else if($donnees['Droit_id'] == 2) {
+                           $droit = "Webmaster";
+                         }
+                         else if($donnees['Droit_id'] == 3) {
+                           $droit = "Client";
+                         }
+                         fputcsv($monfichier,array($donnees['id'],$donnees['Email'],$donnees['Mdp'],$donnees['Nom'],$donnees['Prenom'],$donnees['Adresse'],$donnees['Tel'],$donnees['CodePostal'],$donnees['Ville'],$droit,$donnees['DateDeCreation'],$donnees['DateDerniereConnexion'],$donnees['HeureDerniereConnexion']),";");
+                       }
+                     fclose($monfichier); } ?>
+
+                       window.open('http://localhost/atoutprotect/csvexport/Utilisateurs_Export_Donnees_Administration.csv', 'Download');
+         });
+    </script>
+    <script>
+         $("#CSV_Commandes").click(function(e){
+           <?php $req = $maPdoFonction->CSV_Commandes();
+                 if($req->rowCount() >= 1) {
+                   $path = 'C:/wamp/www/atoutprotect/csvexport/Commandes_Export_Donnees_Administration.csv';
+                    $monfichier = fopen($path, 'w+'); //sert uniquement a effacer le fichier et le créer s'il n'existe pas
+                     fputcsv($monfichier,array('Num transaction','Date','Montant','Methode de Paiement','Emetteur'),";");
+                       while($donnees = $req->fetch()){
+                         if($donnees['typedepaiement_id'] == 1) {
+                           $paiement = "PayPal";
+                         }
+                         else {
+                           $paiement = "AlloPass";
+                         }
+                         fputcsv($monfichier,array($donnees['numTransaction'],$donnees['date'],$donnees['montant'],$paiement,$donnees['emetteur']),";");
+                       }
+                     fclose($monfichier); } ?>
+
+                       window.open('http://localhost/atoutprotect/csvexport/Commandes_Export_Donnees_Administration.csv', 'Download');
+         });
+    </script>
+    <script>
+         $("#CSV_Licences").click(function(e){
+           <?php $req = $maPdoFonction->CSV_Licences();
+                 if($req->rowCount() >= 1) {
+                   $path = 'C:/wamp/www/atoutprotect/csvexport/Licences_Export_Donnees_Administration.csv';
+                    $monfichier = fopen($path, 'w+'); //sert uniquement a effacer le fichier et le créer s'il n'existe pas
+                     fputcsv($monfichier,array('Clef','Proprietaire','Logiciel','Type de licence','Abonnement',"Date Creation",'Date Activation','Date Expiration'),";");
+                       while($donnees = $req->fetch()){
+                         $logiciel = '';
+                         if($donnees['logiciel_id'] == 1) {
+                           $logiciel = "Logiciel 1";
+                         }
+                         else if($donnees['logiciel_id'] == 2) {
+                           $logiciel = "Logiciel 2";
+                         }
+                         $abo = '';
+                         if($donnees['abonnement_id'] == 1) {
+                           $abo = "1 mois";
+                         }
+                         else if($donnees['abonnement_id'] == 3) {
+                           $abo = "3 mois";
+                         }
+                         else if($donnees['abonnement_id'] == 6) {
+                           $abo = "6 mois";
+                         }
+                         else if($donnees['abonnement_id'] == 12) {
+                           $abo = "1 an";
+                         }
+                         else if($donnees['abonnement_id'] == 0) {
+                           $abo = "Perpetuel";
+                         }
+                         fputcsv($monfichier,array($donnees['clef'],$donnees['proprietaire'],$logiciel,$donnees['typelicence'],$abo,$donnees['date_creation'],$donnees['date_activation'],$donnees['date_expiration']),";");
+                       }
+                     fclose($monfichier); } ?>
+
+                       window.open('http://localhost/atoutprotect/csvexport/Licences_Export_Donnees_Administration.csv', 'Download');
+         });
+    </script>
     </div>
 
     <div id="CodePromotion" class="tabcontent">
