@@ -996,6 +996,8 @@ else if(isset($_GET['PayPalOk'])) {
 										 $old = 'C:/wamp/www/AtoutProtect/Facture_ATOUTSA.pdf';
 										 $new = 'C:/wamp/www/AtoutProtect/factures/'.$_SESSION['nom'].'/Facture_ATOUTSA_'.$_GET['token'].'.pdf';
 										 copy($old, $new);
+										 sleep(1);
+										 unlink('C:/wamp/www/AtoutProtect/Facture_ATOUTSA.pdf');
 								} else {
 								    $pdf->Output("Facture_ATOUTSA.pdf", "F");
 								}
