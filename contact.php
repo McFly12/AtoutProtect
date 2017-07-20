@@ -200,7 +200,7 @@
 				</div><!-- /col-lg-4 -->
 
 				<div class="col-lg-4">
-					<h4>By EDISOFT.</h4>
+					<h4>Développé par EDISOFT.</h4>
 				</div><!-- /col-lg-4 -->
         <div id="map">
           <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1444.8149786738888!2d1.4703662!3d43.5934235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf724a7f7c5%3A0x6ce447ca66299696!2s52+Rue+de+Limayrac%2C+31500+Toulouse!5e0!3m2!1sen!2sfr!4v1487415612053" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
