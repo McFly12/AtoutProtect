@@ -210,7 +210,7 @@
           </div><br />
           <div class="input-group">
             <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-earphone" style="color:black;font-size:12px;"></span></span>
-            <input type="text" class="form-control" name="tel" placeholder="Télephone" aria-describedby="sizing-addon2">
+            <input type="text" class="form-control" name="tel" placeholder="Télephone" aria-describedby="sizing-addon2" onkeypress="return isNumberKey(event)" maxlength="10">
           </div><br />
           <div class="input-group">
             <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-envelope" style="color:black;font-size:12px;"></span></span>

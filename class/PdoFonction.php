@@ -67,8 +67,8 @@ class PdoFonction extends PdoBdd {
 	/* 							 ENREGISTRE LE NOUVEAU COMPTE						 			*/
 	public function EnregNouvCompte($nom,$prenom,$tel,$email,$mdp,$adresse,$codepostal,$ville,$droit) {
 		parent::connexion();
-		$result = parent::requete("INSERT INTO `utilisateur`(`Nom`,`Prenom`,`Tel`,`Email`,`Mdp`,`Adresse`,`CodePostal`,`Ville`,`Droit`)
-															 VALUES ('$nom','$prenom','$tel','$email','$mdp','$adresse','$codepostal','$ville','$droit')");
+		$result = parent::requete("INSERT INTO `utilisateur`(`Email`,`Mdp`,`Nom`,`Prenom`,`Adresse`,`Tel`,`CodePostal`,`Ville`,`Droit_id`,`DateDeCreation`)
+															 VALUES ('$email','$mdp','$nom','$prenom','$adresse','$tel','$codepostal','$ville','$droit',CURDATE())");
 		parent::deconnexion();
 		return $result;
 	}
@@ -87,7 +87,7 @@ class PdoFonction extends PdoBdd {
 														AND U.Adresse = "'.$adresse.'"
 														AND U.CodePostal = "'.$prenom.'"
 														AND U.Ville = "'.$ville.'"
-														AND U.Droit = "'.$droit.'" ');
+														AND U.Droit_id = "'.$droit.'" ');
 		parent::deconnexion();
 		return $result;
 	}

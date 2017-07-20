@@ -29,7 +29,7 @@ if((isset($nom)) && (isset($prenom)) && (isset($tel)) && (isset($email)) && (iss
         header('Location: ../createaccount.php?ErrNewAcc');
       }
       else {
-        header('Location: ../login.php?OkrNewAcc');
+        header('Location: ../login.php?OkNewAcc');
       }
     }
     else {
