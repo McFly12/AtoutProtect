@@ -134,5 +134,34 @@ div.tab button.active {
 	color: #2f2f2f;
 }
 #link_codepromo:hover {
-	color: red;
+	color: #FF4742;
+}
+
+.item {
+	position:relative;
+	padding-top:20px;
+	display:inline-block;
+}
+.notify-badge{
+	position: absolute;
+	right:-20px;
+	top:10px;
+	background:#FF4742;
+	text-align: center;
+	border-radius: 30px 30px 30px 30px;
+	color:white;
+	padding:5px 15px;
+	font-size:22px;
+	font-weight: bold;
+}
+
+.green {
+  color: #2ecc71;
+  border: 2px #2ecc71 solid;
+}
+
+.green:hover {
+  color: #fff;
+  background-color: #2ecc71;
+	transition-duration: 0.35s;
 }

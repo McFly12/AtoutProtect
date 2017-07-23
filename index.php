@@ -83,10 +83,18 @@
     <script>
       $(document).ready(function () {
         $( ".add-to-cart" ).click(function() {
-          var type_abo_choisi = $(this).closest('div').find('select').val();
+          // &amp;type_logiciel=prologiciel1
+          var id = $(this).closest('div').find('#type_abo').val();
+          var type_abo_choisi = $(this).closest('div').find("#type_abo option[value="+id+"]").text();
+
+          var id2 = $(this).closest('div').find('#type_licence').val();
+          var type_licence_choisi = $(this).closest('div').find("#type_licence option[value="+id2+"]").text();
+
           var a = $(this).closest('div').find('a');
-          var href = a.attr('href') ;
+          var href = a.attr('href');
               a.attr('href', href + '&type_abonnement='+type_abo_choisi);
+          var href2 = a.attr('href');
+              a.attr('href', href2 + '&type_logiciel='+type_licence_choisi);
         });
       });
     </script>
@@ -95,12 +103,9 @@
 
   <body>
 
-    <?php /* require('class/PDF.php');
-    		$pdf = new PDF();
-    		$pdf->AddPage();
-    		$pdf->SetFont('Arial','B',16);
-    		$pdf->Cell(40,10,'Hello World!');
-    		//$pdf->Output('D','Facture_Commande_.pdf'); */ ?>
+    <?php
+      unset($_SESSION['panier']);
+    ?>
 
     <!-- Static navbar -->
     <div class="navbar navbar-inverse navbar-static-top">
@@ -165,8 +170,6 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-
-<div style="background-color:#f2f2f2;"><br /></div>
 
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 
@@ -241,223 +244,45 @@
 
 	<!-- +++++ Projects Section +++++ -->
   <section class="container">
-    <div class="row white">
-      <?php $req = $maPdoFonction->Logiciels();
-            $arr_nom_logiciel = [];
-      			if($req->rowCount() >= 1) {
-              while($donnees = $req->fetch()) {
-                $arr_nom_logiciel[] = $donnees['Nom'];
-              }
+      <?php $reqete = $maPdoFonction->Logiciels();
+      			if($reqete->rowCount() > 0) {
+              while($donnees_req = $reqete->fetch()) { ?>
+                <?php $nom = $donnees_req['Nom']; ?>
+                <div class="col-sm-3 col-md-4">
+                  <div class="thumbnail">
+                    <img src="" alt="<?php echo $donnees_req['Nom']; ?>">
+                    <div class="caption">
+                      <hr><h3><?php echo $donnees_req['Nom']; ?></h3><hr>
+                      <p class="card-description"><strong>Bootstrap Thumbnail</strong> Customization Example. Here are customized <strong>bootstrap cards</strong>. We just apply some box shadow and remove border radius.</p>
+                      <hr><p>
+                        <select width="auto" id="type_abo" name="type_abo">
+                          <?php $req = $maPdoFonction->Abonnements();
+                                if($req->rowCount() >= 1) {
+                                  while($donnees = $req->fetch()) { ?>
+                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
+                                  <?php }
+                                }
+                          ?>
+                        </select>&nbsp;&nbsp;
+                        <select width="auto" id="type_licence" name="type_licence">
+                          <?php $req = $maPdoFonction->TypeLicences();
+                                if($req->rowCount() >= 1) {
+                                  while($donnees = $req->fetch()) { ?>
+                                      <option value="<?php echo $donnees['Nom']; ?>"><?php echo $donnees['Nom']; ?></option>
+                                  <?php }
+                                }
+                          ?>
+                        </select><br /><br /><hr><br />
+                        <?php echo '<a style="height:10%;font-size:20px;" class="btn green add-to-cart" href="basket.php?action=ajouter&amp;nom_logiciel=' . $nom . '&amp;prix_logiciel=100&amp;quantite_logiciel=1" role="button"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Ajouter au panier</a>'; ?>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+            <?php } ?>
+        </div><!-- /row -->
+        <?php
             }
        ?>
-      <h1 style="margin-bottom:15px;"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo $arr_nom_logiciel[0]; ?></h1>
-      <hr>
-  				<div class="block" style="width:100%; margin-left:12.5%;">
-  					<div class="col-xs-12 col-sm-6 col-md-3">
-  							<ul class="pricing p-green">
-  								<li>
-  									<img src="assets/img/settings.svg" alt="">
-  									<big>Shareware</big>
-  								</li>
-  								<li>Responsive Design</li>
-  								<li>Color Customization</li>
-  								<li>HTML5 & CSS3</li>
-  								<li>Styled elements</li>
-                  <li><br/></li>
-  								<li>
-  									<h3><br/></h3>
-  									<!-- <span>per month</span> -->
-  								</li>
-  								<li>
-                    <?php if(isset($_SESSION['nom'])) { ?><br /><br />
-  									  <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" >Activer</a></button> -->
-                      <?php }
-                      else { ?><br /><br />
-                        <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button> -->
-                      <?php } ?>
-                  </li>
-  							</ul>
-  					</div>
-
-  					<div class="col-xs-12 col-sm-6 col-md-3">
-  							<ul class="pricing p-yel">
-  								<li>
-  									<img src="assets/img/settings.svg" alt="">
-  									<big>Standard</big>
-  								</li>
-  								<li>Responsive Design</li>
-  								<li>Color Customization</li>
-  								<li>HTML5 & CSS3</li>
-  								<li>Styled elements</li>
-                  <li>
-                    <select width="auto" id="type_abo" name="type_abo">
-                      <?php $req = $maPdoFonction->Abonnements();
-                            if($req->rowCount() >= 1) {
-                              while($donnees = $req->fetch()) { ?>
-                                  <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                              <?php }
-                            }
-                      ?>
-                    </select>
-                  </li>
-  								<li>
-  									<h3>100 &euro;</h3>
-  									<!-- <span>per month</span> -->
-  								</li>
-  								<li>
-                    <?php if(isset($_SESSION['nom'])) { ?>
-  									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel1">Ajouter au panier</a></button>
-                      <?php }
-                      else { ?>
-                        <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
-                      <?php } ?>
-                  </li>
-  							</ul>
-  					</div>
-
-  					<div class="col-xs-12 col-sm-6 col-md-3">
-  							<ul class="pricing p-red">
-  								<li>
-  									<img src="assets/img/settings.svg" alt="">
-  									<big>Professionnel</big>
-  								</li>
-  								<li>Accès total</li>
-  								<li>Color Customization</li>
-  								<li>HTML5 & CSS3</li>
-  								<li>Styled elements</li>
-                  <li>
-                    <select width="auto" id="type_abo" name="type_abo">
-                      <?php $req = $maPdoFonction->Abonnements();
-                            if($req->rowCount() >= 1) {
-                              while($donnees = $req->fetch()) { ?>
-                                  <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                              <?php }
-                            }
-                      ?>
-                    </select>
-                  </li>
-  								<li>
-  									<h3>100 &euro;</h3>
-  									<!-- <span>per month</span> -->
-  								</li>
-  								<li>
-                    <?php if(isset($_SESSION['nom'])) { ?>
-  									   <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel1&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel1">Ajouter au panier</a></button>
-                       <?php }
-                       else { ?>
-                        <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
-                       <?php } ?>
-                  </li>
-  							</ul>
-  					</div>
-
-  				</div><!-- /block -->
-
-          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-
-          <h1 style="margin-bottom:15px;"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo $arr_nom_logiciel[1]; ?></h1>
-          <hr>
-      				<div class="block" style="width:100%; margin-left:12%;">
-      					<div class="col-xs-12 col-sm-6 col-md-3">
-      							<ul class="pricing p-green">
-      								<li>
-      									<img src="assets/img/settings.svg" alt="">
-      									<big>Shareware</big>
-      								</li>
-      								<li>Responsive Design</li>
-      								<li>Color Customization</li>
-      								<li>HTML5 & CSS3</li>
-      								<li>Styled elements</li>
-                      <li><br/></li>
-      								<li>
-      									<h3><br/></h3>
-      									<!-- <span>per month</span> -->
-      								</li>
-      								<li>
-                        <?php if(isset($_SESSION['nom'])) { ?><br /><br />
-      									   <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;">Activer</a></button> -->
-                           <?php }
-                           else { ?><br /><br />
-                              <!-- <button class="add-to-cart"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Activer</a></button> -->
-                           <?php } ?>
-                      </li>
-      							</ul>
-      					</div>
-
-      					<div class="col-xs-12 col-sm-6 col-md-3">
-      							<ul class="pricing p-yel">
-      								<li>
-      									<img src="assets/img/settings.svg" alt="">
-      									<big>Standard</big>
-      								</li>
-      								<li>Responsive Design</li>
-      								<li>Color Customization</li>
-      								<li>HTML5 & CSS3</li>
-      								<li>Styled elements</li>
-                      <li>
-                        <select width="auto" id="type_abo" name="type_abo">
-                          <?php $req = $maPdoFonction->Abonnements();
-                                if($req->rowCount() >= 1) {
-                                  while($donnees = $req->fetch()) { ?>
-                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                                  <?php }
-                                }
-                          ?>
-                        </select>
-                      </li>
-      								<li>
-      									<h3>100 &euro;</h3>
-      									<!-- <span>per month</span> -->
-      								</li>
-      								<li>
-                        <?php if(isset($_SESSION['nom'])) { ?>
-      									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=standardlogiciel2">Ajouter au panier</a></button>
-                          <?php }
-                          else { ?>
-                            <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
-                          <?php } ?>
-                      </li>
-      							</ul>
-      					</div>
-
-      					<div class="col-xs-12 col-sm-6 col-md-3">
-      							<ul class="pricing p-red">
-      								<li>
-      									<img src="assets/img/settings.svg" alt="">
-      									<big>Professionnel</big>
-      								</li>
-      								<li>Accès total</li>
-      								<li>Color Customization</li>
-      								<li>HTML5 & CSS3</li>
-      								<li>Styled elements</li>
-                      <li>
-                        <select width="auto" id="type_abo" name="type_abo">
-                          <?php $req = $maPdoFonction->Abonnements();
-                                if($req->rowCount() >= 1) {
-                                  while($donnees = $req->fetch()) { ?>
-                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                                  <?php }
-                                }
-                          ?>
-                        </select>
-                      </li>
-      								<li>
-      									<h3>100 &euro;</h3>
-      									<!-- <span>per month</span> -->
-      								</li>
-      								<li>
-                        <?php if(isset($_SESSION['nom'])) { ?>
-      									  <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" href="basket.php?action=ajouter&amp;nom_logiciel=Logiciel2&amp;prix_logiciel=100&amp;quantite_logiciel=1&amp;type_logiciel=prologiciel2">Ajouter au panier</a></button>
-                        <?php }
-                        else { ?>
-                          <button class="add-to-cart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;<a style="color:white;" data-toggle="modal" data-target="#NoSession">Ajouter au panier</a></button>
-                        <?php } ?>
-                      </li>
-      							</ul>
-      					</div>
-
-      				</div><!-- /block -->
-  			</div><!-- /row -->
     </section>
 
 <br />

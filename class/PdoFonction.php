@@ -43,6 +43,15 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
+	/*									RECUP TYPES LICENCES									*/
+	public function TypeLicences() {
+		parent::connexion();
+		$result = parent::requete('SELECT Nom FROM typelicence');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
 	/* 				VERIFIE CONNECTE, SINON REDIRECTION Index.php 			*/
 	public function VerifierLogin($mail,$mdp){
 		parent::connexion();

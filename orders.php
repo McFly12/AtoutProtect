@@ -224,10 +224,85 @@
 				</table>
 <?php }
 	else { ?>
-		<div class="isa_error_" style="width:66%;">
-			<i class="fa fa-times-circle"></i>
-				Il n'y a aucune commande enregistré à votre nom.
-		</div><br/><br /><br /><br />
+		<div class="alert alert-info center-block" style="width:40%;text-align:center">
+			<i class="fa fa-info-circle"></i>&nbsp;
+			  Vous n'avez fait aucune commande.
+		</div><br/>
+
+		<div class="container">
+			<div class="row" style="width:1800px;margin-left:-320px;">
+				<div class="panel panel-default">
+				  <div class="panel-heading" style="font-family:'Arial Black', Gadget, sans-serif;font-size:16px">Procédure d'achat sur notre site WEB</div>
+				  <div class="panel-body" style="margin-left:10px;">
+						<div class="col-md-3">
+							<div class="item">
+									<span class="notify-badge">1</span>
+							</div>
+							<div class="thumbnail" style="height: 298px;">
+								<img src="assets/img/cart.png" alt="" width="180px" height="180px">
+								<div class="caption">
+									<h4 class="pull-right"></h4>
+									<h4><a href="#"></a></h4>
+									<p style="text-align:justify">Ajouter des produits à votre <a target="_blank" href="http://localhost/atoutprotect/basket.php">panier</a>.</p>
+								</div>
+								<div class="ratings">
+									<p class="pull-right"></p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="item">
+									<span class="notify-badge">2</span>
+							</div>
+								<div class="thumbnail" style="height: 298px;">
+									<img src="assets/img/login.png" alt="" width="180px" height="180px">
+									<div class="caption">
+										<h4 class="pull-right"></h4>
+										<h4><a href="#"></a></h4>
+										<p style="text-align:justify">Se connecter <a target="_blank" href="http://localhost/atoutprotect/login.php">connecter</a> au site WEB. Vous pouvez également créer un compte.</p>
+									</div>
+									<div class="ratings">
+										<p class="pull-right"></p>
+									</div>
+								</div>
+							</div>
+						<div class="col-md-3">
+							<div class="item">
+									<span class="notify-badge">3</span>
+							</div>
+							<div class="thumbnail" style="height: 298px;">
+								<img src="assets/img/paypal_htb.png" alt="" width="180px" height="180px">
+								<div class="caption">
+									<h4 class="pull-right"></h4>
+									<h4><a href="#"></a></h4>
+									<p style="text-align:justify">Effectuer le paiement de votre <a target="_blank" href="http://localhost/atoutprotect/basket.php">panier</a>.</p>
+								</div>
+								<div class="ratings">
+									<p class="pull-right"></p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="item">
+									<span class="notify-badge">4</span>
+							</div>
+							<div class="thumbnail" style="height: 298px;">
+								<img src="assets/img/mailing.png" alt="" width="180px" height="180px">
+								<div class="caption">
+									<h4 class="pull-right"></h4>
+									<h4><a href="#"></a></h4>
+									<p style="text-align:justify">Envoi de vos licences à l'adresse email de votre compte.</p>
+								</div>
+								<div class="ratings">
+									<p class="pull-right"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br /><br /><br />
 	<?php } ?>
 
 <br />

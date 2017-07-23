@@ -62,7 +62,6 @@ if (!$erreur){
          break;
    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -375,15 +374,6 @@ if (!$erreur){
 <br />
 
 
-
-<?php if(!isset($_GET['PayPalOk'])) { ?>
-	<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
-  	<strong> Attention ! Si vous vous déconnectez de votre compte, votre panier sera perdu. </strong>
-	</div><br />
-<?php }
-else if(isset($_GET['PayPalOk'])) {
-} ?>
-
 <!-- Static navbar -->
 <!-- ONGLETS -->
 <div class="container" style="width:100%">
@@ -490,53 +480,23 @@ else if(isset($_GET['PayPalOk'])) {
 												{
 													for ($i=0 ;$i < $nbArticles ; $i++)
 													{
-														echo "<tr style='paddin:2px;'>";
-															if($_SESSION['panier']['logiciel'][$i] == "Logiciel1") {
-																echo "<td style=\"font-weight:bold;text-align:center\">Logiciel 1</td>";
-															}
-															else if($_SESSION['panier']['logiciel'][$i] == "Logiciel2") {
-																echo "<td style=\"font-weight:bold;text-align:center\">Logiciel 2</td>";
-															}
-
-															if($_SESSION['panier']['type'][$i] == "standardlogiciel1" || $_SESSION['panier']['type'][$i] == "standardlogiciel2") {
-																echo "<td>Standard</td>";
-															}
-															else if($_SESSION['panier']['type'][$i] == "prologiciel1" || $_SESSION['panier']['type'][$i] == "prologiciel2") {
-																echo "<td>Professionnel</td>";
-															}
-
-															if($_SESSION['panier']['abonnement'][$i] == "1") {
-																echo "<td>1 mois</td>";
-															}
-															else if($_SESSION['panier']['abonnement'][$i] == "3") {
-																echo "<td>3 mois</td>";
-															}
-															else if($_SESSION['panier']['abonnement'][$i] == "6") {
-																echo "<td>6 mois</td>";
-															}
-															else if($_SESSION['panier']['abonnement'][$i] == "12") {
-																echo "<td>1 an</td>";
-															}
-															else if($_SESSION['panier']['abonnement'][$i] == "0") {
-																echo "<td>A vie</td>";
-															}
-
-															echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
-
-															echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
-
-															echo '<td>';
-															if(!isset($_GET['PayPalOk'])) { ?>
-																<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
-																	<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
-																</button><br/><br />
-																	<button type="button" class="btn btn-danger deleteItemBasket" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
-																		<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
-																	</button>
-															<?php }
-															else { } ?>
-															</td>
-
+														echo "<tr style='padding:2px;'>";
+																echo "<td style=\"font-weight:bold;text-align:center\">".$_SESSION['panier']['logiciel'][$i]."</td>";
+																echo "<td>".$_SESSION['panier']['type'][$i]."</td>";
+																echo "<td>".$_SESSION['panier']['abonnement'][$i]."</td>";
+															  echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
+															  echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
+																echo '<td>';
+																if(!isset($_GET['PayPalOk'])) { ?>
+																	<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
+																		<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
+																	</button><br/><br />
+																		<button type="button" class="btn btn-danger deleteItemBasket" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
+																			<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
+																		</button>
+																<?php }
+																else { } ?>
+																</td>
 														</tr>
 													<?php }
 													echo "<tr style=\"height: 40px !important;background-color: #FFFFFF;\"><td colspan=\"6\"></td></tr>";
@@ -608,10 +568,83 @@ else if(isset($_GET['PayPalOk'])) {
 							<?php
 						}
 						else { // Message si le panier est vide ?>
-							 <br/> <br/> <br/> <br/>
+							 <br/> <br/>
 							<div class="alert alert-info" style="width:50%;text-align:center;float: none;margin: 0 auto;">
 							  <strong> <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Votre panier est vide. </strong>
-							</div> <br/> <br/> <br/> <br/>
+							</div> <br /> <br />
+							<div class="container">
+								<div class="row" style="width:1800px;margin-left:-320px;">
+									<div class="panel panel-default">
+										<div class="panel-heading" style="font-family:'Arial Black', Gadget, sans-serif;font-size:16px">Procédure d'achat sur notre site WEB</div>
+										<div class="panel-body" style="margin-left:10px;">
+											<div class="col-md-3">
+												<div class="item">
+														<span class="notify-badge">1</span>
+												</div>
+												<div class="thumbnail" style="height: 298px;">
+													<img src="assets/img/cart.png" alt="" width="180px" height="180px">
+													<div class="caption">
+														<h4 class="pull-right"></h4>
+														<h4><a href="#"></a></h4>
+														<p style="text-align:justify">Ajouter des produits à votre <a target="_blank" href="http://localhost/atoutprotect/basket.php">panier</a>.</p>
+													</div>
+													<div class="ratings">
+														<p class="pull-right"></p>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="item">
+														<span class="notify-badge">2</span>
+												</div>
+													<div class="thumbnail" style="height: 298px;">
+														<img src="assets/img/login.png" alt="" width="180px" height="180px">
+														<div class="caption">
+															<h4 class="pull-right"></h4>
+															<h4><a href="#"></a></h4>
+															<p style="text-align:justify">Se connecter <a target="_blank" href="http://localhost/atoutprotect/login.php">connecter</a> au site WEB. Vous pouvez également créer un compte.</p>
+														</div>
+														<div class="ratings">
+															<p class="pull-right"></p>
+														</div>
+													</div>
+												</div>
+											<div class="col-md-3">
+												<div class="item">
+														<span class="notify-badge">3</span>
+												</div>
+												<div class="thumbnail" style="height: 298px;">
+													<img src="assets/img/paypal_htb.png" alt="" width="180px" height="180px">
+													<div class="caption">
+														<h4 class="pull-right"></h4>
+														<h4><a href="#"></a></h4>
+														<p style="text-align:justify">Effectuer le paiement de votre <a target="_blank" href="http://localhost/atoutprotect/basket.php">panier</a>.</p>
+													</div>
+													<div class="ratings">
+														<p class="pull-right"></p>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="item">
+														<span class="notify-badge">4</span>
+												</div>
+												<div class="thumbnail" style="height: 298px;">
+													<img src="assets/img/mailing.png" alt="" width="180px" height="180px">
+													<div class="caption">
+														<h4 class="pull-right"></h4>
+														<h4><a href="#"></a></h4>
+														<p style="text-align:justify">Envoi de vos licences à l'adresse email de votre compte.</p>
+													</div>
+													<div class="ratings">
+														<p class="pull-right"></p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						<?php } ?>
 					</div>
 
@@ -687,7 +720,7 @@ else if(isset($_GET['PayPalOk'])) {
                 $reponse = $paypal->request('SetExpressCheckout', $params);
 
                 if($reponse) {
-                  //$paypal = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$reponse['TOKEN'];
+                  $paypal = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$reponse['TOKEN'];
                 }
                 else {
                   var_dump($paypal->errors);
@@ -705,7 +738,7 @@ else if(isset($_GET['PayPalOk'])) {
 													<li class="header"><img src="assets/img/PayPal.png"></img>&nbsp;PayPal</li>
 													<div style=""></div>
 													<li class="grey" style="font-size:14px">PayPal est un service de paiement en ligne qui permet de payer des achats, de recevoir des paiements, ou d’envoyer et de recevoir de l’argent.</li>
-													<li class="grey" style="background-color:#FFF"><a href="<?= $paypal ?>" class="button">Accéder</a></li>
+													<li class="grey" style="background-color:#FFF"><a href="<?php echo $paypal ?>" class="button">Accéder</a></li>
 													</ul>
 												</div>
 
