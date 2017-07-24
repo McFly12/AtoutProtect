@@ -1,6 +1,6 @@
 ## ATOUT PROTECT <img src="http://www.limayrac.fr/sites/limayrac.fr/files/logo_limayrac.jpg" alt="INSTITUT LIMAYRAC" align="right" />
 
-![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/McFly12/AtoutProtect.svg)
+![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/YvanMARTY/AtoutProtect.svg)
 
 <br />
 <blockquote> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.
@@ -26,7 +26,7 @@ Pour tester notre site WEB, vous avez besoin de :
 
 ## Versioning
 
-Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versioning". Pour les différentes releases, allez dans la section [Releases](https://github.com/McFly12/AtoutProtect/tags). 
+Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "versioning". Pour les différentes releases, allez dans la section [Releases](https://github.com/YvanMARTY/AtoutProtect/tags). 
 
 ## Historique des releases
 
@@ -37,4 +37,4 @@ Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versio
 
 ## Auteur
 
-* **Yvan MARTY** - *Développeur WEB* - [Atout Protect](https://github.com/McFly12/AtoutProtect)
+* **Yvan MARTY** - *Développeur WEB* - [Atout Protect](https://github.com/YvanMARTY/AtoutProtect)
