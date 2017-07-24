@@ -2,13 +2,17 @@
 
 **Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)**
 
+[![Build Status][travis-image]][travis-url]
+
+![](https://github.com/McFly12/AtoutProtect/blob/master/assets/img/slide1.jpg)
+
 ## Introduction
 
 Nous sommes deux étudiants à la tête de ce projet :
 - **Yvan MARTY**
 - **Florent CASSAGNE**
 
-### Pre-recquis
+### Pre-requis
 
 Pour tester notre site WEB, vous avez besoin de :
 - MySQL
@@ -23,6 +27,13 @@ Pour tester notre site WEB, vous avez besoin de :
 ## Versioning
 
 Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versioning". Pour les différents realeases, allez dans la section [Realeases](https://github.com/McFly12/AtoutProtect/tags). 
+
+## Historique des realeases
+
+* 0.1.0
+    * Pre-realease
+* 0.0.1
+    * Initial
 
 ## Auteur
 
