@@ -650,8 +650,6 @@ if (!$erreur){
 
         <div class="tab-pane fade" id="B" name="B"><br />
 					<?php if(!isset($_SESSION['nom'])) { ?>
-
-
 						<div class="row mt">
 			        <div style="float:left;padding-left:10px;width:75%">
 			    			<div role="form" class="col-lg-8 col-lg-offset-2">

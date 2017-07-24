@@ -248,36 +248,7 @@
       			if($reqete->rowCount() > 0) {
               while($donnees_req = $reqete->fetch()) { ?>
                 <?php $nom = $donnees_req['Nom']; ?>
-                <div class="col-sm-3 col-md-4">
-                  <div class="thumbnail">
-                    <img src="" alt="<?php echo $donnees_req['Nom']; ?>">
-                    <div class="caption">
-                      <hr><h3><?php echo $donnees_req['Nom']; ?></h3><hr>
-                      <p class="card-description"><strong>Bootstrap Thumbnail</strong> Customization Example. Here are customized <strong>bootstrap cards</strong>. We just apply some box shadow and remove border radius.</p>
-                      <hr><p>
-                        <select width="auto" id="type_abo" name="type_abo">
-                          <?php $req = $maPdoFonction->Abonnements();
-                                if($req->rowCount() >= 1) {
-                                  while($donnees = $req->fetch()) { ?>
-                                      <option value="<?php echo $donnees['id']; ?>"><?php echo $donnees['nom']; ?></option>
-                                  <?php }
-                                }
-                          ?>
-                        </select>&nbsp;&nbsp;
-                        <select width="auto" id="type_licence" name="type_licence">
-                          <?php $req = $maPdoFonction->TypeLicences();
-                                if($req->rowCount() >= 1) {
-                                  while($donnees = $req->fetch()) { ?>
-                                      <option value="<?php echo $donnees['Nom']; ?>"><?php echo $donnees['Nom']; ?></option>
-                                  <?php }
-                                }
-                          ?>
-                        </select><br /><br /><hr><br />
-                        <?php echo '<a style="height:10%;font-size:20px;" class="btn green add-to-cart" href="basket.php?action=ajouter&amp;nom_logiciel=' . $nom . '&amp;prix_logiciel=100&amp;quantite_logiciel=1" role="button"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Ajouter au panier</a>'; ?>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+
             <?php } ?>
         </div><!-- /row -->
         <?php
