@@ -3,8 +3,8 @@
 ![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/McFly12/AtoutProtect.svg)
 
 <br />
-> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.<br />
-> Celle-ci peut être achetée via  le site WEB présent sur ce " repository ". Nous sommes à l'école [Institut Limayrac](http://www.limayrac.fr/).
+> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.
+> Celle-ci peut être achetée via  le site WEB présent sur ce " repository ". Nous sommes à l'Institut Limayrac.
 
 ## Introduction
 
