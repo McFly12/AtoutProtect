@@ -4,7 +4,7 @@
 
 <br />
 <blockquote> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.
- Celle-ci peut être achetée via  le site WEB présent sur ce " repository ". Nous sommes à l'Institut Limayrac.</blockquote>
+ Celle-ci peut être achetée via  le site WEB présent sur ce " repository ". Nous sommes à l'[Limayrac](https://github.com/McFly12/AtoutProtect).</blockquote>
 
 ## Introduction
 
