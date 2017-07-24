@@ -1,6 +1,6 @@
 # ATOUT PROTECT
 
-Projet d'étude - Institut Limayrac
+Projet d'étude - [Institut Limayrac](https://limayrac.fr/)
 
 ## Getting Started
 
