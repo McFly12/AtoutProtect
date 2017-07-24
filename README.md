@@ -1,20 +1,20 @@
 # ATOUT PROTECT
 
-Projet d'étude - [Institut Limayrac](https://limayrac.fr/)
+Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)
 
-## Getting Started
+## Introduction
 
 Nous sommes deux étudiants à la tête de ce projet :
-- Yvan MARTY
-- Florent CASSAGNE
+- **Yvan MARTY**
+- **Florent CASSAGNE**
 
-### Prerequisites
+### Pre-recquis
 
 Pour tester notre site WEB, vous avez besoin de :
 - MySQL
 - Hébergeur WEB
 
-## Built With
+## Développé avec
 
 * [ATOM](https://atom.io/) - IDE
 * [JQUERY](https://jquery.com/) - Framework WEB
@@ -24,10 +24,10 @@ Pour tester notre site WEB, vous avez besoin de :
 
 Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versioning". Pour les différents realeases, allez dans la section [Realeases](https://github.com/McFly12/AtoutProtect/tags). 
 
-## Authors
+## Auteur
 
 * **Yvan MARTY** - *Développeur WEB* - [Atout Protect](https://github.com/McFly12/AtoutProtect)
 
-## License
+## Licence
 
 Ce projet est sous MIT Licence.
