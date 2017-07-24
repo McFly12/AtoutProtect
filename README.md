@@ -2,7 +2,7 @@
 
 **Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)**
 
-[![Build Status][travis-image]][travis-url]
+![](https://img.shields.io/travis/USER/REPO.svg)
 
 ![](https://github.com/McFly12/AtoutProtect/blob/master/assets/img/slide1.jpg)
 
