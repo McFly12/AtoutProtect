@@ -26,9 +26,9 @@ Pour tester notre site WEB, vous avez besoin de :
 
 ## Versioning
 
-Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versioning". Pour les différents realeases, allez dans la section [Realeases](https://github.com/McFly12/AtoutProtect/tags). 
+Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versioning". Pour les différentes releases, allez dans la section [Releases](https://github.com/McFly12/AtoutProtect/tags). 
 
-## Historique des realeases
+## Historique des releases
 
 * 0.1.0
     * Pre-realease
