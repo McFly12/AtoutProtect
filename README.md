@@ -1,6 +1,6 @@
 # ATOUT PROTECT
 
-Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)
+**Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)**
 
 ## Introduction
 
@@ -27,7 +27,3 @@ Nous utilisons [GitHub](https://github.com/McFly12/AtoutProtect) pour le "versio
 ## Auteur
 
 * **Yvan MARTY** - *Développeur WEB* - [Atout Protect](https://github.com/McFly12/AtoutProtect)
-
-## Licence
-
-Ce projet est sous MIT Licence.
