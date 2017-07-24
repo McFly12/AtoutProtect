@@ -4,7 +4,7 @@
 
 ![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/McFly12/AtoutProtect.svg)
 
-![](https://github.com/McFly12/AtoutProtect/blob/master/assets/img/slide1.jpg)
+![](http://international.limayrac.fr/sites/international.limayrac.fr/files/logo_limayrac_jpeg_2016.jpg)
 
 ## Introduction
 
