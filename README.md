@@ -1,6 +1,6 @@
 # ATOUT PROTECT
 
-**Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)**
+> **Projet d'étude - [Institut Limayrac](http://www.limayrac.fr/)**
 
 ![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/McFly12/AtoutProtect.svg)
 
