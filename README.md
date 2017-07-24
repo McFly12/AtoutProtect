@@ -1,4 +1,4 @@
-# ATOUT PROTECT <div style="display: block;margin-left: auto;margin-right: auto;"><img src ="http://www.limayrac.fr/sites/limayrac.fr/files/logo_limayrac.jpg" alt="INSTITUT LIMAYRAC" /></div>
+# ATOUT PROTECT <div><img src ="http://www.limayrac.fr/sites/limayrac.fr/files/logo_limayrac.jpg" alt="INSTITUT LIMAYRAC" /></div>
 
 ![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/McFly12/AtoutProtect.svg)
 
