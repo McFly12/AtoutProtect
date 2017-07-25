@@ -250,5 +250,14 @@ class PdoFonction extends PdoBdd {
 		return $result;
 	}
 
+	/***************************************************************/
+	/* 					RECUPERATION PRIX	 				*/
+	public function RecupPrix($nom,$type,$abo) {
+		parent::connexion();
+		$result = parent::requete('SELECT prix FROM prix_catalogue WHERE nom_logiciel ="'.$nom.'" AND nom_type_licence ="'.$type.'" AND nom_type_abo ="'.$abo.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
 }
 ?>

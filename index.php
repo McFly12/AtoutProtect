@@ -21,9 +21,11 @@
     <!-- Custom styles for this template -->
     <link href="assets/css/main.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/toast.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.toast.js"></script>
 
     <?php  include 'class/PdoFonction.php';
            $maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoFonction
@@ -83,37 +85,133 @@
     <script>
       $(document).ready(function () {
         $( ".add-to-cart" ).click(function() {
-          // &amp;type_logiciel=prologiciel1
-          var id = $(this).closest('div').find('#type_abo').val();
-          var type_abo_choisi = $(this).closest('div').find("#type_abo option[value="+id+"]").text();
+          var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
+          var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
+          var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
+          var quantite = $(this).closest('div.modal').find("#quantite").val();
 
-          var id2 = $(this).closest('div').find('#type_licence').val();
-          var type_licence_choisi = $(this).closest('div').find("#type_licence option[value="+id2+"]").text();
-
-          var a = $(this).closest('div').find('a');
-          var href = a.attr('href');
-              a.attr('href', href + '&type_abonnement='+type_abo_choisi);
-          var href2 = a.attr('href');
-              a.attr('href', href2 + '&type_logiciel='+type_licence_choisi);
+          if(select_type != "TYPE") {
+             if(select_abonnement != "ABONNEMENT") {
+               if(quantite >= 1) {
+                 $.ajax({
+                   url: "modules/AjouterAuPanier.php",
+                   data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement ,'quantite': quantite},
+                   success: function(){
+                     // similar behavior as an HTTP redirect
+                     //window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
+                   }
+                 });
+               }
+               else {
+                $.toast({
+                     heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                     text: '<p>Veuillez indiquer une quantité valide.</p>',
+                     showHideTransition: 'plain',
+                     position: 'bottom-center',
+                     allowToastClose: false,
+                     icon: 'error'
+                 })
+               }
+            }
+            else {
+              $.toast({
+                   heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                   text: '<p>Veuillez choisir un abonnement.</p>',
+                   showHideTransition: 'plain',
+                   position: 'bottom-center',
+                   allowToastClose: false,
+                   icon: 'error'
+               })
+            }
+          }
+          else {
+            $.toast({
+                 heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                 text: '<p>Veuillez choisir un type de licence.</p>',
+                 showHideTransition: 'plain',
+                 position: 'bottom-center',
+                 allowToastClose: false,
+                 icon: 'error'
+             })
+          }
         });
       });
     </script>
-	
-	<script>
-		$(document).ready(function () {
-			$( "#select_type" ).change(function() {
-			  
-			});
-		});
-	</script>
+
+    <script>
+      $(document).ready(function () {
+        $( "#select_type" ).change(function() {
+          var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
+          var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
+          var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
+
+          if(select_type != "TYPE") {
+             if(select_abonnement != "ABONNEMENT") {
+                  $(this).closest('div.modal').find('#prixmodalajax').val('');
+                  // AJAX
+                  $.ajax({
+                    type: "GET",
+                    url: "modules/GetPriceSelection.php",
+                    data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement},
+                    dataType: 'json',
+                    success: function(json){
+                      var len = json.length;
+                      if(len > 0) {
+                        $.each(json, function(value, key) {
+                          alert(key.prix);
+                          alert(value.prix);
+                            $(this).closest('div.modal').find('#prixmodalajax').val(key.prix);
+                        });
+                      }
+                    },
+                    error: function() {
+                      alert();
+                    }
+                  });
+             }
+           }
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+             $("#select_abonnement").on('change', function() { alert();
+          var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
+          var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
+          var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
+
+          if(select_type != "TYPE") {
+             if(select_abonnement != "ABONNEMENT") {
+                  $(this).closest('div.modal').find('#prixmodalajax').val('');
+                  // AJAX
+                  $.ajax({
+                    type: "GET",
+                    url: "modules/GetPriceSelection.php",
+                    data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement},
+                    dataType: 'json',
+                    success: function(json){
+                      var len = json.length;
+                      if(len > 0) {
+                        $.each(json, function(value, key) {
+                          alert(key.prix);
+                          alert(value.prix);
+                          $(this).closest('div.modal').find('#prixmodalajax').val(key.prix);
+                        });
+                      }
+                    },
+                    error: function() {
+                      alert();
+                    }
+                  });
+             }
+           }
+        });
+      });
+    </script>
 
   </head>
 
   <body>
-
-    <?php
-      unset($_SESSION['panier']);
-    ?>
 
     <!-- Static navbar -->
     <div class="navbar navbar-inverse navbar-static-top">
@@ -223,7 +321,7 @@
         <div class="col-lg-8 col-lg-offset-2 centered">
           <img src="assets/img/ATOUTSA.PNG" title="ATOUT S.A.">
           <h1>ATOUT S.A. ,</h1>
-          <p>Nous vous proposons 3 types de licences, décrites ci-dessous : </p>
+          <p style="margin-bottom:-5%;">Voici les logiciels pour lesquels nous vendons des licences : </p>
         </div><!-- /col-lg-8 -->
       </div><!-- /row -->
       </div> <!-- /container -->
@@ -277,7 +375,7 @@
 			</div><!-- /row -->
 			</div><!-- /container -->
         <?php } ?>
-		
+
 	<?php $reqete = $maPdoFonction->Logiciels();
 			if($reqete->rowCount() > 0) { ?>
 			<?php while($donnees_req = $reqete->fetch()) { ?>
@@ -285,7 +383,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+									<a href="#" data-dismiss="modal" class="class pull-right"><span style="color:black;font-size:20px" class="glyphicon glyphicon-remove"></span></a>
 									<h3 class="modal-title"><?php echo $donnees_req['Nom']; ?></h3>
 								</div>
 								<div class="modal-body">
@@ -296,7 +394,13 @@
 										<div class="col-md-6 product_content">
 											<h4>ID Produit : <span><?php echo $donnees_req['id']; ?></span></h4>
 											<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-										</div>
+
+                      <hr width="100%">
+                        <p style="margin-top:-3%;margin-left:2%;font-size:14px;">
+                          Prix : <b id="prixmodalajax" name="prixmodalajax" style="font-size:21px;"></b>
+                          <br /><i style="margin-left:10%;">Tous les prix n'incluent pas la TVA.</i>
+                        </p>
+                    </div>
 												<hr width="100%">
 
 											<div class="row" style="margin:1%">
@@ -323,7 +427,7 @@
 												</div>
 												<!-- end col -->
 												<div class="col-md-4 col-sm-12">
-														Quantité :&nbsp;&nbsp;<input type="number" value="1" min="1" max="100">
+														Quantité :&nbsp;&nbsp;<input id="quantite" name="quantite" type="number" min="1" max="100">
 												</div>
 												<!-- end col -->
 											</div>
@@ -333,14 +437,14 @@
 												-->
 												<hr width="100%">
 													<p style="margin-left:2%;font-size:16px;">
-														Prix total
+														<br />
 													</p>
 													<p style="margin-left:2%;margin-top:-3%;float:left;font-size:25px;color:black;font-weight:bold;">
-														960,00 €
+
 													</p>
 													<p style="margin-left:2%;margin-top:-3%;margin-right:3%;float:right;">
-														<button 
-														type="button" class="btn btn-primary green">
+														<button
+														type="button" class="btn btn-primary green add-to-cart">
 															<span id="spangreen" class="glyphicon glyphicon-shopping-cart"></span>
 																Ajouter au panier
 														</button>

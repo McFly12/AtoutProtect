@@ -8,8 +8,14 @@ ini_set('error_reporting', E_ALL);
 
     $req_majdatederniereco = $maPdoFonction->MajDateDerniereCo($_SESSION['id']);
 
-	  session_unset();
-    session_destroy();
+    unset($_SESSION['nom']);
+    unset($_SESSION['prenom']);
+    unset($_SESSION['droit']);
+    unset($_SESSION['email']);
+    unset($_SESSION['id']);
+    unset($_SESSION['adresse']);
+    unset($_SESSION['codepostal']);
+    unset($_SESSION['ville']);
 
 	header('Location: ../index.php');
 ?>

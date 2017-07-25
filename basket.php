@@ -177,6 +177,15 @@ if (!$erreur){
 
 	<script>
 		$(document).ready(function () {
+			$( "#GoToConnecter" ).click(function() {
+				$('#B').addClass( "active in" );
+				$('.nav-tabs a[href="#B"]').tab('show');
+			});
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
 			$( "#ModifierItemBasket" ).click(function() {
 				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
 
@@ -186,12 +195,12 @@ if (!$erreur){
 				$(this).closest('tr').find('td:eq(3)').find('input').val(val);
 
 				if( $(this).closest('tr').find('td:eq(5)').find('button.btn-success').length == 0 ) {
-					$(this).closest('tr').find('td:eq(5)').append(' <br /><br /><button type="button" class="btn btn-success" style="height:30px;font-size:15px;padding:0;" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
+					$(this).closest('tr').find('td:eq(5)').append(' <br /><br /><button type="button" class="btn btn-success" style="width:150px;height:30px;font-size:15px;padding:0;" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
 				}
 				else
 				{
 					$(this).closest('tr').find('td:eq(5)').find('button.btn-success').remove();
-					$(this).closest('tr').find('td:eq(5)').append('<button type="button" class="btn btn-success" style="height:30px;font-size:15px;padding:0;" name="button_save_baket" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
+					$(this).closest('tr').find('td:eq(5)').append('<button type="button" class="btn btn-success" style="width:150px;height:30px;font-size:15px;padding:0;" name="button_save_baket" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
 				}
 
 			});
@@ -443,11 +452,10 @@ if (!$erreur){
 							<div class="col-lg-6 col-lg-offset-3 centered">
 								<h3>VOTRE PANIER :</h3>
 								<hr>
-								<p></p> <br />
 							</div><br /><br /><br /><br /><br />
 
 							<div class="table-responsive">
-								<table class="table table-striped table-bordered" style="margin-left:0 auto;margin-left: 5px;">
+								<table class="table table-striped table-bordered" >
 									<thead>
 										<tr style="font-size:18px;">
 											<th style="width:18%;">
@@ -486,16 +494,13 @@ if (!$erreur){
 																echo "<td>".$_SESSION['panier']['abonnement'][$i]."</td>";
 															  echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
 															  echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
-																echo '<td>';
-																if(!isset($_GET['PayPalOk'])) { ?>
-																	<button type="button" class="btn btn-primary" style="height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
+																echo '<td>'; ?>
+																	<button type="button" class="btn btn-primary" style="width:150px;height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
 																		<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
 																	</button><br/><br />
-																		<button type="button" class="btn btn-danger deleteItemBasket" style="height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
+																		<button type="button" class="btn btn-danger deleteItemBasket" style="width:150px;height:30px;font-size:15px;padding:0;" id="deleteItemBasket" name="deleteItemBasket">
 																			<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer
 																		</button>
-																<?php }
-																else { } ?>
 																</td>
 														</tr>
 													<?php }
@@ -558,12 +563,19 @@ if (!$erreur){
 													&nbsp;&nbsp;Poursuivre mes achats
 											</a>
 										</button>
-										<button type="button" id="GoToPayment" name="GoToPayment" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;font-size: 17px;">
-												<span class="glyphicon glyphicon-credit-card" style="font-size:16px;color:white;"></span>
-													&nbsp;&nbsp;Procéder au paiement
-										</button><br /><br /><br />
-								<?php } ?>
-
+										<?php if(isset($_SESSION['nom'])) { ?>
+											<button type="button" id="GoToPayment" name="GoToPayment" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;font-size: 17px;">
+													<span class="glyphicon glyphicon-credit-card" style="font-size:16px;color:white;"></span>
+														&nbsp;&nbsp;Procéder au paiement
+											</button><br /><br /><br />
+										<?php }
+										else { ?>
+											<button type="button" id="GoToConnecter" name="GoToConnecter" class="btn btn-primary" style="float:right;width:20%;margin-left:1%;font-size: 17px;">
+													<span class="glyphicon glyphicon glyphicon-user" style="font-size:16px;color:white;"></span>
+														&nbsp;&nbsp;Se connecter
+											</button><br /><br /><br />
+										<?php }
+								} ?>
 							</div>
 							<?php
 						}
