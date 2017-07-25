@@ -230,7 +230,7 @@
 		</div><br/>
 
 		<div class="container">
-			<div class="row" style="width:1800px;margin-left:-320px;">
+			<div class="row" style="width:100%;">
 				<div class="panel panel-default">
 				  <div class="panel-heading" style="font-family:'Arial Black', Gadget, sans-serif;font-size:16px">Procédure d'achat sur notre site WEB</div>
 				  <div class="panel-body" style="margin-left:10px;">
@@ -238,7 +238,7 @@
 							<div class="item">
 									<span class="notify-badge">1</span>
 							</div>
-							<div class="thumbnail" style="height: 298px;">
+							<div class="thumbnail" style="height: 100%;">
 								<img src="assets/img/cart.png" alt="" width="180px" height="180px">
 								<div class="caption">
 									<h4 class="pull-right"></h4>
@@ -254,7 +254,7 @@
 							<div class="item">
 									<span class="notify-badge">2</span>
 							</div>
-								<div class="thumbnail" style="height: 298px;">
+								<div class="thumbnail" style="height: 100%;">
 									<img src="assets/img/login.png" alt="" width="180px" height="180px">
 									<div class="caption">
 										<h4 class="pull-right"></h4>
@@ -270,7 +270,7 @@
 							<div class="item">
 									<span class="notify-badge">3</span>
 							</div>
-							<div class="thumbnail" style="height: 298px;">
+							<div class="thumbnail" style="height: 100%;">
 								<img src="assets/img/paypal_htb.png" alt="" width="180px" height="180px">
 								<div class="caption">
 									<h4 class="pull-right"></h4>
@@ -286,7 +286,7 @@
 							<div class="item">
 									<span class="notify-badge">4</span>
 							</div>
-							<div class="thumbnail" style="height: 298px;">
+							<div class="thumbnail" style="height: 100%;">
 								<img src="assets/img/mailing.png" alt="" width="180px" height="180px">
 								<div class="caption">
 									<h4 class="pull-right"></h4>

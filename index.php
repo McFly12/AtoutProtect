@@ -98,6 +98,14 @@
         });
       });
     </script>
+	
+	<script>
+		$(document).ready(function () {
+			$( "#select_type" ).change(function() {
+			  
+			});
+		});
+	</script>
 
   </head>
 
@@ -116,7 +124,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
+          <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect" style="font-size:10px;">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
             <br /><br /><br /><br />
             <div id="moncompte">
@@ -245,15 +253,105 @@
 	<!-- +++++ Projects Section +++++ -->
   <section class="container">
       <?php $reqete = $maPdoFonction->Logiciels();
-      			if($reqete->rowCount() > 0) {
-              while($donnees_req = $reqete->fetch()) { ?>
-                <?php $nom = $donnees_req['Nom']; ?>
-
+      			if($reqete->rowCount() > 0) { ?>
+				<div class="container">
+				<div class="row">
+             <?php while($donnees_req = $reqete->fetch()) { ?>
+			         <div class="col-md-4">
+					  <div class="thumbnail">
+						<img src="http://via.placeholder.com/350x200" alt="" class="img-responsive">
+						<div class="caption">
+						  <h4 class="pull-right"></h4>
+						  <h4><?php echo $donnees_req['Nom']; ?></h4>
+						  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+						</div>
+						<div class="btn-ground text-center">
+						<?php $modal = "#product_view".$donnees_req['Nom'];?>
+							<!-- <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Ajouter au panier</button> -->
+							<button type="button" class="btn btn-primary" data-target="#product_view<?php echo $donnees_req['Nom']?>" data-toggle="modal" ><i class="fa fa-search"></i>&nbsp;&nbsp;Plus d'informations</button>
+						</div>
+						<div class="space-ten"></div>
+					  </div>
+					</div>
             <?php } ?>
-        </div><!-- /row -->
-        <?php
-            }
-       ?>
+			</div><!-- /row -->
+			</div><!-- /container -->
+        <?php } ?>
+		
+	<?php $reqete = $maPdoFonction->Logiciels();
+			if($reqete->rowCount() > 0) { ?>
+			<?php while($donnees_req = $reqete->fetch()) { ?>
+					<div class="modal fade product_view" id="product_view<?php echo $donnees_req['Nom']?>">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+									<h3 class="modal-title"><?php echo $donnees_req['Nom']; ?></h3>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-6 product_img">
+											<img src="http://via.placeholder.com/400x400" class="img-responsive"><br />
+										</div>
+										<div class="col-md-6 product_content">
+											<h4>ID Produit : <span><?php echo $donnees_req['id']; ?></span></h4>
+											<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+										</div>
+												<hr width="100%">
+
+											<div class="row" style="margin:1%">
+												<div class="col-md-4 col-sm-6 col-xs-12">
+													<?php $req_select1 = $maPdoFonction->TypeLicences();
+															if($req_select1->rowCount() > 0) { ?>
+																<select class="form-control" id="select_type" name="select_type">
+																	<option disabled selected>TYPE</option>
+																		<?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
+																				<option value="<?php echo $donnees_req_select1['id']; ?>"><?php echo $donnees_req_select1['Nom']; ?></option>
+																		<?php } } ?>
+																</select>
+												</div>
+												<!-- end col -->
+												<div class="col-md-4 col-sm-6 col-xs-12">
+													<?php $req_select2 = $maPdoFonction->Abonnements();
+															if($req_select2->rowCount() > 0) { ?>
+																<select class="form-control" id="select_abonnement" name="select_abonnement">
+																	<option disabled selected>ABONNEMENT</option>
+																		<?php while($donnees_req_select2 = $req_select2->fetch()) { ?>
+																				<option value="<?php echo $donnees_req_select2['duree']; ?>"><?php echo $donnees_req_select2['nom']; ?></option>
+																		<?php } } ?>
+																</select>
+												</div>
+												<!-- end col -->
+												<div class="col-md-4 col-sm-12">
+														Quantité :&nbsp;&nbsp;<input type="number" value="1" min="1" max="100">
+												</div>
+												<!-- end col -->
+											</div>
+											<div class="btn-ground">
+												<!-- <h5>Total</h5>
+												<h3 class="cost" style="float:left;"> 75.00 <span style="color:black;font-size:18px;" class="glyphicon glyphicon-eur"></span></h3>
+												-->
+												<hr width="100%">
+													<p style="margin-left:2%;font-size:16px;">
+														Prix total
+													</p>
+													<p style="margin-left:2%;margin-top:-3%;float:left;font-size:25px;color:black;font-weight:bold;">
+														960,00 €
+													</p>
+													<p style="margin-left:2%;margin-top:-3%;margin-right:3%;float:right;">
+														<button 
+														type="button" class="btn btn-primary green">
+															<span id="spangreen" class="glyphicon glyphicon-shopping-cart"></span>
+																Ajouter au panier
+														</button>
+													</p>
+											</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+			<?php } } ?>
     </section>
 
 <br />

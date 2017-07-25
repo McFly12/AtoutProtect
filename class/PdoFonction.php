@@ -19,7 +19,7 @@ class PdoFonction extends PdoBdd {
 	/* 											RECUP LOGICIELS 											*/
 	public function Logiciels() {
 		parent::connexion();
-		$result = parent::requete('SELECT Nom FROM logiciel');
+		$result = parent::requete('SELECT * FROM logiciel');
 		parent::deconnexion();
 		return $result;
 	}
@@ -37,7 +37,7 @@ class PdoFonction extends PdoBdd {
 	/*									RECUP TYPES D'ABONNEMENTS									*/
 	public function Abonnements() {
 		parent::connexion();
-		$result = parent::requete('SELECT id,nom,durée FROM abonnement');
+		$result = parent::requete('SELECT * FROM abonnement');
 		parent::deconnexion();
 		return $result;
 	}
@@ -46,7 +46,7 @@ class PdoFonction extends PdoBdd {
 	/*									RECUP TYPES LICENCES									*/
 	public function TypeLicences() {
 		parent::connexion();
-		$result = parent::requete('SELECT Nom FROM typelicence');
+		$result = parent::requete('SELECT * FROM typelicence');
 		parent::deconnexion();
 		return $result;
 	}

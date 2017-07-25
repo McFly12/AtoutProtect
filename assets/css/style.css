@@ -156,12 +156,69 @@ div.tab button.active {
 }
 
 .green {
-  color: #2ecc71;
+  color: black;
   border: 2px #2ecc71 solid;
+  background-color: white;
+  transition-duration: 0.35s;
+  float:right;
+  background-color:white;
+  font-weight:bold;
+  border-color:black;
+  font-size:16px;
 }
 
-.green:hover {
-  color: #fff;
-  background-color: #2ecc71;
-	transition-duration: 0.35s;
+#spangreen {
+	color: black;
+	font-size: 16px;
+	border-color:black;
 }
+
+.green:hover #spangreen {
+  color: white;
+  background-color: green;
+  transition-duration: 0.35s;
+  font-weight:bold;
+  border-color:white;
+  font-size:16px;
+}
+.green:hover {
+  color: white;
+  background-color: green;
+  transition-duration: 0.35s;
+  font-weight:bold;
+  border-color:green;
+  font-size:16px;
+}
+.green:focus {
+  color: black;
+  border: 2px #2ecc71 solid;
+  background-color: white;
+  transition-duration: 0.35s;
+  float:right;
+  background-color:white;
+  font-weight:bold;
+  border-color:black;
+  font-size:16px;
+  outline: none;
+}
+.green:focus #spangreen {
+	color: black;
+	font-size: 16px;
+	background-color: white;
+	border-color:black;
+	outline: none;
+}
+
+.product_view .modal-dialog{
+	max-width: 800px;
+	width: 100%;
+}
+.pre-cost{
+	text-decoration: line-through;
+	color: #a5a5a5;
+}
+.space-ten{
+	padding: 10px 0;
+}
+
+
