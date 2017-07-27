@@ -10,8 +10,10 @@ ini_set('error_reporting', E_ALL);
 $mail = $_POST['InputEmail1'];
 $mdp = $_POST['InputPassword1'];
 
+$u_password = sha1($mdp);
+
   if ((isset($mail)) && (isset($mdp))) {
-    $req = $maPdoFonction->VerifierLogin($mail,$mdp);
+    $req = $maPdoFonction->VerifierLogin($mail,$u_password);
     if($req->rowCount() == 1){
 			while($donnees = $req->fetch()) {
         $_SESSION['nom'] = $donnees['Nom'];

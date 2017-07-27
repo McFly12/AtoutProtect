@@ -237,7 +237,9 @@
             <input type="text" class="form-control" name="ville" placeholder="Ville" autocomplete="off" aria-describedby="sizing-addon2">
           </div><br />
           <div align="center"><br />
-            <button type="submit" id="creer_compte" name="creer_compte" class="btn btn-success">&nbsp;ENREGISTRER</button>
+            <button type="submit" id="creer_compte" name="creer_compte" class="btn btn-success">
+              <span style="font-size:15px;color:white;" class="glyphicon glyphicon-floppy-save"></span>
+                &nbsp;&nbsp;ENREGISTRER</button>
           </div>
 				</form>
 			</div>

@@ -84,21 +84,21 @@
 
 	<script src="assets/js/jquery.simplePagination.js"></script>
 	<script>
-	$(document).ready(function() {
-		$("#list_commandes").simplePagination({
-			// the number of rows to show per page
-			perPage: 5,
-			// CSS classes to custom the pagination
-			containerClass: '',
-			previousButtonClass: 'btn btn-secondary btn-custom-pagination',
-			nextButtonClass: 'btn btn-secondary btn-custom-pagination',
-			// text for next and prev buttons
-			previousButtonText: 'Précédent',
-			nextButtonText: 'Suivant',
-			// initial page
-			currentPage: 1
+		$(document).ready(function() {
+			$("#list_commandes").simplePagination({
+				// the number of rows to show per page
+				perPage: 10,
+				// CSS classes to custom the pagination
+				containerClass: '',
+				previousButtonClass: 'btn btn-secondary btn-custom-pagination',
+				nextButtonClass: 'btn btn-secondary btn-custom-pagination',
+				// text for next and prev buttons
+				previousButtonText: 'Précédent',
+				nextButtonText: 'Suivant',
+				// initial page
+				currentPage: 1
+			});
 		});
-	});
 	</script>
 	</head>
 

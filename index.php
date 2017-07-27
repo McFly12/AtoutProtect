@@ -145,40 +145,7 @@
           var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
           var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
 
-          if(select_type != "TYPE") {
-             if(select_abonnement != "ABONNEMENT") {
-                  $(this).closest('div.modal').find('#prixmodalajax').val('');
-                  // AJAX
-                  $.ajax({
-                    type: "GET",
-                    url: "modules/GetPriceSelection.php",
-                    data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement},
-                    dataType: 'json',
-                    success: function(json){
-                      var len = json.length;
-                      if(len > 0) {
-                        $.each(json, function(value, key) {
-                          alert(key.prix);
-                          alert(value.prix);
-                            $(this).closest('div.modal').find('#prixmodalajax').val(key.prix);
-                        });
-                      }
-                    },
-                    error: function() {
-                      alert();
-                    }
-                  });
-             }
-           }
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function () {
-             $("#select_abonnement").on('change', function() { alert();
-          var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
-          var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
-          var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
+          var th = $(this);
 
           if(select_type != "TYPE") {
              if(select_abonnement != "ABONNEMENT") {
@@ -193,14 +160,59 @@
                       var len = json.length;
                       if(len > 0) {
                         $.each(json, function(value, key) {
-                          alert(key.prix);
-                          alert(value.prix);
-                          $(this).closest('div.modal').find('#prixmodalajax').val(key.prix);
+                          $(th).closest('div.modal').find('#prixmodalajax').text(key.prix);
+                          var text = $(th).closest('div.modal').find('#prixmodalajax').text();
+                          var val = parseFloat(text).toFixed(2);
+                          $(th).closest('div.modal').find('#prixmodalajax').text(val+' €');
                         });
+                      }
+                      else {
+                        $(th).closest('div.modal').find('#prixmodalajax').text('');
                       }
                     },
                     error: function() {
-                      alert();
+                      $(th).closest('div.modal').find('#prixmodalajax').text('');
+                    }
+                  });
+             }
+           }
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+             $("#select_abonnement").on('change', function() {
+          var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
+          var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
+          var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
+
+          var th = $(this);
+
+          if(select_type != "TYPE") {
+             if(select_abonnement != "ABONNEMENT") {
+                  $(this).closest('div.modal').find('#prixmodalajax').val('');
+                  // AJAX
+                  $.ajax({
+                    type: "GET",
+                    url: "modules/GetPriceSelection.php",
+                    data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement},
+                    dataType: 'json',
+                    success: function(json){
+                      var len = json.length;
+                      if(len > 0) {
+                        $.each(json, function(value, key) {
+                          $(th).closest('div.modal').find('#prixmodalajax').text(key.prix);
+                          var text = $(th).closest('div.modal').find('#prixmodalajax').text();
+                          var val = parseFloat(text).toFixed(2);
+                          $(th).closest('div.modal').find('#prixmodalajax').text(val+' €');
+                        });
+                      }
+                      else {
+                        $(th).closest('div.modal').find('#prixmodalajax').text('');
+                      }
+                    },
+                    error: function() {
+                      $(th).closest('div.modal').find('#prixmodalajax').text('');
                     }
                   });
              }
@@ -397,7 +409,7 @@
 
                       <hr width="100%">
                         <p style="margin-top:-3%;margin-left:2%;font-size:14px;">
-                          Prix : <b id="prixmodalajax" name="prixmodalajax" style="font-size:21px;"></b>
+                          Prix U. : <b id="prixmodalajax" name="prixmodalajax" style="font-size:21px;"></b>
                           <br /><i style="margin-left:10%;">Tous les prix n'incluent pas la TVA.</i>
                         </p>
                     </div>

@@ -227,6 +227,25 @@
       });
     </script>
 
+    <script src="assets/js/jquery.simplePagination.js"></script>
+    <script>
+    $(document).ready(function() {
+      $("table").simplePagination({
+        // the number of rows to show per page
+        perPage: 10,
+        // CSS classes to custom the pagination
+        containerClass: '',
+        previousButtonClass: 'btn btn-secondary btn-custom-pagination',
+        nextButtonClass: 'btn btn-secondary btn-custom-pagination',
+        // text for next and prev buttons
+        previousButtonText: 'Précédent',
+        nextButtonText: 'Suivant',
+        // initial page
+        currentPage: 1
+      });
+    });
+    </script>
+
   </head>
 
   <body style="background-color:#f2f2f2;">
@@ -397,6 +416,11 @@
     </div>
 
     <div id="Acheteurs" class="tabcontent">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 style="padding:0;">Aperçu des acheteurs</h3>
+        </div>
+      </div>
       <?php $req = $maPdoFonction->Commande();
           if($req->rowCount() >= 1) { ?> <br />
 
@@ -460,27 +484,43 @@
         </div>
       </div>
 
-      <div class="panel-body row btn-toolbar">
-        <div style="padding:0;" class='btn-group'>
           <?php $req = $maPdoFonction->RecupLicences();
-                if($req->rowCount() >= 1) {
-                  while($donnees = $req->fetch()) {
-                    if($donnees['date_activation'] != null) { ?>
-                      <li class="list-group-item" style="background-color:#DFF0D8;">
-                        &nbsp;&nbsp;&nbsp;
-                        <b><?php echo $donnees['clef']; ?></b> -- Activé le <b><?php echo date("d/m/Y", strtotime($donnees['date_activation'])); ?></b> -- valable jusqu'au <b><?php echo date("d/m/Y", strtotime($donnees['date_expiration'])); ?></b> -- acheté le <b><?php echo date("d/m/Y", strtotime($donnees['date_creation'])); ?></b>
-                      </li>
-                    <?php }
-                    else { ?>
-                        <li class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;
-                            <b><?php echo $donnees['clef']; ?></b> -- Acheté par <b><?php echo $donnees['proprietaire']; ?> -- </b>Non utilisé</b>
-                        </li>
-                    <?php }
-                  }
-              } ?>
-        </div>
-      </div>
+                if($req->rowCount() >= 1) { ?>
+                  <table class="table table-bordered table-responsive table-striped" style="margin-left:5%;width:91%;">
+                      <thead>
+                        <tr style="background-color:#2f2f2f;text-align:center;color:white;">
+                          <th>
+                            Clef
+                          </th>
+                          <th>
+                            Date d'achat
+                          </th>
+                          <th>
+                            Date d'activation
+                          </th>
+                          <th>
+                            Date d'expiration
+                          </th>
+                        </tr>
+                      </thead>
+                  <?php while($donnees = $req->fetch()) { ?>
+                        <tr>
+                          <td><?php echo $donnees['clef']; ?></b></td>
+                          <td><?php echo date("d/m/Y", strtotime($donnees['date_creation'])); ?></td>
+                          <?php if($donnees['date_activation'] != null) { ?>
+                            <td><?php echo date("d/m/Y", strtotime($donnees['date_activation'])); ?></td>
+                          <?php } else { ?>
+                              <td> / </td>
+                          <?php } ?>
+                          <?php if($donnees['date_expiration'] != null) { ?>
+                            <td><?php echo date("d/m/Y", strtotime($donnees['date_expiration'])); ?></td>
+                          <?php } else { ?>
+                              <td> / </td>
+                          <?php } ?>
+                    </tr>
+                <?php } ?>
+                </table>
+            <?php } ?>
 
     </div>
 
@@ -649,116 +689,30 @@
 
       <div class="panel-body row btn-toolbar">
         <div style="padding:0;" class='btn-group'>
-          <button onclick="openModalNouvLogiciel()" class="btn btn-success" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;">Nouveau logiciel</button>
+          <button onclick="openModalNouvLogiciel()" class="btn btn-success" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Nouveau logiciel</button>
           <?php $req = $maPdoFonction->Logiciels();
                 if($req->rowCount() >= 1) {
-                  ?><button onclick="DeleteLogiciel(this.id);" class="btn btn-danger" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;">Supprimer</button><?php
+                  ?><button onclick="DeleteLogiciel(this.id);" class="btn btn-danger" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;"><i class="fa fa-minus" aria-hidden="true"></i>&nbsp;&nbsp;Supprimer</button><?php
                 } ?>
         </div>
       </div>
 
       <?php $req = $maPdoFonction->Logiciels();
-            if($req->rowCount() >= 1) { $i = ''; $nb = 0;
-              $items = ['msoffice', 'oracle', 'phpstorm', 'ps', 'vs'];
-              while ($data = $req->fetch()) {
-                if($nb == 0) { ?>
-                <div class="row text-center">
-                    <div class="col-md-3 col-sm-6 hero-feature">
-                        <div class="thumbnail">
-                          <input type="checkbox" class="checkbox" id="check0" />
-                            <img src="assets/img/logiciels/<?php
-                              echo $i = "oracle"; ?>.jpg" alt="">
-                            <div class="caption">
-                                <h3><?php echo $data['Nom']; ?></h3>
-                                <?php if($i == "vs") { ?>
-                                    <p>Ensemble complet d'outils de développement permettant de générer des applications web ASP.NET, des services web XML, des applications bureautiques et des applications mobiles.</p>
-                                <?php }
-                                else if($i == "ps") { ?>
-                                    <p>Logiciel de retouche, de traitement et de dessin assisté par ordinateur.</p>
-                                <?php }
-                                else if($i == "msoffice") { ?>
-                                    <p>Suite bureautique</p>
-                                <?php }
-                                else if($i == "oracle") { ?>
-                                    <p>Système de gestion de base de données</p>
-                                <?php }
-                                else if($i == "phpstorm") { ?>
-                                    <p>IDE</p>
-                                <?php }
-                                else { ?>
-                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-              <?php }
-              else if($nb == 1) { ?>
-                <div class="row text-center">
-                    <div class="col-md-3 col-sm-6 hero-feature">
-                        <div class="thumbnail">
-                          <input type="checkbox" class="checkbox" id="check1" />
-                            <img src="assets/img/logiciels/<?php
-                              echo $i = "msoffice"; ?>.jpg" alt="">
-                            <div class="caption">
-                                <h3><?php echo $data['Nom']; ?></h3>
-                                <?php if($i == "vs") { ?>
-                                    <p>Ensemble complet d'outils de développement permettant de générer des applications web ASP.NET, des services web XML, des applications bureautiques et des applications mobiles.</p>
-                                <?php }
-                                else if($i == "ps") { ?>
-                                    <p>Logiciel de retouche, de traitement et de dessin assisté par ordinateur.</p>
-                                <?php }
-                                else if($i == "msoffice") { ?>
-                                    <p>Suite bureautique</p>
-                                <?php }
-                                else if($i == "oracle") { ?>
-                                    <p>Système de gestion de base de données</p>
-                                <?php }
-                                else if($i == "phpstorm") { ?>
-                                    <p>IDE</p>
-                                <?php }
-                                else { ?>
-                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-              <?php }
-              else if($nb == 2) { ?>
-                <div class="row text-center">
-                    <div class="col-md-3 col-sm-6 hero-feature">
-                        <div class="thumbnail">
-                          <input type="checkbox" class="checkbox" id="check2" />
-                            <img src="assets/img/logiciels/<?php
-                              echo $i = "phpstorm"; ?>.jpg" alt="">
-                            <div class="caption">
-                                <h3><?php echo $data['Nom']; ?></h3>
-                                <?php if($i == "vs") { ?>
-                                    <p>Ensemble complet d'outils de développement permettant de générer des applications web ASP.NET, des services web XML, des applications bureautiques et des applications mobiles.</p>
-                                <?php }
-                                else if($i == "ps") { ?>
-                                    <p>Logiciel de retouche, de traitement et de dessin assisté par ordinateur.</p>
-                                <?php }
-                                else if($i == "msoffice") { ?>
-                                    <p>Suite bureautique</p>
-                                <?php }
-                                else if($i == "oracle") { ?>
-                                    <p>Système de gestion de base de données</p>
-                                <?php }
-                                else if($i == "phpstorm") { ?>
-                                    <p>IDE</p>
-                                <?php }
-                                else { ?>
-                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-              <?php } $nb++; }
-            } ?>
-    </div>
+            if($req->rowCount() >= 1) { ?>
+
+              <?php while ($data = $req->fetch()) { ?>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                  <div class="thumbnail">
+                    <input type="checkbox" class="checkbox" id="check0" />
+                      <img src="http://via.placeholder.com/350x200" alt="">
+                      <div class="caption">
+                          <h3><?php echo $data['Nom']; ?></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                      </div>
+                  </div>
+                </div>
+              <?php } ?>
+            <?php } ?>
     <br />
   </section>
 

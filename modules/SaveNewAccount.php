@@ -22,13 +22,21 @@ if((isset($nom)) && (isset($prenom)) && (isset($tel)) && (isset($email)) && (iss
 
   if(strcmp($mdp, $confirmmdp) == 0) {
 
-    $req = $maPdoFonction->EnregNouvCompte($nom,$prenom,$tel,$email,$mdp,$adresse,$codepostal,$ville,'1');
+    $u_password = sha1($mdp);
+
+    $req = $maPdoFonction->EnregNouvCompte($nom,$prenom,$tel,$email,$u_password,$adresse,$codepostal,$ville,'1');
     if($req->rowCount() == 1) {
-        $req_verif = $maPdoFonction->VerifEnregNouvCompte($nom,$prenom,$tel,$email,$mdp,$adresse,$codepostal,$ville,'1');
+        $req_verif = $maPdoFonction->VerifEnregNouvCompte($nom,$prenom,$tel,$email,$u_password,$adresse,$codepostal,$ville,'1');
       if($req_verif->rowCount() == 1) {
         header('Location: ../createaccount.php?ErrNewAcc');
       }
       else {
+        $folderName = $nom;
+          $structure = '../factures/'.$folderName.'/';
+            if (!file_exists('./factures/'.$folderName)) {
+              mkdir('./factures/'.$folderName, 0400, true);
+             }
+             sleep(2);
         header('Location: ../login.php?OkNewAcc');
       }
     }

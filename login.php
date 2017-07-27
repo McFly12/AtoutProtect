@@ -176,11 +176,11 @@
     				<form method="POST" action="modules/Connexion.php" id="login" style="font-size:27px;">
               <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-envelope" style="color:black;font-size:12px;"></span></span>
-                <input type="email" class="form-control" style="width:75%;" name="InputEmail1" placeholder="Email" autocomplete="off" autofocus="on" aria-describedby="sizing-addon2">
+                <input type="email" class="form-control" style="width:75%;font-size:16px;" name="InputEmail1" placeholder="Email" autocomplete="off" autofocus="on" aria-describedby="sizing-addon2">
               </div><br />
               <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
-                <input type="password" class="form-control" style="width:75%;" name="InputPassword1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
+                <input type="password" class="form-control" style="width:75%;font-size:16px;" name="InputPassword1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
               </div><br />
               <div align="center">
                 <button type="submit" class="btn btn-success" style="width:76%;margin-left:-136px" id="seconnecter">
