@@ -31,9 +31,9 @@ Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "vers
 ## Historique des releases
 
 * 0.1.0
-    * Pre-realease
+    * Release
 * 0.0.1
-    * Initial
+    * Pre-release - Initial
 
 ## Auteur
 
