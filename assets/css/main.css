@@ -20,6 +20,10 @@
 	zoom: 1;
 }
 
+* {
+	outline: none;
+}
+
 body {
   	background-color: #ffffff;
   	font-family: 'Montserrat', sans-serif;
@@ -476,5 +480,5 @@ hr {
 }
 
 .btncsv:hover {
-	
+
 }

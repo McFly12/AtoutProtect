@@ -81,7 +81,7 @@
 				$rows.hide();
 				$rows.slice((from-1), to).show();
 
-				of.innerHTML = '<b>' + from + ' à ' + to + ' sur ' + $rows.length + ' commandes</b>';
+				of.innerHTML = '<b>' + from + ' à ' + to + ' sur ' + $rows.length + ' entrées</b>';
 
 				if ($rows.length <= settings.perPage) {
 					$(container).hide();

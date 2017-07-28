@@ -25,6 +25,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 
+    <script src="assets/js/jquery.toast.js"></script>
+    <link href="assets/css/toast.css" rel="stylesheet">
+
+    <script src="assets/js/clipboard/dist/clipboard.js"></script>
+
     <?php  include 'class/PdoFonction.php';
            $maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoFonction
            error_reporting(E_ALL);
@@ -103,29 +108,9 @@
     </script>
 
     <script type="text/javascript">
-      function openModalNouvCodePromo(){
-          $('#discountBuild').modal();
-          $('#discountBuild').find('#codepromo').val('');
-      }
-    </script>
-
-    <script type="text/javascript">
       function openModalNouvLogiciel(){
           $('#nouvlogiciel').modal();
           $('#nouvlogiciel').find('#nomlogiciel').val('');
-      }
-    </script>
-
-    <script type="text/javascript">
-      function GenererCodePromo(id){
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        for (var i = 0; i < 10; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-          var button = document.getElementById(id);
-          $(button).closest('div').find('#codepromo').val(text);
       }
     </script>
 
@@ -253,38 +238,6 @@
     <div id="snackbar">Veuillez compléter l'ensemble des champs.</div>
 
     <!--- Discount Builder --->
-    <div class="modal fade" id="discountBuild">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Générer un nouveau code promotion</h4>
-          </div>
-          <div class="modal-body">
-            <div class="btn-group btn-group-justified" role="group" id="myTabs">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default" id="buton_cpromo" style="height:34px;width:88px;border-radius:5px;" onclick="GenererCodePromo(this.id);">Générer</button>
-                <input type="text" class="form-control" id="codepromo" placeholder="Code" style="margin-left:100px;width:250px;height:34px;" readonly required/>
-
-                <br /><br />
-
-                  <div class="input-group">
-                    <span class="input-group-addon" ><i class="fa fa-percent" style="font-size: 1.2em;color: black;"></i></span>
-                    <input id="num_pourcentage_promo" type="number" class="form-control" min="1" max="99" name="num_pourcentage_promo" placeholder="Pourcentage de réduction" required />
-                  </div>
-              </div>
-            </div>
-            <br>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="savecpbdd(this.id);" style="width:100px;height:35px;">Enregistrer</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" style="width:100px;height:35px;">Annuler</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--- Discount Builder --->
     <div class="modal fade" id="nouvlogiciel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -308,7 +261,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- Static navbar -->
     <div class="navbar navbar-inverse navbar-static-top">
@@ -401,7 +353,113 @@
       }
     </script>
 
+    <script>
+      $(document).ready(function () {
+        $("#generer_licence").on('click', function () {
+          var beneficiaire = $('#nomlogiciel_genererlicence').val();
+          var select_nom = $("#select_logiciel :selected").text();
+          var select_type = $("#select_type :selected").text();
+          var select_abonnement = $("#select_abonnement :selected").text();
+
+
+                if(beneficiaire != '') {
+                    if(select_nom != "LOGICIEL") {
+                      if(select_type != "TYPE") {
+                        if(select_abonnement != "ABONNEMENT") {
+                          var id_logiciel = $('select[name=select_logiciel]').val();
+                          var id_abonnement = $('select[name=select_abonnement]').val();
+                          $.ajax({
+                            url: "modules/EnregistrerNouvelleLicence.php",
+                            data: {'beneficiaire': beneficiaire ,'logiciel': id_logiciel ,'type': select_type ,'abo': id_abonnement},
+                            dataType: 'json',
+                            success: function(json){
+                              var len = json.length;
+                              if(len > 0) {
+                                new Clipboard('.btnclipboard');
+                                $('#clef').val(json);
+                                $('#ModalLicenceAdmin').modal('show');
+                              }
+                            }
+                          });
+                         }
+                         else {
+                           $.toast({
+                                heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                                text: '<p>Veuillez indiquer la durée d\'abonnement.</p>',
+                                showHideTransition: 'plain',
+                                position: 'bottom-center',
+                                allowToastClose: false,
+                                icon: 'error'
+                            })
+                         }
+                     }
+                     else {
+                       $.toast({
+                            heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                            text: '<p>Veuillez indiquer le type de la licence.</p>',
+                            showHideTransition: 'plain',
+                            position: 'bottom-center',
+                            allowToastClose: false,
+                            icon: 'error'
+                        })
+                     }
+                  }
+                  else {
+                    $.toast({
+                         heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                         text: '<p>Veuillez indiquer le nom du logiciel.</p>',
+                         showHideTransition: 'plain',
+                         position: 'bottom-center',
+                         allowToastClose: false,
+                         icon: 'error'
+                     })
+                  }
+                }
+                else {
+                  $.toast({
+                       heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+                       text: '<p>Veuillez indiquer le nom du bénéficiaire.</p>',
+                       showHideTransition: 'plain',
+                       position: 'bottom-center',
+                       allowToastClose: false,
+                       icon: 'error'
+                   })
+                }
+        });
+      });
+    </script>
+
     <br /><br />
+
+    <!-- Modal -->
+      <div class="modal fade" id="ModalLicenceAdmin" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Votre numéro de licence</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="clef">Licence :</label>
+                    <!-- Target -->
+                    <input id="clef">
+
+                    <!-- Trigger -->
+                    <button class="btnclipboard" data-clipboard-target="#clef">
+                        <img src="assets/img/clippy.svg" alt="Copy to clipboard" width="10" height="10">
+                    </button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
 
     <div class="tab">
       <button class="tablinks" onclick="openCity(event, 'Acheteurs')">Acheteurs</button>
@@ -410,7 +468,7 @@
         &nbsp;&nbsp;&nbsp;
       <button class="tablinks" onclick="openCity(event, 'ExportationDeDonnees')">Exportation de données</button>
         &nbsp;&nbsp;&nbsp;
-      <button class="tablinks" onclick="openCity(event, 'CodePromotion')">Code promotion</button>
+      <button class="tablinks" onclick="openCity(event, 'OffresPromotionnelles')">Offres promotionnelles</button>
         &nbsp;&nbsp;&nbsp;
       <button class="tablinks" onclick="openCity(event, 'Catalogue')">Administration du catalogue</button>
     </div>
@@ -482,7 +540,7 @@
         <div class="panel-heading">
           <h3 style="padding:0;">Aperçu des licences vendues</h3>
         </div>
-      </div>
+      </div><br />
 
           <?php $req = $maPdoFonction->RecupLicences();
                 if($req->rowCount() >= 1) { ?>
@@ -636,48 +694,51 @@
     </script>
     </div>
 
-    <div id="CodePromotion" class="tabcontent">
+    <div id="OffresPromotionnelles" class="tabcontent">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 style="padding:0;">Gestion des codes promotions</h3>
+            <h3 style="padding:0;">Offres promotionelles</h3>
           </div>
         </div>
 
-        <div class="panel-body row btn-toolbar">
-          <div style="padding:0;" class='btn-group'>
-            <button onclick="openModalNouvCodePromo()" class="btn btn-success" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;">Nouveau Code Promotion</button>
-            <?php $req = $maPdoFonction->RecupCodesPromo();
-            			if($req->rowCount() >= 1) {
-                    ?><button class="btn btn-danger" style="display:inline-block;width:300px;margin-right: 5px;padding:0;height:30px;">Supprimer selection</button><?php
-                  } ?>
-          </div>
-        </div>
+        <h4 align="center">Veuillez remplir les informations suivantes afin de générer une licence :</h4>
 
-        <div class="list-group" style="margin:10px;">
-          <?php $req = $maPdoFonction->RecupCodesPromo();
-              if($req->rowCount() >= 1) {
-                ?> <ul class="list-group"> <?php
-                while($donnees = $req->fetch()) {
-                  if($donnees['statut'] == "Activé") { ?>
-                    <li class="list-group-item" style="background-color:#DFF0D8;">
-                      <b><?php echo $donnees['code']; ?></b> -- <b><?php echo $donnees['pourcentage_reduc']; ?> %</b> -- utilisé par <b><?php echo $donnees['beneficiaire']; ?></b>
-                    </li>
-                  <?php }
-                  else { ?>
-                      <li class="list-group-item">
-                        <input type="checkbox" value="">
-                          &nbsp;&nbsp;&nbsp;
-                        <b><?php echo $donnees['code']; ?></b> -- <b><?php echo $donnees['pourcentage_reduc']; ?> %</b> -- <b>Non utilisé</b>
-                      </li>
-                  <?php }
-                } ?> </ul>
-        <?php  }
-        else { ?>
-          <div class="alert alert-info">
-            <strong>Aucuns code promotions utilisés ou a été généré.</strong>
+        <br />
+        <div align="center" style="width:50%;margin:auto;">
+              <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-user" style="color:black;font-size:12px;"></span></span>
+                <input type="text" class="form-control" id="nomlogiciel_genererlicence" name="nomlogiciel_genererlicence" placeholder="Nom du bénéficiaire" aria-describedby="sizing-addon2">
+              </div><br />
+              <?php $req_select1 = $maPdoFonction->Logiciels();
+                  if($req_select1->rowCount() > 0) { ?>
+                    <select id="select_logiciel" name="select_logiciel">
+                      <option disabled selected>LOGICIEL</option>
+                        <?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
+                            <option value="<?php echo $donnees_req_select1['id']; ?>"><?php echo $donnees_req_select1['Nom']; ?></option>
+                        <?php } } ?>
+                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php $req_select1 = $maPdoFonction->TypeLicences();
+                    if($req_select1->rowCount() > 0) { ?>
+                      <select id="select_type" name="select_type">
+                        <option disabled selected>TYPE</option>
+                          <?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
+                              <option value="<?php echo $donnees_req_select1['id']; ?>"><?php echo $donnees_req_select1['Nom']; ?></option>
+                          <?php } } ?>
+                      </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php $req_select2 = $maPdoFonction->Abonnements();
+                    if($req_select2->rowCount() > 0) { ?>
+                      <select id="select_abonnement" name="select_abonnement">
+                        <option disabled selected>ABONNEMENT</option>
+                          <?php while($donnees_req_select2 = $req_select2->fetch()) { ?>
+                              <option value="<?php echo $donnees_req_select2['id']; ?>"><?php echo $donnees_req_select2['nom']; ?></option>
+                          <?php } } ?>
+                      </select>&nbsp;&nbsp;&nbsp;&nbsp;
+              <div align="center"><br />
+                <button type="submit" id="generer_licence" name="generer_licence" class="btn btn-success">
+                  <span style="font-size:15px;color:white;" class="glyphicon glyphicon-plus"></span>
+                    &nbsp;&nbsp;GENERER</button>
+              </div> <br />
           </div>
-        <?php } ?>
-        </div>
     </div>
 
     <div id="Catalogue" class="tabcontent" style="height:640px;">
@@ -713,8 +774,9 @@
                 </div>
               <?php } ?>
             <?php } ?>
-    <br />
-  </section>
+        </div>
+    <br />  <br />
+  </section><br />
 
 	<!-- +++++ Footer Section +++++ -->
 	<div id="footer">
