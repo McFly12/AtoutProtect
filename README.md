@@ -1,6 +1,6 @@
 ## ATOUT PROTECT <img src="http://www.limayrac.fr/sites/limayrac.fr/files/logo_limayrac.jpg" alt="INSTITUT LIMAYRAC" align="right" />
 
-![](https://img.shields.io/travis/USER/REPO.svg) ![](https://img.shields.io/github/issues/YvanMARTY/AtoutProtect.svg)
+![](https://img.shields.io/travis/rust-lang/rust/master.svg) ![](https://img.shields.io/github/issues/YvanMARTY/AtoutProtect.svg)
 
 <br />
 <blockquote> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.
