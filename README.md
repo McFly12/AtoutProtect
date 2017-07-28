@@ -30,10 +30,10 @@ Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "vers
 
 ## Historique des releases
 
-* 0.1.0
-    * Release
-* 0.0.1
-    * Pre-release - Initial
+* 1.0
+    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/V1.0)
+* 0.8
+    * [Pre-release - Initial](https://github.com/YvanMARTY/AtoutProtect/releases/tag/Initial)
 
 ## Auteur
 
