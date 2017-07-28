@@ -160,7 +160,7 @@
 
 	<!-- +++++ Information Section +++++ -->
 
-	<div class="container pt">
+	<div class="container pt" style="margin-top:-7%;margin-bottom:-5%">
 		<div class="row mt centered">
 			<div class="col-lg-3">
 				<span class="glyphicon glyphicon-star-empty" style="color:#f8941d;"></span>

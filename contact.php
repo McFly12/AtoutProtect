@@ -143,9 +143,9 @@
 
 	<!-- +++++ Contact Section +++++ -->
 
-	<div class="container pt">
+	<div class="container pt" style="margin-bottom:-5%;">
 		<div class="row mt">
-			<div class="col-lg-6 col-lg-offset-3 centered">
+			<div class="col-lg-6 col-lg-offset-3 centered" style="margin-top:-5%;">
 				<h3>NOUS CONTACTER</h3>
 				<hr>
 				<p>Veuillez compléter ce formulaire :</p>
@@ -169,7 +169,10 @@
 				  <textarea id="textEmail1" name="textEmail1" style="resize: none;" class="form-control" rows="6" placeholder="Votre demande"></textarea>
 				    <br>
 				</form>
-        <button class="btn btn-success" onclick="Toast()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp;&nbsp;ENVOYER</button>
+        <button class="btn btn-success" onclick="Toast()" style="margin:auto;display:block;">
+          <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+          &nbsp;&nbsp;ENVOYER
+        </button>
 			</div>
 		</div><!-- /row -->
 	</div><!-- /container -->

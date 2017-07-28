@@ -289,16 +289,14 @@
       </div>
     </div>
 
-	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	<!-- <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
-    <!-- Indicators -->
 		<ul class="carousel-indicators">
 			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 			<li data-target="#myCarousel" data-slide-to="1"></li>
 			<li data-target="#myCarousel" data-slide-to="2"></li>
 		</ul>
 
-    <!-- Carousel -->
 		<div class="carousel-inner">
       <div class="item active" style="height:auto;">
           <img src="assets/img/slide1.jpg" alt="First Slide" width="auto">
@@ -323,11 +321,10 @@
       </div>
 
   </div>
-</div>
+</div> -->
 
-<div style="background-color:#f2f2f2;"><br /></div>
   <!-- +++++ Welcome Section +++++ -->
-  <div id="ww">
+  <div id="ww" style="background-color:#e4e4e4;">
       <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 centered">
