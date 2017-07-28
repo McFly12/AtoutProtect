@@ -38,3 +38,4 @@ Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "vers
 ## Auteur
 
 * **Yvan MARTY** - *Développeur WEB* - [Atout Protect](https://github.com/YvanMARTY/AtoutProtect)
+* **Florent CASSAGNE** - *Développeur logiciel* - [Atout Protect](https://github.com/YvanMARTY/AtoutProtect)
