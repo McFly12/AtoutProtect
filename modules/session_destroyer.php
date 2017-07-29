@@ -17,5 +17,5 @@ ini_set('error_reporting', E_ALL);
     unset($_SESSION['codepostal']);
     unset($_SESSION['ville']);
 
-	header('Location: ../index.php');
+	header('Location: ../login.php');
 ?>

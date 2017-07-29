@@ -176,6 +176,7 @@
 			</div>
 		</div><!-- /row -->
 	</div><!-- /container -->
+  <br /><br />
 
 <div id="snackbar">Merci de votre demande. Nous vous contacterons dans les meilleurs delais.</div>
 

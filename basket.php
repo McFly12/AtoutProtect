@@ -1049,7 +1049,7 @@ if (!$erreur){
 								$mail = new PHPMailer;
 
 								$mail->isSMTP();                                      // Set mailer to use SMTP
-								$mail->Host = 'smtp.bouygtel.fr';  // Specify main and backup SMTP servers
+								$mail->Host = 'smtp.orange.fr';  // Specify main and backup SMTP servers
 								$mail->SMTPAuth = false;                               // Enable SMTP authentication
 								$mail->Username = 'atoutlicencemanagement@gmail.com';                 // SMTP username
 								$mail->Password = 'atoutprotect';                           // SMTP password

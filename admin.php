@@ -663,12 +663,13 @@
                      fputcsv($monfichier,array('Clef','Proprietaire','Logiciel','Type de licence','Abonnement',"Date Creation",'Date Activation','Date Expiration'),";");
                        while($donnees = $req->fetch()){
                          $logiciel = '';
-                         if($donnees['logiciel_id'] == 1) {
-                           $logiciel = "Logiciel 1";
-                         }
-                         else if($donnees['logiciel_id'] == 2) {
-                           $logiciel = "Logiciel 2";
-                         }
+                         $req_logiciel = $maPdoFonction->GetNomLogiciel($donnees['logiciel_id']);
+                               if($req_logiciel->rowCount() >= 1) {
+                                 while($data = $req_logiciel->fetch()){
+                                   $logiciel = $data['Nom'];
+                                 }
+                               }
+
                          $abo = '';
                          if($donnees['abonnement_id'] == 1) {
                            $abo = "1 mois";

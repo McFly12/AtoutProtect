@@ -97,8 +97,23 @@
                    url: "modules/AjouterAuPanier.php",
                    data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement ,'quantite': quantite},
                    success: function(){
-                     // similar behavior as an HTTP redirect
-                     //window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
+                     $.toast({
+                          heading: '<h2 style="float:left;font-size:20px">Succès</h2><br /><br />',
+                          text: '<p>Vous ajout au panier a être pris en compte. Vous pouvez continuer vos achats.</p>',
+                          showHideTransition: 'plain',
+                          position: 'bottom-center',
+                          allowToastClose: false,
+                          icon: 'success'
+                      })
+                      $.ajax({
+                        url: "modules/CompterNbArticlesPanier.php",
+                        data: {},
+                        dataType: 'json',
+                        success: function(json){
+                          $('span.badge').text(json);
+                          $('.product_view').modal('hide');
+                        }
+                      });
                    }
                  });
                }

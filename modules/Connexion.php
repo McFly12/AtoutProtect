@@ -24,6 +24,7 @@ $u_password = sha1($mdp);
         $_SESSION['adresse'] = $donnees['Adresse'];
         $_SESSION['codepostal'] = $donnees['CodePostal'];
         $_SESSION['ville'] = $donnees['Ville'];
+        unset($_SESSION['email_reset_mdp']);
       }
       header('Location: ../account.php');
     }

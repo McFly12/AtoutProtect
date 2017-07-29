@@ -1,8 +1,4 @@
-<?php session_start();
-  if(isset($_SESSION['nom'])) {
-    header('Location: account.php');
-  }
-?>
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,16 +8,13 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="EDISOFT">
+    <meta name="author" content="">
     <link rel="shortcut icon" href="assets/img/logo.png">
 
-    <title>Atout Protect - Espace membre</title>
+    <title>Atout Protect - Réinitialisation du mot de passe</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="assets/css/style.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="assets/css/font-awesome.css" rel="stylesheet">
@@ -29,11 +22,8 @@
     <!-- Custom styles for this template -->
     <link href="assets/css/main.css" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="assets/js/jquery-ui.js"></script>
-
-    <link href="assets/css/toast.css" rel="stylesheet">
-    <script src="assets/js/jquery.toast.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,7 +38,7 @@
                $(this).find('ul').toggle();
           });
       });
-    </script>
+  </script>
 
   <script>
     $(document).ready(function () {
@@ -83,7 +73,6 @@
       });
     });
   </script>
-
   </head>
 
   <body>
@@ -101,8 +90,7 @@
           <?php if(isset($_SESSION['nom'])) { ?>
             <br /><br /><br /><br />
             <div id="moncompte">
-              <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;
-              <img src="assets/img/submenu.png"></img>
+              <font color="#D8D6D6">&nbsp;&nbsp;Bienvenue <?php echo $_SESSION['nom']; ?>&nbsp;<?php echo $_SESSION['prenom']; ?></font>&nbsp;&nbsp;<img src="assets/img/submenu.png"></img>
                 <ul style="display:none;">
                   <li id="compte" style='color:white'>
                     <a href="account.php" style='color:white' onmouseover="this.style.color='#CCCCCC'" onmouseout="this.style.background='';this.style.color='white';"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Mon Compte</a>
@@ -128,19 +116,19 @@
           <ul class="nav navbar-nav navbar-right" id="menu_ul" name="menu_ul">
             <li><a href="index.php" id="accueil" name="accueil" ><i class="fa fa-home fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Accueil</a></li>
             <li><a href="basket.php" id="panier" name="panier" ><i class="fa fa-shopping-cart fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Panier
-							<?php if(isset($_SESSION['panier'])) {
-								if(isset($_SESSION['panier']['logiciel'])) {
-									if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
-										<span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
-									<?php }
-								}
-								else { ?>
-									<span class="badge">0</span>
-								<?php }
-							} else { ?>
-								<span class="badge">0</span>
-							<?php }?>
-						</a></li>
+              <?php if(isset($_SESSION['panier'])) {
+                if(isset($_SESSION['panier']['logiciel'])) {
+                  if(sizeof($_SESSION['panier']['logiciel']) > 0) { ?>
+                    <span class="badge"><?php echo count($_SESSION['panier']['logiciel']); ?></span>
+                  <?php }
+                }
+                else { ?>
+                  <span class="badge">0</span>
+                <?php }
+              } else { ?>
+                <span class="badge">0</span>
+              <?php }?>
+            </a></li>
             <li><a href="about.php" id="apropos" name="apropos" ><i class="fa fa-info fa-lg" style="color:white;" ></i>&nbsp;&nbsp;A propos</a></li>
             <li><a href="contact.php" id="contact" name="contact" ><i class="fa fa-envelope fa-lg" style="color:white;" ></i>&nbsp;&nbsp;Contact</a></li>
             <?php if(isset($_SESSION['nom'])) { ?>
@@ -153,72 +141,49 @@
       </div>
     </div>
 
-
 	<!-- +++++ Contact Section +++++ -->
 
-	<div class="container pt">
-		<div class="row mt" style="margin-top:0px;">
-			<div class="col-lg-6 col-lg-offset-3 centered">
-				<h3>ESPACE MEMBRE :</h3>
+	<div class="container pt" style="margin-bottom:-5%;">
+		<div class="row mt">
+			<div class="col-lg-6 col-lg-offset-3 centered" style="margin-top:-5%;">
+				<h3>REINITIALISATION DE VOTRE MOT DE PASSE</h3>
 				<hr>
+				<p>Veuillez compléter les champs suivant :</p>
         <?php
-  				if (isset($_GET['ErrLog'])){
-  					echo '<div class="isa_error_"><i class="fa fa-times-circle"></i>&nbsp;Adresse email ou mot de passe incorrect.</div><br />';
-  				}
-  			?>
-        <?php
-          if (isset($_GET['OkrNewAcc'])){
-            echo '<div class="isa_success_"><i class="fa fa-check"></i>&nbsp;Votre compte a bien été créé.</div><br />';
-          }
-        ?>
-        <?php
-          if (isset($_GET['SendResetOK'])){
-            echo '<div class="isa_success_"><i class="fa fa-check"></i>&nbsp;Votre mot de passe a bien été réinitialiser. Veuillez vérifier vos emails.</div><br />';
-          }
-        ?>
-        <?php
-          if (isset($_GET['OkNewMdp'])){
-            echo '<div class="isa_success_"><i class="fa fa-check"></i>&nbsp;Votre mot de passe a bien été mis à jour. Vous pouvez vous connecter avec votre nouveau mot de passe.</div><br />';
+          if (isset($_GET['ErrMdp'])){
+            echo '<div class="isa_error_">Les deux mots de passes saisis correspondent pas. Veuillez ré-essayer.</div><br />';
           }
         ?>
 			</div>
 		</div>
-
-      <div class="row mt">
-        <div style="float:left;padding-left:10px;width:75%">
-    			<div role="form" class="col-lg-8 col-lg-offset-2">
-    				<form method="POST" action="modules/Connexion.php" id="login" style="font-size:27px;">
-              <div class="input-group">
-                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-envelope" style="color:black;font-size:12px;"></span></span>
-                <input type="email" class="form-control" style="width:75%;font-size:16px;" id="InputEmail1" name="InputEmail1" placeholder="Email" autocomplete="off" autofocus="on" aria-describedby="sizing-addon2">
-              </div><br />
-              <div class="input-group">
-                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
-                <input type="password" class="form-control" style="width:75%;font-size:16px;" id="InputPassword1" name="InputPassword1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
-              </div>
-              <p style="margin-left:250px;"><a href="recover.php">Mot de passe oublié ?</a></p>
-              <div align="center">
-                <button type="submit" class="btn btn-success" style="width:76%;margin-left:-136px" id="seconnecter">
-                  <span class="glyphicon glyphicon-log-in" style="color:white;font-size:12px;"></span>
-                  &nbsp;&nbsp;SE CONNECTER
-                </button>
-              </div>
-    				</form>
-    			</div>
-          <br /> <div class="vertical-row"></div>
+		<div class="row mt">
+			<div class="col-lg-8 col-lg-offset-2" style="margin-top:-32px;">
+        <div role="form" class="col-lg-8 col-lg-offset-2">
+          <form method="POST" action="modules/SaveNewMdp.php" id="login" style="font-size:27px;">
+            <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-envelope" style="color:black;font-size:12px;"></span></span>
+              <input disabled value="<?php echo $_SESSION['email_reset_mdp']; ?>" type="email" class="form-control" style="width:75%;font-size:16px;" id="email_newmdp" name="email_newmdp" placeholder="Email" autocomplete="off" autofocus="on" aria-describedby="sizing-addon2">
+            </div><br />
+            <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
+              <input type="password" class="form-control" style="width:75%;font-size:16px;" id="Pass1" name="Pass1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
+            </div><br />
+            <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock" style="color:black;font-size:12px;"></span></span>
+              <input type="password" class="form-control" style="width:75%;font-size:16px;" id="ConfirmPass1" name="ConfirmPass1" placeholder="Mot de passe" autocomplete="off" aria-describedby="sizing-addon2">
+            </div><br />
+            <div align="center">
+              <button type="submit" class="btn btn-success" style="width:76%;margin-left:-136px" id="seconnecter">
+                <span class="glyphicon glyphicon-log-in" style="color:white;font-size:12px;"></span>
+                &nbsp;&nbsp;ENVOYER
+              </button>
+            </div>
+          </form>
         </div>
-
-        <div style="float:right;padding-right:10px;width:25%">
-    			<div role="form" class="col-lg-8 col-lg-offset-2">
-              <div><br /><br /><br /><br />
-                <a href="createaccount.php">
-                  <button type="submit" class="btn btn-success" style="width:105%" ><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Créer un compte</button>
-                </a>
-              </div>
-    			</div>
-        </div>
-  		</div><!-- /row -->
+			</div>
+		</div><!-- /row -->
 	</div><!-- /container -->
+  <br /><br />
 
 	<!-- +++++ Footer Section +++++ -->
 
@@ -259,5 +224,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="assets/js/bootstrap.min.js"></script>
+
   </body>
 </html>

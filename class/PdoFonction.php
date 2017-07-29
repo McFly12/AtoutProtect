@@ -25,6 +25,15 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
+	/* 							RECUP SPECIFIC NOM LOGICIEL										*/
+	public function GetNomLogiciel($id) {
+		parent::connexion();
+		$result = parent::requete('SELECT Nom FROM logiciel WHERE id ="'.$id.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
 	/* 									 SUPPRIME UN COMPTE									 			*/
 	public function DeleteLogiciel($nomlogiciel) {
 		parent::connexion();
@@ -255,6 +264,24 @@ class PdoFonction extends PdoBdd {
 	public function RecupPrix($nom,$type,$abo) {
 		parent::connexion();
 		$result = parent::requete('SELECT prix FROM prix_catalogue WHERE nom_logiciel ="'.$nom.'" AND nom_type_licence ="'.$type.'" AND nom_type_abo ="'.$abo.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					 MET A JOUR LE MDP DE L'UTILISATEUR 	 		 	*/
+	public function MAJResetMdp($mail,$mdp){
+		parent::connexion();
+		$result = parent::requete('UPDATE utilisateur U SET U.Mdp="'.$mdp.'" WHERE U.Email="'.$mail.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 					VERIFIE LE NOUVEAU MDP DE L'UTILISATEUR 	 		 	*/
+	public function VerifMAJResetMdp($mail,$mdp){
+		parent::connexion();
+		$result = parent::requete('SELECT * FROM utilisateur U WHERE U.Mdp="'.$mdp.'" AND U.Email="'.$mail.'"');
 		parent::deconnexion();
 		return $result;
 	}
