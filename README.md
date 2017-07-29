@@ -31,11 +31,11 @@ Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "vers
 ## Historique des releases
 
 * 1.2
-    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/V1.2)
+    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.2)
 * 1.1
-    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/V1.1)
+    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.1)
 * 1.0
-    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/V1.0)
+    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.0)
 * 0.8
     * [Pre-release - Initial](https://github.com/YvanMARTY/AtoutProtect/releases/tag/Initial)
 
