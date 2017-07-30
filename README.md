@@ -7,14 +7,15 @@
 ## Introduction
 
 Nous sommes deux étudiants à la tête de ce projet :
-- **Yvan MARTY**
-- **Florent CASSAGNE**
+* **Yvan MARTY**
+* **Florent CASSAGNE**
 
 ## Pre-requis
 
 Pour tester notre site WEB, vous avez besoin de :
-- MySQL
-- Hébergeur WEB
+* [MySQL](https://www.mysql.com/fr/) : Hébergement de la base de données
+* [Fichiers sources du site WEB](https://github.com/YvanMARTY/AtoutProtect/archive/master.zip)
+* Hébergeur WEB
 
 ## Développé avec
 
