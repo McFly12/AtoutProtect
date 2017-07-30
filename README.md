@@ -30,6 +30,8 @@ Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "vers
 
 ## Historique des releases
 
+* 1.5
+    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.5)
 * 1.2
     * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.2)
 * 1.1
