@@ -28,15 +28,15 @@ Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "vers
 
 ## Historique des releases
 
-* 1.5
+* 1.5 | 30/07/2017
     * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.5)
-* 1.2
+* 1.2 | 29/07/2017
     * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.2)
-* 1.1
+* 1.1 | 28/07/2017
     * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.1)
-* 1.0
+* 1.0 | 28/07/2017
     * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/V1.0)
-* 0.8
+* 0.8 | 24/07/2017
     * [Pre-release - Initial](https://github.com/YvanMARTY/AtoutProtect/releases/tag/Initial)
 
 ## Auteur
