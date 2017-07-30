@@ -34,8 +34,35 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 									 SUPPRIME UN COMPTE									 			*/
+	/* 							RECUP SPECIFIC ID LOGICIEL										*/
+	public function GetIdLogiciel($nom) {
+		parent::connexion();
+		$result = parent::requete('SELECT id FROM logiciel WHERE Nom ="'.$nom.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 							RECUP SPECIFIC ID ABONNEMENT									*/
+	public function GetIdAbo($nom) {
+		parent::connexion();
+		$result = parent::requete('SELECT id FROM abonnement WHERE nom ="'.$nom.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 									 SUPPRIME UN LOGICIEL 							 			*/
 	public function DeleteLogiciel($nomlogiciel) {
+		parent::connexion();
+		$result = parent::requete('DELETE FROM prix_catalogue WHERE nom_logiciel = "'.$nomlogiciel.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 									 SUPPRIME UN COMPTE									 			*/
+	public function DeleteLogicielTablePrix($nomlogiciel) {
 		parent::connexion();
 		$result = parent::requete('DELETE FROM logiciel WHERE nom = "'.$nomlogiciel.'"');
 		parent::deconnexion();
@@ -282,6 +309,16 @@ class PdoFonction extends PdoBdd {
 	public function VerifMAJResetMdp($mail,$mdp){
 		parent::connexion();
 		$result = parent::requete('SELECT * FROM utilisateur U WHERE U.Mdp="'.$mdp.'" AND U.Email="'.$mail.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 							 ENREGISTRE LE NOUVEAU LOGICIEL						 			*/
+	public function SavePrixLogiciel($nomlogiciel,$type,$abo,$prix) {
+		parent::connexion();
+		$result = parent::requete("INSERT INTO `prix_catalogue`(`id`, `nom_logiciel`, `nom_type_licence`, `nom_type_abo`, `prix`)
+																VALUES (default,'$nomlogiciel','$type','$abo','$prix')");
 		parent::deconnexion();
 		return $result;
 	}

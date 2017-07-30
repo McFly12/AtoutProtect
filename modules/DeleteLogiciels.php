@@ -8,5 +8,7 @@ if(isset($_GET['nomlogiciel'])) {
 		$nomlogiciel = $_GET['nomlogiciel'];
 
 		$maPdoFonction->DeleteLogiciel($nomlogiciel);
+
+		$maPdoFonction->DeleteLogicielTablePrix($nomlogiciel);
 }
 	?>

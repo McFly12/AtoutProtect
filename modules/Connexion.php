@@ -10,7 +10,7 @@ ini_set('error_reporting', E_ALL);
 $mail = $_POST['InputEmail1'];
 $mdp = $_POST['InputPassword1'];
 
-$u_password = sha1($mdp);
+$u_password = hash('sha256', $mdp);
 
   if ((isset($mail)) && (isset($mdp))) {
     $req = $maPdoFonction->VerifierLogin($mail,$u_password);

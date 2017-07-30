@@ -156,7 +156,7 @@
 				<form role="form">
 				  <div class="form-group">
 				    <input type="text" class="form-control" id="NameInputEmail1" name="NameInputEmail1" placeholder="Votre nom">
-				    <br>
+				    <br />
 				  </div>
 				  <div class="form-group">
 				    <input type="email" class="form-control" id="exampleInputEmail1" name="exampleInputEmail1" placeholder="Adresse email">
@@ -197,7 +197,7 @@
 				<div class="col-lg-4">
 					<h4><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;&nbsp;ATOUT S.A.</h4>
           <p>
-            52 Rue de Limayrac,<br/>
+            50 rue de Limayrac,<br/>
 						05 61 36 08 08, <br/>
 						31 000 TOULOUSE (FRANCE)
 					</p>
@@ -207,7 +207,7 @@
 					<h4>Développé par EDISOFT.</h4>
 				</div><!-- /col-lg-4 -->
         <div id="map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1444.8149786738888!2d1.4703662!3d43.5934235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf724a7f7c5%3A0x6ce447ca66299696!2s52+Rue+de+Limayrac%2C+31500+Toulouse!5e0!3m2!1sen!2sfr!4v1487415612053" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.6394079193233!2d1.4685485158854545!3d43.593226679123376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf7254f26bf%3A0x62ddf85fb62c1df4!2sInstitut+Limayrac!5e0!3m2!1sfr!2sfr!4v1501421918862" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
 			</div>
 

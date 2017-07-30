@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start();
+if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
+  header('Location: index.php');
+}
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -271,7 +275,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
+          <a class="navbar-brand" href="index.php" id='grostitre' name='grostitre'><img src="assets/img/logo2.png" title="Atout Protect" style="font-size:10px;">&nbsp;&nbsp;ATOUT PROTECT</a><br/>
           <?php if(isset($_SESSION['nom'])) { ?>
             <br /><br /><br /><br />
             <div id="moncompte">
@@ -742,7 +746,7 @@
           </div>
     </div>
 
-    <div id="Catalogue" class="tabcontent" style="height:640px;">
+    <div id="Catalogue" class="tabcontent" style="height:940px;">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 style="padding:0;">Logiciels compatibles avec les licences vendues</h3>
@@ -775,7 +779,7 @@
                 </div>
               <?php } ?>
             <?php } ?>
-        </div>
+  </div>
     <br />  <br />
   </section><br />
 
@@ -792,7 +796,7 @@
 
 				<div class="col-lg-4">
 					<h4><i class="fa fa-building-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;ATOUT S.A.</h4>
-          <p>52 Rue de Limayrac,<br/>
+          <p>50 rue de Limayrac,<br/>
 						05 61 36 08 08, <br/>
 						31 000 TOULOUSE (FRANCE)
 					</p>
@@ -802,7 +806,7 @@
 					<h4>Développé par EDISOFT.</h4>
 				</div><!-- /col-lg-4 -->
         <div id="map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1444.8149786738888!2d1.4703662!3d43.5934235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf724a7f7c5%3A0x6ce447ca66299696!2s52+Rue+de+Limayrac%2C+31500+Toulouse!5e0!3m2!1sen!2sfr!4v1487415612053" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.6394079193233!2d1.4685485158854545!3d43.593226679123376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf7254f26bf%3A0x62ddf85fb62c1df4!2sInstitut+Limayrac!5e0!3m2!1sfr!2sfr!4v1501421918862" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
 			</div>
 

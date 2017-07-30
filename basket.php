@@ -837,55 +837,33 @@ if (!$erreur){
 
 										for ($i=0 ;$i < $nbArticles ; $i++)
 										{
-											$nom = $_SESSION['nom'];
+												$nom = $_SESSION['nom'];
 
-											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
-												$logiciel = 'Logiciel 1';
-												$idlogiciel = 1;
-											}
-											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
-												$logiciel = 'Logiciel 2';
-												$idlogiciel = 2;
-											}
+												$logiciel = $_SESSION['panier']['logiciel'][$i];
+												$reqete = $maPdoFonction->GetIdLogiciel($_SESSION['panier']['logiciel'][$i]);
+													if($reqete->rowCount() > 0) {
+														 while($donnees_req = $reqete->fetch()) {
+															 $idlogiciel = $donnees_req['id'];
+														}
+													}
 
-											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-												$type_logiciel_mail = 'Standard';
-											}
-											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-												$type_logiciel_mail = 'Professionnel';
-											}
+												$type_logiciel_mail = $_SESSION['panier']['type'][$i];
+												$type_logiciel = $_SESSION['panier']['type'][$i];
 
-											$type_logiciel = $_SESSION['panier']['type'][$i];
-
-											if($_SESSION['panier']['abonnement'][$i] == "1") {
-												$abo = "1 mois";
-												$abo_id = 1;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "3") {
-												$abo = "3 mois";
-												$abo_id = 3;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "6") {
-												$abo = "6 mois";
-												$abo_id = 6;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "12") {
-												$abo = "1 an";
-												$abo_id = 12;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "0") {
-												$abo = "A vie";
-												$abo_id = 0;
-											}
+												$abo = $_SESSION['panier']['abonnement'][$i];
+												$reqete = $maPdoFonction->GetIdAAbo($_SESSION['panier']['abonnement'][$i]);
+													if($reqete->rowCount() > 0) {
+														 while($donnees_req = $reqete->fetch()) {
+															 $abo_id = $donnees_req['id'];
+														}
+													}
 										}
 
 										// PARAMETRES : $clef,$nom,$logiciel,$abo_id
 										$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$idlogiciel,$type_logiciel_mail,$abo_id);
 
 										$content = $logiciel.' -- '.$type_logiciel_mail.' -- '.$abo.'  : '.$clef;
-										?>
 
-										<?php
 										$to      = $_SESSION['email'];
 						}
 								else if($nbArticles > 1) {
@@ -895,52 +873,31 @@ if (!$erreur){
 											$clef = generation_clefs();
 											$nom = $_SESSION['nom'];
 
-											if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
-												$logiciel = 'Logiciel 1';
-												$idlogiciel = 1;
-											}
-											else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
-												$logiciel = 'Logiciel 2';
-												$idlogiciel = 2;
-											}
+											$logiciel = $_SESSION['panier']['logiciel'][$i];
+											$reqete = $maPdoFonction->GetIdLogiciel($_SESSION['panier']['logiciel'][$i]);
+												if($reqete->rowCount() > 0) {
+													 while($donnees_req = $reqete->fetch()) {
+														 $idlogiciel = $donnees_req['id'];
+													}
+												}
 
-											if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-												$type_logiciel_mail = 'Standard';
-											}
-											if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-												$type_logiciel_mail = 'Professionnel';
-											}
-
+											$type_logiciel_mail = $_SESSION['panier']['type'][$i];
 											$type_logiciel = $_SESSION['panier']['type'][$i];
 
-											if($_SESSION['panier']['abonnement'][$i] == "1") {
-												$abo = "1 mois";
-												$abo_id = 1;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "3") {
-												$abo = "3 mois";
-												$abo_id = 3;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "6") {
-												$abo = "6 mois";
-												$abo_id = 6;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "12") {
-												$abo = "1 an";
-												$abo_id = 12;
-											}
-											else if($_SESSION['panier']['abonnement'][$i] == "0") {
-												$abo = "A vie";
-												$abo_id = 0;
-											}
+											$abo = $_SESSION['panier']['abonnement'][$i];
+											$reqete = $maPdoFonction->GetIdAAbo($_SESSION['panier']['abonnement'][$i]);
+												if($reqete->rowCount() > 0) {
+													 while($donnees_req = $reqete->fetch()) {
+														 $abo_id = $donnees_req['id'];
+													}
+												}
 
 											$content .= $logiciel.' -- '.$type_logiciel_mail.' -- '.$abo.'  : '.$clef.'%0D%0A';
 
 											// PARAMETRES : $clef,$nom,$logiciel,$abo_id
 											$req = $maPdoFonction->EnregistrerLicenceBase($clef,$nom,$idlogiciel,$type_logiciel,$abo_id);
-										} ?>
+										}
 
-										<?php
 										$to      = $_SESSION['email'];
 						 }
 
@@ -951,7 +908,7 @@ if (!$erreur){
 							 $pdf = new PDF( 'P', 'mm', 'A4' );
 							 $pdf->AddPage();
 							 $pdf->addSociete( "\n\n\n\n\n\n\n\n\n\n\n\nATOUT S.A.",
-																 "                    ".utf8_decode("52 Rue de Limayrac,\n").
+																 "                    ".utf8_decode("50 rue de Limayrac,\n").
 																 "                    31 000 TOULOUSE (FRANCE)\n");
 							 $pdf->fact_dev( "Facture_".$_GET['token'], "TEMPO" );
 							 $pdf->temporaire( "ATOUT S.A." );
@@ -987,36 +944,14 @@ if (!$erreur){
 								 $logiciel = "";
 								 $type_logiciel = "";
 								 $abo = "";
-								 if($_SESSION['panier']['logiciel'][$i] == 'Logiciel1') {
-									 $logiciel = 'Logiciel 1';
-								 }
-								 else if($_SESSION['panier']['logiciel'][$i] == 'Logiciel2') {
-									 $logiciel = 'Logiciel 2';
-								 }
-								 if($_SESSION['panier']['type'][$i] == 'standardlogiciel1' || $_SESSION['panier']['type'][$i] == 'standardlogiciel2') {
-									 $type_logiciel = 'Standard';
-								 }
-								 if($_SESSION['panier']['type'][$i] == 'prologiciel1' || $_SESSION['panier']['type'][$i] == 'prologiciel2') {
-									 $type_logiciel = 'Professionnel';
-								 }
 
-								 if($_SESSION['panier']['abonnement'][$i] == "1") {
-									 $abo = "1 mois";
-								 }
-								 else if($_SESSION['panier']['abonnement'][$i] == "3") {
-									 $abo = "3 mois";
-								 }
-								 else if($_SESSION['panier']['abonnement'][$i] == "6") {
-									 $abo = "6 mois";
-								 }
-								 else if($_SESSION['panier']['abonnement'][$i] == "12") {
-									 $abo = "1 an";
-								 }
-								 else if($_SESSION['panier']['abonnement'][$i] == "0") {
-									 $abo = "A vie";
-								 }
+								$logiciel = 'Logiciel 2'$_SESSION['panier']['logiciel'][$i];
 
-								 $amountHT = $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
+								$type_logiciel = $_SESSION['panier']['type'][$i];
+
+								$abo = $_SESSION['panier']['abonnement'][$i];
+
+								$amountHT = $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
 
 								 $line = array( "NOM"    => $logiciel,
 																"TYPE"  => $type_logiciel,
@@ -1104,7 +1039,7 @@ if (!$erreur){
 
   				<div class="col-lg-4">
   					<h4><i class="fa fa-building-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;ATOUT S.A.</h4>
-            <p>52 Rue de Limayrac,<br/>
+            <p>50 rue de Limayrac,<br/>
   						05 61 36 08 08, <br/>
   						31 000 TOULOUSE (FRANCE)
   					</p>
@@ -1114,7 +1049,7 @@ if (!$erreur){
   					<h4>Développé par EDISOFT.</h4>
   				</div><!-- /col-lg-4 -->
 					<div id="map">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1444.8149786738888!2d1.4703662!3d43.5934235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf724a7f7c5%3A0x6ce447ca66299696!2s52+Rue+de+Limayrac%2C+31500+Toulouse!5e0!3m2!1sen!2sfr!4v1487415612053" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.6394079193233!2d1.4685485158854545!3d43.593226679123376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebcf7254f26bf%3A0x62ddf85fb62c1df4!2sInstitut+Limayrac!5e0!3m2!1sfr!2sfr!4v1501421918862" width="380" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
 					</div>
   			</div>
 
