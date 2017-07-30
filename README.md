@@ -10,7 +10,7 @@ Nous sommes deux étudiants à la tête de ce projet :
 - **Yvan MARTY**
 - **Florent CASSAGNE**
 
-### Pre-requis
+## Pre-requis
 
 Pour tester notre site WEB, vous avez besoin de :
 - MySQL
