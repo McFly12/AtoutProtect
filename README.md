@@ -13,7 +13,8 @@ Nous sommes deux étudiants à la tête de ce projet :
 ## Pre-requis
 
 Pour tester notre site WEB, vous avez besoin de :
-* [MySQL](https://www.mysql.com/fr/) : Hébergement de la base de données
+* [MySQL](https://www.mysql.com/fr/)
+    * Hébergement de la base de données
 * [Fichiers sources du site WEB](https://github.com/YvanMARTY/AtoutProtect/archive/master.zip)
 * Hébergeur WEB
 
