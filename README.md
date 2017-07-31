@@ -1,7 +1,7 @@
 ## ATOUT PROTECT <img src="http://www.limayrac.fr/sites/limayrac.fr/files/logo_limayrac.jpg" alt="INSTITUT LIMAYRAC" align="right" />
 
 <br /><br />
-<blockquote> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.
+<blockquote style="text-align:justify;"> Dans le cadre de nos études, nous devons réaliser une DLL capable de vérfier la validité d'une licence.
  Celle-ci peut être achetée via  le site WEB présent sur ce " repository ". Nous sommes étudiants à l'<a href="http://www.limayrac.fr/">Institut Limayrac</a>.</blockquote>
 
 ## Introduction
