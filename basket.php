@@ -945,7 +945,7 @@ if (!$erreur){
 								 $type_logiciel = "";
 								 $abo = "";
 
-								$logiciel = 'Logiciel 2'$_SESSION['panier']['logiciel'][$i];
+								$logiciel = $_SESSION['panier']['logiciel'][$i];
 
 								$type_logiciel = $_SESSION['panier']['type'][$i];
 

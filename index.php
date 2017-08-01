@@ -376,28 +376,28 @@
   <section class="container">
       <?php $reqete = $maPdoFonction->Logiciels();
       			if($reqete->rowCount() > 0) { ?>
-				<div class="container">
-				<div class="row">
-             <?php while($donnees_req = $reqete->fetch()) { ?>
-			         <div class="col-md-4">
-					  <div class="thumbnail">
-						<img src="http://via.placeholder.com/350x200" alt="" class="img-responsive">
-						<div class="caption">
-						  <h4 class="pull-right"></h4>
-						  <h4><?php echo $donnees_req['Nom']; ?></h4>
-						  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-						</div>
-						<div class="btn-ground text-center">
-						<?php $modal = "#product_view".$donnees_req['Nom'];?>
-							<!-- <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Ajouter au panier</button> -->
-							<button type="button" class="btn btn-primary" data-target="#product_view<?php echo $donnees_req['Nom']?>" data-toggle="modal" ><i class="fa fa-search"></i>&nbsp;&nbsp;Plus d'informations</button>
-						</div>
-						<div class="space-ten"></div>
-					  </div>
-					</div>
-            <?php } ?>
-			</div><!-- /row -->
-			</div><!-- /container -->
+        				<div class="container">
+              				<div class="row list-group">
+                           <?php while($donnees_req = $reqete->fetch()) { ?>
+              			         <div class="item col-md-4">
+              					  <div class="thumbnail">
+              						<img src="http://via.placeholder.com/350x200" alt="" class="img-responsive">
+              						<div class="caption">
+              						  <h4 class="pull-right"></h4>
+              						  <h4><?php echo $donnees_req['Nom']; ?></h4>
+              						  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+              						</div>
+              						<div class="btn-ground text-center">
+              						<?php $modal = "#product_view".$donnees_req['Nom'];?>
+              							<!-- <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Ajouter au panier</button> -->
+              							<button type="button" class="btn btn-primary" data-target="#product_view<?php echo $donnees_req['Nom']?>" data-toggle="modal" ><i class="fa fa-search"></i>&nbsp;&nbsp;Plus d'informations</button>
+              						</div>
+              						<div class="space-ten"></div>
+              					  </div>
+              					</div>
+                          <?php } ?>
+              			</div><!-- /row -->
+        		  </div><!-- /container -->
         <?php } ?>
 
 	<?php $reqete = $maPdoFonction->Logiciels();

@@ -72,6 +72,19 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
     </script>
 
     <script>
+    $(document).ready(function() {
+        $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+            e.preventDefault();
+            $(this).siblings('a.active').removeClass("active");
+            $(this).addClass("active");
+            var index = $(this).index();
+            $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+            $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+        });
+    });
+    </script>
+
+    <script>
       $(document).ready(function () {
         $(function(){
           var url = window.location.pathname,
@@ -474,7 +487,9 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
         &nbsp;&nbsp;&nbsp;
       <button class="tablinks" onclick="openCity(event, 'OffresPromotionnelles')">Offres promotionnelles</button>
         &nbsp;&nbsp;&nbsp;
-      <button class="tablinks" onclick="openCity(event, 'Catalogue')">Administration du catalogue</button>
+      <button class="tablinks" onclick="openCity(event, 'Logiciels')">Logiciels</button>
+        &nbsp;&nbsp;&nbsp;
+      <button class="tablinks" onclick="openCity(event, 'AdminstrationDuCatalogue')">Administration du catalogue</button>
     </div>
 
     <div id="Acheteurs" class="tabcontent">
@@ -746,7 +761,7 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
           </div>
     </div>
 
-    <div id="Catalogue" class="tabcontent" style="height:940px;">
+    <div id="Logiciels" class="tabcontent" style="height:940px;">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 style="padding:0;">Logiciels compatibles avec les licences vendues</h3>
@@ -779,7 +794,79 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
                 </div>
               <?php } ?>
             <?php } ?>
-  </div>
+    </div>
+
+    <div id="AdminstrationDuCatalogue" class="tabcontent" style="height:500px;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 style="padding:0;">Administration du catalogue</h3>
+        </div>
+      </div>
+
+              <div class="bhoechie-tab-container" style="margin-right:55px;">
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                    <div class="list-group">
+                      <a href="#" class="list-group-item active text-center">
+                        <h4 class="glyphicon glyphicon-calendar"></h4><br/>Abonnements
+                      </a>
+                      <a href="#" class="list-group-item text-center">
+                        <h4 class="glyphicon glyphicon-list"></h4><br/>Types de licences
+                      </a>
+                    </div>
+                  </div>
+                  <div class=" bhoechie-tab">
+                      <!-- abonnements section -->
+                      <div class="bhoechie-tab-content active" style="height:375px">
+                        <button class="btn btn-success" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          &nbsp;&nbsp;Nouveau type de licence
+                        </button>
+                        <?php $req = $maPdoFonction->TypeLicences();
+                              if($req->rowCount() >= 1) { ?>
+                                <button class="btn btn-danger" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
+                                  <i class="fa fa-minus" aria-hidden="true"></i>
+                                  &nbsp;&nbsp;Supprimer un type de licence
+                                </button><br /><br />
+                            <?php } ?>
+                          <center>
+                            <?php $req_select1 = $maPdoFonction->TypeLicences();
+  															if($req_select1->rowCount() > 0) { ?>
+  																<select class="form-control" id="select_type" name="select_type" style="width:auto">
+  																	<option disabled selected>TYPE</option>
+  																		<?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
+  																				<option value="<?php echo $donnees_req_select1['id']; ?>"><?php echo $donnees_req_select1['Nom']; ?></option>
+  																		<?php } } ?>
+  																</select>
+                          </center>
+                      </div>
+                      <!-- types de licences section -->
+                      <div class="bhoechie-tab-content" style="height:375px;">
+                        <button class="btn btn-success" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          &nbsp;&nbsp;Nouveau type d'abonnement
+                        </button>
+                        <?php $req = $maPdoFonction->Abonnements();
+                              if($req->rowCount() >= 1) { ?>
+                                <button class="btn btn-danger" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
+                                  <i class="fa fa-minus" aria-hidden="true"></i>
+                                  &nbsp;&nbsp;Supprimer un type d'abonnement
+                                </button><br /><br />
+                            <?php } ?>
+                          <center>
+                            <?php $req_select2 = $maPdoFonction->Abonnements();
+  															if($req_select2->rowCount() > 0) { ?>
+  																<select class="form-control" id="select_abonnement" name="select_abonnement" style="width:auto">
+  																	<option disabled selected>ABONNEMENT</option>
+  																		<?php while($donnees_req_select2 = $req_select2->fetch()) { ?>
+  																				<option value="<?php echo $donnees_req_select2['duree']; ?>"><?php echo $donnees_req_select2['nom']; ?></option>
+  																		<?php } } ?>
+  																</select>
+                          </center>
+                      </div>
+                  </div>
+              </div>
+        </div>
+
     <br />  <br />
   </section><br />
 
