@@ -38,7 +38,9 @@
 			bNext.className = settings.nextButtonClass;
 
 			bPrevious.style.marginRight = '8px';
+			bPrevious.style.width = '200px';
 			bNext.style.marginLeft = '8px';
+			bNext.style.width = '200px';
 			container.style.textAlign = "center";
 			container.style.marginBottom = '20px';
 

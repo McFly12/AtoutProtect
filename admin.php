@@ -526,7 +526,7 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
               </thead>
             <?php while($donnees = $req->fetch()) { ?>
               <tr>
-                      <td name='numcommande' id='numcommande' style="text-align:center;"><?php echo $donnees["numTransaction"]; ?></td>
+                      <td name='numcommande' id='numcommande'><?php echo $donnees["numTransaction"]; ?></td>
                       <td><?php echo $donnees["emetteur"]; ?></td>
                       <td name='datecommande' id='datecommande' ><?php echo date("d/m/Y", strtotime($donnees["date"])); ?></td>
                       <td name='montanttotalcommande' id='montanttotalcommande' ><?php echo $donnees["montant"]; ?> €</td>
@@ -806,11 +806,13 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
               <div class="bhoechie-tab-container" style="margin-right:55px;">
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
                     <div class="list-group">
-                      <a href="#" class="list-group-item active text-center">
-                        <h4 class="glyphicon glyphicon-calendar"></h4><br/>Abonnements
+                      <a href="#" class="list-group-item active text-center" style="height:187px;">
+                        <h4 class="glyphicon glyphicon-calendar" style="margin-top:40px;"></h4>
+							<br/>Abonnements
                       </a>
-                      <a href="#" class="list-group-item text-center">
-                        <h4 class="glyphicon glyphicon-list"></h4><br/>Types de licences
+                      <a href="#" class="list-group-item text-center" style="height:187px;">
+                        <h4 class="glyphicon glyphicon-list" style="margin-top:40px;"></h4>
+							<br/>Types de licences
                       </a>
                     </div>
                   </div>
