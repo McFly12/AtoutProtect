@@ -26,7 +26,7 @@ Pour tester notre site WEB, vous avez besoin de :
 
 ## Versioning
 
-Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "versioning". Pour les différentes releases, allez dans la section [Releases](https://github.com/YvanMARTY/AtoutProtect/tags). 
+Nous utilisons [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "versioning". Pour les différentes releases, allez dans la section [Releases](https://github.com/YvanMARTY/AtoutProtect/releases). 
 
 ## Historique des releases
 
