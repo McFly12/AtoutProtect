@@ -26,7 +26,7 @@ Pour tester notre site WEB, vous avez besoin de :
 
 ## Versioning
 
-Nous utilisons le système de [Releases](https://github.com/YvanMARTY/AtoutProtect/releases) de  [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "versioning". 
+Nous utilisons le système de [releases](https://github.com/YvanMARTY/AtoutProtect/releases) de  [GitHub](https://github.com/YvanMARTY/AtoutProtect) pour le "versioning". 
 
 ## Historique des releases
 
