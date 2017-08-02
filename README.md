@@ -30,6 +30,8 @@ Nous utilisons le système de [releases](https://github.com/YvanMARTY/AtoutProte
 
 ## Historique des releases
 
+* 1.6 | 02/08/2017
+    * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.6)
 * 1.5 | 30/07/2017
     * [Release](https://github.com/YvanMARTY/AtoutProtect/releases/tag/1.5)
 * 1.2 | 29/07/2017
