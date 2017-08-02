@@ -61,10 +61,46 @@ class PdoFonction extends PdoBdd {
 	}
 
 	/***************************************************************/
-	/* 									 SUPPRIME UN COMPTE									 			*/
+	/* 									 SUPPRIME UN LOGICIEL DES PRIX			 			*/
 	public function DeleteLogicielTablePrix($nomlogiciel) {
 		parent::connexion();
 		$result = parent::requete('DELETE FROM logiciel WHERE nom = "'.$nomlogiciel.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 									 SUPPRIME UN TYPE DE LOGICIEL				 			*/
+	public function DeleteTypeLogiciel($nomlogiciel) {
+		parent::connexion();
+		$result = parent::requete('DELETE FROM typelicence WHERE Nom = "'.$nomlogiciel.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 									 SUPPRIME UN TYPE DES PRIX					 			*/
+	public function DeleteTypeLogicielTablePrix($nomlogiciel) {
+		parent::connexion();
+		$result = parent::requete('DELETE FROM prix_catalogue WHERE nom_type_licence = "'.$nomlogiciel.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 									 SUPPRIME UN TYPE D'ABO							 			*/
+	public function DeleteAbonnement($nomabo) {
+		parent::connexion();
+		$result = parent::requete('DELETE FROM abonnement WHERE nom = "'.$nomabo.'"');
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 									 SUPPRIME UN TYPE DES PRIX					 			*/
+	public function DeleteAbonnementTablePrix($nomabo) {
+		parent::connexion();
+		$result = parent::requete('DELETE FROM prix_catalogue WHERE nom_type_abo = "'.$nomabo.'"');
 		parent::deconnexion();
 		return $result;
 	}
@@ -245,6 +281,26 @@ class PdoFonction extends PdoBdd {
 		parent::connexion();
 		$result = parent::requete("INSERT INTO `logiciel`(`id`,`Nom`)
 															 VALUES (default,'$nom')");
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 						ENREGISTRE LE NOUVEAU TYPE DE LICENCE	 					*/
+	public function SaveNouvTypeLicence($nom) {
+		parent::connexion();
+		$result = parent::requete("INSERT INTO `typelicence`(`id`,`Nom`)
+															 VALUES (default,'$nom')");
+		parent::deconnexion();
+		return $result;
+	}
+
+	/***************************************************************/
+	/* 						ENREGISTRE LE NOUVEAU TYPE DE LICENCE	 					*/
+	public function SaveNouvAbonnement($nom,$duree) {
+		parent::connexion();
+		$result = parent::requete("INSERT INTO `abonnement`(`id`,`nom`,`duree`)
+															 VALUES (default,'$nom','$duree')");
 		parent::deconnexion();
 		return $result;
 	}

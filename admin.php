@@ -102,27 +102,71 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
     </script>
 
     <script>
-      function DeleteLogiciel(id) {
-        var button = document.getElementById(id);
+      $( document ).ready(function() {
+        $( "#DeleteTypeLicence" ).click(function() {
 
-        if( $('#Catalogue :checkbox:checked').length > 0 ) {
-          $('#Catalogue :checkbox:checked').each(function () {
-            var nomlogiciel = $(this).closest('.thumbnail').find('h3').text();
+          if( $('#AdminstrationDuCatalogue :checkbox:checked').length > 0 ) {
+            $('#AdminstrationDuCatalogue :checkbox:checked').each(function () {
+              var nomlogiciel = $(this).closest('li').text();
+
+                $.ajax({
+                  type: "GET",
+                  url: "modules/DeleteTypeLicence.php",
+                  data: {'nomlogiciel': nomlogiciel},
+                  success: function() {
+                   // window.location.href = "admin.php?id=CodePromotion";
+                  }
+                });
+            });
+
+              window.location.href = "admin.php?id=AdminstrationDuCatalogue";
+          }
+        });
+      });
+    </script>
+    <script>
+      $( document ).ready(function() {
+        $( "#DeleteAbonnement" ).click(function() {
+
+          if( $('#AdminstrationDuCatalogue :checkbox.abonnn:checked').length > 0 ) {
+            $('#AdminstrationDuCatalogue :checkbox.abonnn:checked').each(function () {
+              var nomabo = $(this).closest('li').text();
 
               $.ajax({
-                type: "GET",
-                url: "modules/DeleteLogiciels.php",
-                data: {'nomlogiciel': nomlogiciel},
-                success: function() {
-                 // window.location.href = "admin.php?id=CodePromotion";
-                }
-              });
-          });
+                  type: "GET",
+                  url: "modules/DeleteAbonnement.php",
+                  data: {'nomabo': nomabo},
+                  success: function() {
+                   // window.location.href = "admin.php?id=CodePromotion";
+                  }
+                });
+            });
 
-            window.location.href = "admin.php?id=Catalogue";
-        }
-      }
+              window.location.href = "admin.php?id=AdminstrationDuCatalogue";
+          }
+        });
+      });
     </script>
+
+    <script>
+     function DeleteLogiciel(id) {
+       var button = document.getElementById(id);
+       if( $('#Catalogue :checkbox:checked').length > 0 ) {
+         $('#Catalogue :checkbox:checked').each(function () {
+           var nomlogiciel = $(this).closest('.thumbnail').find('h3').text();
+             $.ajax({
+               type: "GET",
+               url: "modules/DeleteLogiciels.php",
+               data: {'nomlogiciel': nomlogiciel},
+               success: function() {
+                // window.location.href = "admin.php?id=CodePromotion";
+               }
+             });
+         });
+           window.location.href = "admin.php?id=Catalogue";
+       }
+     }
+   </script>
 
     <script type="text/javascript">
       function openModalNouvLogiciel(){
@@ -185,7 +229,64 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
               url: "modules/SaveLogiciel.php",
               data: {'nom': nom},
               success: function() {
-               window.location.href = "admin.php?id=Catalogue";
+               window.location.href = "admin.php?id=Logiciels";
+              }
+          });
+        }
+        else {
+          // Get the snackbar DIV
+          var x = document.getElementById("snackbar")
+
+          // Add the "show" class to DIV
+          x.className = "show";
+
+          // After 3 seconds, remove the show class from DIV
+          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+      }
+    </script>
+    <script>
+      function savetypelicencebdd(id){
+        var button = document.getElementById(id);
+
+        if( document.getElementById("nomtypelicence").value != "" ) {
+            var nom = document.getElementById("nomtypelicence").value;
+
+            $.ajax({
+              type: "GET",
+              url: "modules/SaveTypeLicence.php",
+              data: {'nom': nom},
+              success: function() {
+               window.location.href = "admin.php?id=AdminstrationDuCatalogue";
+              }
+          });
+        }
+        else {
+          // Get the snackbar DIV
+          var x = document.getElementById("snackbar")
+
+          // Add the "show" class to DIV
+          x.className = "show";
+
+          // After 3 seconds, remove the show class from DIV
+          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+      }
+    </script>
+    <script>
+      function saveabonnementbdd(id){
+        var button = document.getElementById(id);
+
+        if( document.getElementById("nomabonnement").value != "" ) {
+            var nom = document.getElementById("nomabonnement").value;
+            var duree = document.getElementById("dureeabonnement").value;
+
+            $.ajax({
+              type: "GET",
+              url: "modules/SaveAbonnement.php",
+              data: {'nom': nom,'duree': duree},
+              success: function() {
+               window.location.href = "admin.php?id=AdminstrationDuCatalogue";
               }
           });
         }
@@ -212,19 +313,26 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
     			var tab_parents = document.getElementsByClassName("tablinks");
     			tab_parents[0].className += " active";
         }
-        if(window.location.search == '?id=CodePromotion') {
-          var element = document.getElementById('CodePromotion');
+        if(window.location.search == '?id=OffresPromotionnelles') {
+          var element = document.getElementById('OffresPromotionnelles');
     			element.style.display = "block";
 
     			var tab_parents = document.getElementsByClassName("tablinks");
     			tab_parents[3].className += " active";
         }
-        if(window.location.search == '?id=Catalogue') {
-          var element = document.getElementById('Catalogue');
+        if(window.location.search == '?id=Logiciels') {
+          var element = document.getElementById('Logiciels');
     			element.style.display = "block";
 
     			var tab_parents = document.getElementsByClassName("tablinks");
     			tab_parents[4].className += " active";
+        }
+        if(window.location.search == '?id=AdminstrationDuCatalogue') {
+          var element = document.getElementById('AdminstrationDuCatalogue');
+    			element.style.display = "block";
+
+    			var tab_parents = document.getElementsByClassName("tablinks");
+    			tab_parents[5].className += " active";
         }
       });
     </script>
@@ -802,72 +910,116 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
           <h3 style="padding:0;">Administration du catalogue</h3>
         </div>
       </div>
+      <div class="container">
+          <div class="row">
 
-              <div class="bhoechie-tab-container" style="margin-right:55px;">
-                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
-                    <div class="list-group">
-                      <a href="#" class="list-group-item active text-center" style="height:187px;">
-                        <h4 class="glyphicon glyphicon-calendar" style="margin-top:40px;"></h4>
-							<br/>Abonnements
-                      </a>
-                      <a href="#" class="list-group-item text-center" style="height:187px;">
-                        <h4 class="glyphicon glyphicon-list" style="margin-top:40px;"></h4>
-							<br/>Types de licences
-                      </a>
-                    </div>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Types de licences</h4>
                   </div>
-                  <div class=" bhoechie-tab">
-                      <!-- abonnements section -->
-                      <div class="bhoechie-tab-content active" style="height:375px">
-                        <button class="btn btn-success" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
-                          <i class="fa fa-plus" aria-hidden="true"></i>
-                          &nbsp;&nbsp;Nouveau type de licence
-                        </button>
-                        <?php $req = $maPdoFonction->TypeLicences();
-                              if($req->rowCount() >= 1) { ?>
-                                <button class="btn btn-danger" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
-                                  <i class="fa fa-minus" aria-hidden="true"></i>
-                                  &nbsp;&nbsp;Supprimer un type de licence
-                                </button><br /><br />
-                            <?php } ?>
-                          <center>
-                            <?php $req_select1 = $maPdoFonction->TypeLicences();
-  															if($req_select1->rowCount() > 0) { ?>
-  																<select class="form-control" id="select_type" name="select_type" style="width:auto">
-  																	<option disabled selected>TYPE</option>
-  																		<?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
-  																				<option value="<?php echo $donnees_req_select1['id']; ?>"><?php echo $donnees_req_select1['Nom']; ?></option>
-  																		<?php } } ?>
-  																</select>
-                          </center>
-                      </div>
-                      <!-- types de licences section -->
-                      <div class="bhoechie-tab-content" style="height:375px;">
-                        <button class="btn btn-success" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
-                          <i class="fa fa-plus" aria-hidden="true"></i>
-                          &nbsp;&nbsp;Nouveau type d'abonnement
-                        </button>
-                        <?php $req = $maPdoFonction->Abonnements();
-                              if($req->rowCount() >= 1) { ?>
-                                <button class="btn btn-danger" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;">
-                                  <i class="fa fa-minus" aria-hidden="true"></i>
-                                  &nbsp;&nbsp;Supprimer un type d'abonnement
-                                </button><br /><br />
-                            <?php } ?>
-                          <center>
-                            <?php $req_select2 = $maPdoFonction->Abonnements();
-  															if($req_select2->rowCount() > 0) { ?>
-  																<select class="form-control" id="select_abonnement" name="select_abonnement" style="width:auto">
-  																	<option disabled selected>ABONNEMENT</option>
-  																		<?php while($donnees_req_select2 = $req_select2->fetch()) { ?>
-  																				<option value="<?php echo $donnees_req_select2['duree']; ?>"><?php echo $donnees_req_select2['nom']; ?></option>
-  																		<?php } } ?>
-  																</select>
-                          </center>
-                      </div>
+                  <div class="modal-body">
+                    <p>Veuillez saisir le nom du nouveau type de licence : </p>
+                      <input id="nomtypelicence" type="text" class="form-control" name="nomtypelicence" placeholder="Nom" required />
                   </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="savetypelicencebdd(this.id);" style="width:100px;height:35px;">Enregistrer</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                  </div>
+                </div>
+
               </div>
-        </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="myModal2" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Abonnements</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>Veuillez saisir le nom du nouveau abonnement : </p>
+                      <input id="nomabonnement" type="text" class="form-control" name="nomabonnement" placeholder="Nom" required /><br />
+                      <input id="dureeabonnement" type="number" min="1" class="form-control" name="dureeabonnement" placeholder="Durée (en jours)" required />
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="saveabonnementbdd(this.id);" style="width:100px;height:35px;">Enregistrer</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+              <div style="margin-left:5%">
+                  <div class="tabbable">
+                      <ul class="nav nav-pills nav-stacked col-sm-4">
+                          <li class="li_b active"><a href="#a" data-toggle="tab" style="color:black"><i class="fa fa-bars" aria-hidden="true"></i> Types de licences</a></li>
+                          <li class="li_b"><a href="#b" data-toggle="tab" style="color:black"><i class="fa fa-calendar" aria-hidden="true"></i> Abonnements</a></li>
+                      </ul>
+                      <div class="tab-content col-md-4" style=";width:auto;height:auto;">
+                          <div class="tab-pane active" id="a"><br />
+                            <button class="btn btn-success" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;" data-toggle="modal" data-target="#myModal">
+                              <i class="fa fa-plus" aria-hidden="true"></i>
+                              &nbsp;&nbsp;Nouveau type de licence
+                            </button>
+                            <?php $req = $maPdoFonction->TypeLicences();
+                                  if($req->rowCount() >= 1) { ?>
+                                    <button class="btn btn-danger" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;" id="DeleteTypeLicence">
+                                      <i class="fa fa-minus" aria-hidden="true"></i>
+                                      &nbsp;&nbsp;Supprimer un type de licence
+                                    </button><br /><br />
+                                <?php } ?>
+                              <center>
+                                <?php $req_select1 = $maPdoFonction->TypeLicences();
+                    								if($req_select1->rowCount() > 0) { ?>
+                    									<div class="list-group">
+                    											<?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
+                                            <li class="list-group-item"><span style="float:left;"><input type="checkbox"></span><?php echo $donnees_req_select1['Nom']; ?></li>
+                    											<?php } } ?>
+                    									</div>
+                              </center><br />
+                          </div>
+                          <div class="tab-pane" id="b"><br />
+                            <button class="btn btn-success" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;" data-toggle="modal" data-target="#myModal2">
+                              <i class="fa fa-plus" aria-hidden="true"></i>
+                              &nbsp;&nbsp;Nouveau type d'abonnement
+                            </button>
+                            <?php $req = $maPdoFonction->Abonnements();
+                                  if($req->rowCount() >= 1) { ?>
+                                    <button class="btn btn-danger" style="display:inline-block;width:300px;margin-left: 5px;padding:0;height:30px;" id="DeleteAbonnement">
+                                      <i class="fa fa-minus" aria-hidden="true"></i>
+                                      &nbsp;&nbsp;Supprimer un type d'abonnement
+                                    </button><br /><br />
+                                <?php } ?>
+                              <center>
+                                <?php $req_select2 = $maPdoFonction->Abonnements();
+                      							if($req_select2->rowCount() > 0) { ?>
+                      								<div class="list-group">
+                      										<?php while($donnees_req_select2 = $req_select2->fetch()) { ?>
+                      												<li class="list-group-item"><span style="float:left;"><input type="checkbox" class="abonnn"></span><?php echo $donnees_req_select2['nom']; ?></li>
+                      										<?php } } ?>
+                      								</div>
+                              </center><br />
+                          </div>
+                      </div>
+                  </div>
+                  <!-- /tabs -->
+              </div>
+
+          </div>
+          <!-- /row -->
+      </div>
+    </div>
 
     <br />  <br />
   </section><br />
