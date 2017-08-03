@@ -445,7 +445,7 @@ if (!$erreur){
 
     <!-- Tab panes -->
 		<!-- Content de chaque onglet -->
-    <div class="tab-content">
+    <div class="tab-content" style="border:1px solid;border-color: #ddd;">
         <div class="tab-pane fade in active" id="A" name="A">
 
 					<?php if (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) { ?>
@@ -697,9 +697,8 @@ if (!$erreur){
 					else { ?><br />
 
 						<div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
-							<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
-							<h3><span style="color:#aab2bc;"></span>Vous êtes connecté en tant que <?php echo $_SESSION['prenom'];?> <?php echo $_SESSION['nom']; ?>.</h3>
-							<p>Si vous voulez vous authentifier avec un autre compte, veuillez vous rendre sur la page de connexion, en vous ayant <a href="modules/session_destroyer.php">déconnecté</a> au préalable.</p>
+							<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:35px;margin-top:0px;"></i></span>
+							<p><span style="color:#aab2bc;"></span>Vous êtes connecté en tant que <b><?php echo $_SESSION['prenom'];?> <?php echo $_SESSION['nom']; ?></b>.</p>
 						</div>
 
 					<?php } ?>

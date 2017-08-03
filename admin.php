@@ -121,6 +121,16 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
 
               window.location.href = "admin.php?id=AdminstrationDuCatalogue";
           }
+		  else {
+			 $.toast({
+				heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+				text: '<p>Veuille cocher une case.</p>',
+				showHideTransition: 'plain',
+				position: 'bottom-center',
+				allowToastClose: false,
+				icon: 'error'
+			})
+		  }
         });
       });
     </script>
@@ -144,6 +154,16 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
 
               window.location.href = "admin.php?id=AdminstrationDuCatalogue";
           }
+		  else {
+			$.toast({
+				heading: '<h2 style="float:left;font-size:20px">Erreur</h2><br /><br />',
+				text: '<p>Veuille cocher une case.</p>',
+				showHideTransition: 'plain',
+				position: 'bottom-center',
+				allowToastClose: false,
+				icon: 'error'
+			})
+		  }
         });
       });
     </script>

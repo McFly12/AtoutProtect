@@ -226,6 +226,6 @@ div.tab button.active {
 .li_b.active > a,
 .li_b.active > a:hover,
 .li_b.active > a:focus {
-	background-color: #fff;
+	background-color: #ccc;
 	color: black;
 }
