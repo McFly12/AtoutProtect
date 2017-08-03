@@ -99,7 +99,7 @@
                    success: function(){
                      $.toast({
                           heading: '<h2 style="float:left;font-size:20px">Succès</h2><br /><br />',
-                          text: '<p>Vous ajout au panier a être pris en compte. Vous pouvez continuer vos achats.</p>',
+                          text: '<p>Votre ajout au panier a être pris en compte. Vous pouvez continuer vos achats.</p>',
                           showHideTransition: 'plain',
                           position: 'bottom-center',
                           allowToastClose: false,
@@ -149,6 +149,17 @@
                  icon: 'error'
              })
           }
+        });
+      });
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $( ".btn-moreinfo" ).click(function() {
+          $('#select_type option:first').attr('selected',true);
+          $('#select_abonnement option:first').attr('selected',true);
+          $('#quantite').val('');
+          $('#prixmodalajax').text('');
         });
       });
     </script>
@@ -390,7 +401,7 @@
               						<div class="btn-ground text-center">
               						<?php $modal = "#product_view".$donnees_req['Nom'];?>
               							<!-- <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Ajouter au panier</button> -->
-              							<button type="button" class="btn btn-primary" data-target="#product_view<?php echo $donnees_req['Nom']?>" data-toggle="modal" ><i class="fa fa-search"></i>&nbsp;&nbsp;Plus d'informations</button>
+              							<button type="button" class="btn btn-primary btn-moreinfo" data-target="#product_view<?php echo $donnees_req['Nom']?>" data-toggle="modal" ><i class="fa fa-search"></i>&nbsp;&nbsp;Plus d'informations</button>
               						</div>
               						<div class="space-ten"></div>
               					  </div>
