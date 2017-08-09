@@ -7,7 +7,7 @@ $maPdoFonction = new PdoFonction();		//Creation d'une instance de la classe PdoF
 //récuperation des variables en POST ou GET
 $nom = (isset($_POST['nom'])? $_POST['nom']:  (isset($_GET['nom'])? $_GET['nom']:null ));
 $quantite = (isset($_POST['quantite'])? $_POST['quantite']:  (isset($_GET['quantite'])? $_GET['quantite']:null ));
-$prix = "10";
+$prix = (isset($_POST['prix'])? $_POST['prix']:  (isset($_GET['prix'])? $_GET['prix']:null ));
 $type = (isset($_POST['type'])? $_POST['type']:  (isset($_GET['type'])? $_GET['type']:null ));
 $abo = (isset($_POST['abo'])? $_POST['abo']:  (isset($_GET['abo'])? $_GET['abo']:null ));
 

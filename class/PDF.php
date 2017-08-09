@@ -139,7 +139,7 @@ class PDF extends FPDF
     // Company
     function addSociete( $nom, $adresse )
     {
-      $this->Image('D:/Yvan/Bureau/ATOUTSA.png',10,10,20,15,'PNG');
+      $this->Image('D:/yvanm/Destktop/ATOUTSA.png',10,10,20,15,'PNG');
         $x1 = 10;
         $y1 = 8;
         //Positionnement en bas

@@ -1,7 +1,10 @@
 <?php
 	include_once("gestionpanier.php");
   require("class/PayPal.php");
+	require('class/PDF.php');
 	require 'PHPMailer/PHPMailerAutoload.php';
+
+	ob_start();
 
 $erreur = false;
 
@@ -59,7 +62,6 @@ if (!$erreur){
          break;
    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -139,136 +141,34 @@ if (!$erreur){
 		});
 	</script>
 
+	<!-- PARAMETRAGE REDIRECTION -->
 	<script>
 		$(document).ready(function () {
-			$( "#ModifierItemBasket" ).click(function() {
-				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
 
-				$(this).closest('tr').find('td:eq(3)').html(' <input type="number" name="nouv_quantite" min="0" value='+quantite_logiciel+'> ');
+			var url_recup = 	window.location.href;
+			var url = new URL(url_recup);
+			var c = url.searchParams.get("PayerID"); // isset($_GET['PayerID']
 
-				var val = $(this).closest('tr').find('td:eq(3)').find('input').val();
-				$(this).closest('tr').find('td:eq(3)').find('input').val(val);
+			// INIT : A L'OUVERTURE DE LA PAGE
+			if(typeof c !== 'undefined') {
 
-				if( $(this).closest('tr').find('td:eq(5)').find('button.btn-success').length == 0 ) {
-					$(this).closest('tr').find('td:eq(5)').append(' <br /><br /><button type="button" class="btn btn-success" style="height:30px;font-size:15px;padding:0;" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
-				}
-				else
-				{
-					$(this).closest('tr').find('td:eq(5)').find('button.btn-success').remove();
-					$(this).closest('tr').find('td:eq(5)').append('<button type="button" class="btn btn-success" style="height:30px;font-size:15px;padding:0;" name="button_save_baket" id="button_save_baket" onclick="SaveFullBasket(this.id)"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Enregistrer</button> ');
-				}
+				// IMPOSSIBLE DE RE-PAYER
+				$('#C').attr('disabled', true);
+				$('#lienTabC').attr('href', '');
 
-			});
+				// SUPPRIMER LE ACTIF SUR LES li
+				$('li.nav').removeClass( "active" );
+
+				// OUVERTURE DU DIV DE LA VALIDATION DU PAIEMENT
+				$('.nav-tabs a[href="#D"]').tab('show');
+			}
+
 		});
 	</script>
-
-	<script>
-		function SaveFullBasket(button_id) {
-			var button = document.getElementById(button_id);
-
-			var nom_logiciel = $(button).closest('tr').find('td:eq(0)').text();
-			var type_logiciel = $(button).closest('tr').find('td:eq(1)').text();
-			var abo_logiciel = $(button).closest('tr').find('td:eq(2)').text();
-			var quantite_logiciel = $(button).closest('tr').find('td:eq(3)').find('input').val();
-
-			$(button).closest('tr').find('td:eq(3)').html(quantite_logiciel);
-
-				$.ajax({
-					url: "modules/SaveModifFullBasket.php",
-					data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel},
-					success: function(){
-						// similar behavior as an HTTP redirect
-						window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
-		    	}
-			});
-
-			$(button).remove();
-		}
-	</script>
-
-	<script>
-		$(document).ready(function () {
-			$( ".deleteItemBasket" ).click(function() {
-
-				var nom_logiciel = $(this).closest('tr').find('td:eq(0)').text();
-				var type_logiciel = $(this).closest('tr').find('td:eq(1)').text();
-				var abo_logiciel = $(this).closest('tr').find('td:eq(2)').text();
-				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
-				var th = $(this);
-				$(this).closest('tr').remove();
-
-					$.ajax({
-						url: "modules/SaveSupprimerFullBasket.php",
-						data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel},
-						success: function(){
-							// similar behavior as an HTTP redirect
-							window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
-						}
-					});
-			});
-		});
-	</script>
-
-		<script>
-			function InputCodePromo() {
-				$('#CodePromoModalInput').modal();
-			}
-		</script>
-
-		<script>
-			function ApplyPromo() {
-				var code = document.getElementById('codepromo_input').value;
-
-				var pourcentage_reduc = "";
-
-				$.ajax({
-					type: "GET",
-					data: {'code': code},
-					url: 'modules/VerifCodePromo.php',
-					dataType: 'json',
-					success: function(json) {
-						var len = json.length;
-							if(len > 0) {
-								$.each(json, function(value, key) {
-										pourcentage_reduc = key.pourcentage_reduc;
-										$.ajax({
-											type: "GET",
-											data: {'pourcentage_reduc': pourcentage_reduc},
-											url: 'modules/UpdateRemise.php',
-											success: function() {
-												$('#CodePromoModalInput').modal('toggle');
-												location.reload();
-											}
-										});
-								});
-							}
-						}
-					});
-
-			}
-		</script>
 
 	</head>
 
 	<body>
-
-		<div class="modal fade" id="CodePromoModalInput" tabindex="-1" role="dialog" aria-labelledby="CodePromoModalInput" aria-hidden="true">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		            <h4 class="modal-title" id="myModalLabel">Votre code promotion</h4>
-		            </div>
-		            <div class="modal-body">
-		                <input id="codepromo_input" type="text" class="form-control" maxlength="10" name="codepromo_input" placeholder="Code promotion" required />
-		            </div>
-		            <div class="modal-footer">
-									<button type="button" class="btn btn-primary" style="width:100px;height:35px;" onclick="ApplyPromo();">Appliquer</button>
-		              <button type="button" class="btn btn-default" data-dismiss="modal" style="width:100px;height:35px;">Annuler</button>
-		        </div>
-		    </div>
-		  </div>
-		</div>
 
 		<!-- Static navbar -->
 		<!-- MENU -->
@@ -337,110 +237,66 @@ if (!$erreur){
 
 <br />
 
-<?php if(!isset($_GET['PayPalOk'])) { ?>
-	<div class="alert alert-warning" style="margin-left:2%;margin-right:2%;text-align:center;">
-  	<strong> Attention ! Si vous vous déconnectez de votre compte, votre panier sera perdu. </strong>
-	</div><br />
-<?php }
-else if(isset($_GET['PayPalOk'])) {
-} ?>
 
 <!-- Static navbar -->
 <!-- ONGLETS -->
 <div class="container" style="width:100%">
     <ul class="nav nav-tabs">
-        <li class="nav" style="width:25%" id="lienTabA" name="lienTabA">
+        <li class="nav active" style="width:25%" id="lienTabA" name="lienTabA">
 					<a href="#A" data-toggle="tab">
 					<i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
 						&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Panier</font>
 					</a>
 				</li>
-        <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-					<a>
+        <li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
+					<a href="#B" data-toggle="tab">
 						<span class="glyphicon glyphicon-user" style="font-size:inherit;color:#555555"></span>
 							&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Inscription / Connexion</font>
 					</a>
 				</li>
-
-				<?php if(!isset($_SESSION['nom'])) { ?>
-	        <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-						<a>
-							<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-								&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
-						</a>
-					</li>
-					<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-						<a>
-							<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-								&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
-						</a>
-					</li>
-				<?php }
-				 	else {
-						if(isset($_GET['PayPalOk'])) { ?>
-						<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-							<a>
+						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
+							<a href="#C" data-toggle="tab" id="lienTabC">
 								<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
 									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
 							</a>
 						</li>
-						<?php }
-						else { ?>
-							<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
-								<a href="#C" data-toggle="tab" id="lienTabC">
-									<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
-								</a>
-							</li>
-						<?php } ?>
-						<?php if(isset($_GET['PayPalOk'])) { ?>
-										<li class="nav active" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
-											<a href="#D" data-toggle="tab">
-												<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-													&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
-											</a>
-										</li>
-									<?php }
-						 else { ?>
-							 <li class="nav active" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
- 								<a href="#D" data-toggle="tab">
- 									<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
- 										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
- 								</a>
- 							</li>
-					<?php }
-					} ?>
+						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
+							<a href="#D" data-toggle="tab">
+								<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
+							</a>
+						</li>
 
     </ul>
 
     <!-- Tab panes -->
 		<!-- Content de chaque onglet -->
-    <div class="tab-content">
-	     <div class="tab-pane fade" id="A" name="A">
-				 <br/> <br/>
-					<div class="alert alert-info" style="width:50%;text-align:center;float: none;margin: 0 auto;">
-				  	<strong> <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Votre panier est vide. </strong>
-					</div>
-			</div>
-
-	     <div class="tab-pane fade" id="B" name="B"><br />
-			</div>
-
-			<div class="tab-pane fade" id="C" name="C">
-			</div>
-
-			<div class="tab-pane fade in active" id="D" name="D"><br />
-
-
-				<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
-					<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
-					<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
-					<p>Votre numéro de transaction est : <b><?php echo $_GET['token']; ?></b>. Le montant de celle-ci est de <b><?php echo number_format($_SESSION['totalTVA'], 2, ',', ' ') ?> €.</b></p>
-					<br /><p>Les clefs de licences commandées ainsi que la facture, vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p><br />
+    <div class="tab-content" style="border:1px solid;border-color: #ddd;">
+        <div class="tab-pane fade in active" id="A" name="A">
 				</div>
 
-			</div>
-	  </div>
+        <div class="tab-pane fade" id="B" name="B"><br />
+
+				</div>
+
+
+				<div class="tab-pane fade" id="C" name="C">
+
+				</div>
+
+				<div class="tab-pane fade" id="D" name="D"><br />
+
+					<br/><div class="alert alert-success" style="margin-left:2%;margin-right:2%;text-align:center;">
+						<span><i class="fa fa-check" aria-hidden="true" style="float:left;font-size:50px;margin-top:20px;"></i></span>
+						<h3><span style="color:#aab2bc;"></span>Votre paiement PayPal a été validé.</h3>
+						<p>Votre numéro de transaction est : <b><?php echo $_GET['token']; ?></b>. Le montant de celle-ci est de <b><?php echo number_format($_SESSION['totalTVA'], 2, ',', ' ') ?> €.</b></p>
+						<br /><p>Les clefs de licences commandées ainsi que la facture, vous seront envoyés à l'adresse email suivante : <b><?php echo $_SESSION['email']; ?></b></p><br />
+					</div>
+
+				</div>
+
+	 </div>
+ </div>
 
 <br />
 

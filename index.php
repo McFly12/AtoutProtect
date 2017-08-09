@@ -89,13 +89,14 @@
           var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
           var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
           var quantite = $(this).closest('div.modal').find("#quantite").val();
+          var prix = $(this).closest('div.modal').find("#prixmodalajax").text().replace(' €','');
 
           if(select_type != "TYPE") {
              if(select_abonnement != "ABONNEMENT") {
                if(quantite >= 1) {
                  $.ajax({
                    url: "modules/AjouterAuPanier.php",
-                   data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement ,'quantite': quantite},
+                   data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement ,'quantite': quantite, 'prix' : prix},
                    success: function(){
                      $.toast({
                           heading: '<h2 style="float:left;font-size:20px">Succès</h2><br /><br />',
@@ -166,48 +167,7 @@
 
     <script>
       $(document).ready(function () {
-        $( "#select_type" ).change(function() {
-          var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
-          var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
-          var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
-
-          var th = $(this);
-
-          if(select_type != "TYPE") {
-             if(select_abonnement != "ABONNEMENT") {
-                  $(this).closest('div.modal').find('#prixmodalajax').val('');
-                  // AJAX
-                  $.ajax({
-                    type: "GET",
-                    url: "modules/GetPriceSelection.php",
-                    data: {'nom': select_nom ,'type': select_type ,'abo': select_abonnement},
-                    dataType: 'json',
-                    success: function(json){
-                      var len = json.length;
-                      if(len > 0) {
-                        $.each(json, function(value, key) {
-                          $(th).closest('div.modal').find('#prixmodalajax').text(key.prix);
-                          var text = $(th).closest('div.modal').find('#prixmodalajax').text();
-                          var val = parseFloat(text).toFixed(2);
-                          $(th).closest('div.modal').find('#prixmodalajax').text(val+' €');
-                        });
-                      }
-                      else {
-                        $(th).closest('div.modal').find('#prixmodalajax').text('');
-                      }
-                    },
-                    error: function() {
-                      $(th).closest('div.modal').find('#prixmodalajax').text('');
-                    }
-                  });
-             }
-           }
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function () {
-             $("#select_abonnement").on('change', function() {
+             $(".select").on('change', function() {
           var select_nom = $(this).closest('div.modal').find("h3.modal-title").text();
           var select_type = $(this).closest('div.modal').find("#select_type :selected").text();
           var select_abonnement = $(this).closest('div.modal').find("#select_abonnement :selected").text();
@@ -442,7 +402,7 @@
 												<div class="col-md-4 col-sm-6 col-xs-12">
 													<?php $req_select1 = $maPdoFonction->TypeLicences();
 															if($req_select1->rowCount() > 0) { ?>
-																<select class="form-control" id="select_type" name="select_type">
+																<select class="form-control select" id="select_type" name="select_type">
 																	<option disabled selected>TYPE</option>
 																		<?php while($donnees_req_select1 = $req_select1->fetch()) { ?>
 																				<option value="<?php echo $donnees_req_select1['id']; ?>"><?php echo $donnees_req_select1['Nom']; ?></option>
@@ -453,7 +413,7 @@
 												<div class="col-md-4 col-sm-6 col-xs-12">
 													<?php $req_select2 = $maPdoFonction->Abonnements();
 															if($req_select2->rowCount() > 0) { ?>
-																<select class="form-control" id="select_abonnement" name="select_abonnement">
+																<select class="form-control select" id="select_abonnement" name="select_abonnement">
 																	<option disabled selected>ABONNEMENT</option>
 																		<?php while($donnees_req_select2 = $req_select2->fetch()) { ?>
 																				<option value="<?php echo $donnees_req_select2['duree']; ?>"><?php echo $donnees_req_select2['nom']; ?></option>

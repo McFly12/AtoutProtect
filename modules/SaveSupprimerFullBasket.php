@@ -9,16 +9,17 @@ $nom = $_GET['nom'];
 $type = $_GET['type'];
 $abo = $_GET['abo'];
 $quantite = $_GET['quantite'];
+$prix = $_GET['prix'];
 
 
-if((isset($nom)) && (isset($type)) && (isset($abo)) && (isset($quantite))) {
+if((isset($nom)) && (isset($type)) && (isset($abo)) && (isset($quantite)) && (isset($prix))) {
   /* On compte le nombre d'articles différents dans le panier */
   $nb_articles = count($_SESSION['panier']['logiciel']);
 
   /* On parcoure le tableau de session pour modifier l'article précis. */
   for($i = 0; $i < $nb_articles; $i++)
   {
-    if($nom == $_SESSION['panier']['logiciel'][$i] && $type == $_SESSION['panier']['type'][$i] && $abo == $_SESSION['panier']['abonnement'][$i])
+    if($nom == $_SESSION['panier']['logiciel'][$i] && $type == $_SESSION['panier']['type'][$i] && $abo == $_SESSION['panier']['abonnement'][$i] && $prix == $_SESSION['panier']['prix'][$i])
     {
         unset($_SESSION['panier']['logiciel'][$i]);
         unset($_SESSION['panier']['type'][$i]);

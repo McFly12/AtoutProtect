@@ -147,20 +147,23 @@ if (!$erreur){
 
 			var url_recup = 	window.location.href;
 			var url = new URL(url_recup);
-			var c = url.searchParams.get("PayPalOk");
+			var c = url.searchParams.get("PayerID"); // isset($_GET['PayerID']
 
 			// INIT : A L'OUVERTURE DE LA PAGE
-			if(c == 'OK') {
+			if(typeof c !== 'undefined') {
 
 				// IMPOSSIBLE DE RE-PAYER
 				$('#C').attr('disabled', true);
 				$('#lienTabC').attr('href', '');
 
 				// SUPPRIMER LE ACTIF SUR LES li
-				$('#lienTabA').removeClass( "active" );
+				$('li.nav').removeClass( "active" );
 
 				// OUVERTURE DU DIV DE LA VALIDATION DU PAIEMENT
-				$('.nav-tabs a[href="#D"]').tab('show');
+				// $('.nav-tabs a[href="#D"]').tab('show');
+				$('div#D').addClass('in active');
+				//     display: block;
+    		// visibility: visible;
 			}
 
 		});
@@ -179,7 +182,7 @@ if (!$erreur){
 		$(document).ready(function () {
 			$( "#GoToConnecter" ).click(function() {
 				$('#B').addClass( "active in" );
-				$('.nav-tabs a[href="#B"]').show();
+				$('.nav-tabs a[href="#B"]').tab('show');
 			});
 		});
 	</script>
@@ -239,12 +242,11 @@ if (!$erreur){
 				var type_logiciel = $(this).closest('tr').find('td:eq(1)').text();
 				var abo_logiciel = $(this).closest('tr').find('td:eq(2)').text();
 				var quantite_logiciel = $(this).closest('tr').find('td:eq(3)').text();
-				var th = $(this);
-				$(this).closest('tr').remove();
+				var prix_logiciel = $(this).closest('tr').find('td:eq(4)').text().replace(' €','');
 
 					$.ajax({
 						url: "modules/SaveSupprimerFullBasket.php",
-						data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel},
+						data: {'nom': nom_logiciel ,'type': type_logiciel ,'abo': abo_logiciel ,'quantite': quantite_logiciel, 'prix': prix_logiciel},
 						success: function(){
 							// similar behavior as an HTTP redirect
 							window.location.replace("http://localhost/atoutprotect/basket.php?SaveFullBasketOK");
@@ -399,47 +401,18 @@ if (!$erreur){
 							&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Inscription / Connexion</font>
 					</a>
 				</li>
-
-				<?php
-				$nbArticles = count($_SESSION['panier']);
-				if(!isset($_SESSION['nom']) || $nbArticles == 0) {  ?>
-	        <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-						<a>
-							<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-								&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
-						</a>
-					</li>
-					<li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
-						<a>
-							<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-								&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
-						</a>
-					</li>
-				<?php }
-				 	else {?>
-						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'">
-							<a href="#C" data-toggle="tab" id="lienTabC">
+						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabC">
+							<a href="#C" data-toggle="tab">
 								<i class="fa fa-credit-card" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
 									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Paiement</font>
 							</a>
 						</li>
-						<?php if(isset($_GET['PayPalOk']) && $_GET['PayPalOk'] == "OK") { ?>
-										<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
-											<a href="#D" data-toggle="tab">
-												<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
-													&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
-											</a>
-										</li>
-									<?php }
-						 else { ?>
-							 <li class="nav" style="width:25%" onmouseover="style='cursor:not-allowed;width:25%'" onmouseover="style='cursor:default;width:25%'">
- 								<a>
- 									<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
- 										&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
- 								</a>
- 							</li>
-					<?php }
-					} ?>
+						<li class="nav" style="width:25%" onmouseover="style='cursor:pointer;width:25%'" onmouseover="style='cursor:default;width:25%'" id="lienTabD" name="lienTabD">
+							<a href="#D" data-toggle="tab">
+								<i class="fa fa-check" aria-hidden="true" style="font-size:inherit;color:#555555"></i>
+									&nbsp;&nbsp;<font color="#555555" style="font-weight:bold;font-size:16px;">Validation</font>
+							</a>
+						</li>
 
     </ul>
 
@@ -493,7 +466,7 @@ if (!$erreur){
 																echo "<td>".$_SESSION['panier']['type'][$i]."</td>";
 																echo "<td>".$_SESSION['panier']['abonnement'][$i]."</td>";
 															  echo "<td>".htmlspecialchars($_SESSION['panier']['quantite'][$i])."</td>";
-															  echo "<td>".htmlspecialchars(number_format($_SESSION['panier']['prix'][$i], 2, ',', ' '))." &euro;</td>";
+															  echo "<td>".$_SESSION['panier']['prix'][$i]." &euro;</td>";
 																echo '<td>'; ?>
 																	<button type="button" class="btn btn-primary" style="width:150px;height:30px;font-size:15px;padding:0;" id="ModifierItemBasket" name="ModifierItemBasket">
 																		<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbsp;Modifier
@@ -545,7 +518,7 @@ if (!$erreur){
 											?>
 									</tbody>
 								</table>
-								<?php if(!isset($_GET['PayPalOk'])) { ?>
+								<?php if( !isset($_GET['PayerID']) ) { ?>
 									<!-- <p style="margin-left:0 auto;margin-left: 7px;margin-top: -20px;" id="link_codepromo" onclick="InputCodePromo();">
 										<a style="cursor:pointer;">
 											Vous avez un code promotion ?
@@ -556,7 +529,7 @@ if (!$erreur){
 								<br /><br />
 
 								<?php $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-									if(parse_url($url, PHP_URL_QUERY) != "PayPalOk") { ?>
+									if( !isset($_GET['PayerID']) ) {?>
 										<button type="button" class="btn btn-primary" style="float:left;width:20%;margin-left:1%;font-size: 17px;">
 											<a href="index.php" style="text-decoration:none;color:inherit;">
 												<span class="glyphicon glyphicon-backward" style="font-size:15px;color:white;"></span>
@@ -712,7 +685,7 @@ if (!$erreur){
           $paypal = new PayPal();
 
 					    $params = array(
-					      'RETURNURL' => 'http://localhost/atoutprotect/basket.php?PayPalOk=OK',
+					      'RETURNURL' => 'http://localhost/atoutprotect/basket.php',
 					      'CANCELURL' => 'http://localhost/atoutprotect/basket.php?ErrPayPal',
 
 					      'PAYMENTREQUEST_0_AMT' => $_SESSION['totalTVA'],
@@ -973,7 +946,6 @@ if (!$erreur){
 										 $new = 'C:/wamp/www/AtoutProtect/factures/'.$_SESSION['nom'].'/Facture_ATOUTSA_'.$_GET['token'].'.pdf';
 										 copy($old, $new);
 										 sleep(1);
-										 unlink('C:/wamp/www/AtoutProtect/Facture_ATOUTSA.pdf');
 								} else {
 								    $pdf->Output("Facture_ATOUTSA.pdf", "F");
 								}
@@ -1002,13 +974,13 @@ if (!$erreur){
 								    echo 'Message could not be sent.';
 								    echo 'Mailer Error: ' . $mail->ErrorInfo;
 								} else {
-								    echo 'Message has been sent';
-										sleep(1);
+										unset($_SESSION['panier']);
 										// similar behavior as an HTTP redirect
-										?><script>
+										?><script> setTimeout(function(){
 											var url_recup = window.location.href;
 											var parametres = url_recup.substring(url_recup.lastIndexOf('?')+1);
 												window.location.replace("http://localhost/atoutprotect/basket_success.php?"+parametres);
+										 }, 622);
 										</script><?php
 								}
 
