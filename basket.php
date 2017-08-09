@@ -179,7 +179,7 @@ if (!$erreur){
 		$(document).ready(function () {
 			$( "#GoToConnecter" ).click(function() {
 				$('#B').addClass( "active in" );
-				$('.nav-tabs a[href="#B"]').tab('show');
+				$('.nav-tabs a[href="#B"]').show();
 			});
 		});
 	</script>
@@ -739,28 +739,27 @@ if (!$erreur){
 
               <br />
               <h3 align="center" style="font-size:20px;">Veuillez choisir votre mode de paiement :</h3><hr>
-							<br /><br />
+							<div class="columns" style="margin-left:30%;">
+								<ul class="price">
+								<li class="header"><img src="assets/img/PayPal.png"></img>&nbsp;PayPal</li>
+								<div style=""></div>
+								<li class="grey" style="font-size:14px">PayPal est un service de paiement en ligne qui permet de payer des achats, de recevoir des paiements, ou d’envoyer et de recevoir de l’argent.</li>
+								<li class="grey" style="background-color:#FFF"><a href="<?php echo $paypal ?>" class="button">Accéder</a></li>
+								</ul>
+							</div>
+							<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
 										<!-- <div class="container">
-											<div class="row" > -->
-
-												<div class="columns" style="margin-left:30%;">
-													<ul class="price">
-													<li class="header"><img src="assets/img/PayPal.png"></img>&nbsp;PayPal</li>
-													<div style=""></div>
-													<li class="grey" style="font-size:14px">PayPal est un service de paiement en ligne qui permet de payer des achats, de recevoir des paiements, ou d’envoyer et de recevoir de l’argent.</li>
-													<li class="grey" style="background-color:#FFF"><a href="<?php echo $paypal ?>" class="button">Accéder</a></li>
-													</ul>
-												</div>
-
-												<!-- <div class="columns" style="margin-left:10%;">
+											<div class="row" >
+												<div class="columns" style="margin-left:10%;">
 													<ul class="price">
 													<li class="header"><img src="assets/img/MasterCard.png"></img>&nbsp;HiPay (ex: AlloPass)</li>
 													<li class="grey" style="font-size:14px">AlloPass s’adresse aux marchands et aux internautes pour le micropaiement de biens digitaux (inscriptions ou options payantes sur les sites internet, achat d’articles de presse, ...).</li>
 													<li class="grey" style="background-color:#FFF"><a href="#C" class="button">Accéder</a></li>
 													</ul>
-												</div> -->
-
-											<!-- </div>
+												</div>
+											</div>
 										</div> -->
 
 						<?php } ?>
@@ -782,7 +781,7 @@ if (!$erreur){
 				<?php	} ?>
 
 					<?php
-						if(!empty($_GET['token'])) {
+						if(isset($_GET['PayerID'])) {
 							$content = '';
 							$headers = '';
 							$to = '';
@@ -850,10 +849,10 @@ if (!$erreur){
 												$type_logiciel = $_SESSION['panier']['type'][$i];
 
 												$abo = $_SESSION['panier']['abonnement'][$i];
-												$reqete = $maPdoFonction->GetIdAAbo($_SESSION['panier']['abonnement'][$i]);
-													if($reqete->rowCount() > 0) {
-														 while($donnees_req = $reqete->fetch()) {
-															 $abo_id = $donnees_req['id'];
+												$req = $maPdoFonction->GetIdAbo($_SESSION['panier']['abonnement'][$i]);
+													if($req->rowCount() > 0) {
+														 while($donnees = $req->fetch()) {
+															 $abo_id = $donnees['id'];
 														}
 													}
 										}
@@ -884,7 +883,7 @@ if (!$erreur){
 											$type_logiciel = $_SESSION['panier']['type'][$i];
 
 											$abo = $_SESSION['panier']['abonnement'][$i];
-											$reqete = $maPdoFonction->GetIdAAbo($_SESSION['panier']['abonnement'][$i]);
+											$reqete = $maPdoFonction->GetIdAbo($_SESSION['panier']['abonnement'][$i]);
 												if($reqete->rowCount() > 0) {
 													 while($donnees_req = $reqete->fetch()) {
 														 $abo_id = $donnees_req['id'];
@@ -962,7 +961,6 @@ if (!$erreur){
 								 $y   += $size + 2;
 							 }
 
-
 							 $pdf->addTVAs($_SESSION['numberHT'],$_SESSION['totalTVA']);
 							 $pdf->addCadreEurosFrancs($_SESSION['numberHT'],$_SESSION['totalTVA']);
 
@@ -983,7 +981,7 @@ if (!$erreur){
 								$mail = new PHPMailer;
 
 								$mail->isSMTP();                                      // Set mailer to use SMTP
-								$mail->Host = 'smtp.orange.fr';  // Specify main and backup SMTP servers
+								$mail->Host = 'smtp.bbox.fr';  // Specify main and backup SMTP servers
 								$mail->SMTPAuth = false;                               // Enable SMTP authentication
 								$mail->Username = 'atoutlicencemanagement@gmail.com';                 // SMTP username
 								$mail->Password = 'atoutprotect';                           // SMTP password
@@ -1000,6 +998,7 @@ if (!$erreur){
 								$mail->Body    = $content;
 
 								if(!$mail->send()) {
+									echo '<script type="text/javascript">window.alert("pas OK");</script>';
 								    echo 'Message could not be sent.';
 								    echo 'Mailer Error: ' . $mail->ErrorInfo;
 								} else {
