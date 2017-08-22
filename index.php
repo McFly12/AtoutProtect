@@ -311,16 +311,16 @@
 
   <!-- +++++ Welcome Section +++++ -->
   <div id="ww" style="background-color:#e4e4e4;">
-      <div class="container">
+      <div class="container" style="margin-top:-50px;">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 centered">
           <img src="assets/img/ATOUTSA.PNG" title="ATOUT S.A.">
           <h1>ATOUT S.A. ,</h1>
-          <p style="margin-bottom:-5%;">Voici les logiciels pour lesquels nous vendons des licences : </p>
-        </div><!-- /col-lg-8 -->
-      </div><!-- /row -->
-      </div> <!-- /container -->
-  </div><!-- /ww -->
+          <p style="margin-bottom:-7%;margin-top:-30px;">Voici les logiciels pour lesquels nous vendons des licences : </p>
+        </div>
+      </div>
+      </div>
+  </div>
 
 <br />
 
