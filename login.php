@@ -181,6 +181,11 @@
             echo '<div class="isa_success_"><i class="fa fa-check"></i>&nbsp;Votre mot de passe a bien été mis à jour. Vous pouvez vous connecter avec votre nouveau mot de passe.</div><br />';
           }
         ?>
+        <?php
+          if (isset($_GET['OkNewAcc'])){
+            echo '<div class="isa_success_"><i class="fa fa-check"></i>&nbsp;Votre compte a bien été créé. Vous pouvez maitenant vous connecter.</div><br />';
+          }
+        ?>
 			</div>
 		</div>
 
