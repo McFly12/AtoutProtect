@@ -24,9 +24,9 @@ if((isset($nom)) && (isset($prenom)) && (isset($tel)) && (isset($email)) && (iss
 
     $u_password = hash('sha256', $mdp);
 
-    $req = $maPdoFonction->EnregNouvCompte($nom,$prenom,$tel,$email,$u_password,$adresse,$codepostal,$ville,'1');
+    $req = $maPdoFonction->EnregNouvCompte($nom,$prenom,$tel,$email,$u_password,$adresse,$codepostal,$ville,'3');
     if($req->rowCount() == 1) {
-        $req_verif = $maPdoFonction->VerifEnregNouvCompte($nom,$prenom,$tel,$email,$u_password,$adresse,$codepostal,$ville,'1');
+        $req_verif = $maPdoFonction->VerifEnregNouvCompte($nom,$prenom,$tel,$email,$u_password,$adresse,$codepostal,$ville,'3');
       if($req_verif->rowCount() == 1) {
         header('Location: ../createaccount.php?ErrNewAcc');
       }
