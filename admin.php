@@ -574,6 +574,21 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
       });
     </script>
 
+    <script>
+    $(document).ready(function () {
+      $(".btnclipboard").on('click', function () {
+        $.toast({
+   				heading: '<h2 style="float:left;font-size:20px">Infos</h2><br /><br />',
+   				text: '<p>Clé copié dans votre presse-papier.</p>',
+   				showHideTransition: 'plain',
+   				position: 'bottom-center',
+   				allowToastClose: false,
+   				icon: 'info'
+   			})
+      });
+    });
+    </script>
+
     <br /><br />
 
     <!-- Modal -->
@@ -775,7 +790,8 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
                          }
                          fputcsv($monfichier,array($donnees['id'],$donnees['Email'],$donnees['Mdp'],$donnees['Nom'],$donnees['Prenom'],$donnees['Adresse'],$donnees['Tel'],$donnees['CodePostal'],$donnees['Ville'],$droit,$donnees['DateDeCreation'],$donnees['DateDerniereConnexion'],$donnees['HeureDerniereConnexion']),";");
                        }
-                     fclose($monfichier); } ?>
+                     fclose($monfichier);
+                   } ?>
 
                        window.open('http://localhost/atoutprotect/csvexport/Utilisateurs_Export_Donnees_Administration.csv', 'Download');
          });
