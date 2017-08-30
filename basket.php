@@ -72,7 +72,7 @@ if (!$erreur){
 		<meta name="format-detection" content="telephone=no">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-		<link rel="shortcut icon" href="assets/img/logo.png">
+		<link rel="shortcut icon" href="assets/img/favicon.jpg">
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
 

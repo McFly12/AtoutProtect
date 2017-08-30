@@ -12,7 +12,7 @@ if(!isset($_SESSION['nom']) || $_SESSION['droit'] != 1) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/img/logo.png">
+    <link rel="shortcut icon" href="assets/img/favicon.jpg">
 
     <title>Atout Protect - Adminsitration</title>
 

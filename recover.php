@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="assets/img/logo.png">
+    <link rel="shortcut icon" href="assets/img/favicon.jpg">
 
     <title>Atout Protect - Réinitialisation du mot de passe</title>
 
